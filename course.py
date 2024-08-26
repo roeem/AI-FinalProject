@@ -2,7 +2,7 @@ from prerequisites import Prerequisites
 
 
 class Course:
-    def __init__(self, course_number: int, semester: str, name: str,
+    def __init__(self, course_number: int, semester: str, name: str, points: int, is_mandatory: bool = False,
                  prerequisites: Prerequisites = Prerequisites()):
         """
 
@@ -12,10 +12,11 @@ class Course:
         :param prerequisites: prerequisites for this course.
         """
         # TODO: in the future - maybe add course avg.
-
         self.__number: int = course_number
         self.__semester: str = semester
         self.__name: str = name
+        self.__points: int = points
+        self.__is_mandatory: bool = is_mandatory
         self.__prerequisites: Prerequisites = prerequisites
 
     @property
@@ -29,6 +30,14 @@ class Course:
     @property
     def name(self) -> str:
         return self.__name
+
+    @property
+    def points(self) -> int:
+        return self.__points
+
+    @property
+    def is_mandatory(self) -> bool:
+        return self.__is_mandatory
 
     @property
     def prerequisites(self) -> Prerequisites:
