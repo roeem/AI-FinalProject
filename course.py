@@ -2,10 +2,13 @@ from prerequisites import Prerequisites
 
 
 class Course:
+    """
+    This class represent a Course of some degree.
+    """
+
     def __init__(self, course_number: int, semester: str, name: str, points: int, is_mandatory: bool = False,
                  prerequisites: Prerequisites = Prerequisites()):
         """
-
         :param course_number: the number of the course
         :param semester: the semester in which the course is studied - should be 'A' or 'B'.
         :param name: the course name.

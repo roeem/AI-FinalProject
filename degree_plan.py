@@ -1,10 +1,14 @@
-import math
-
 from course import Course
 from itertools import chain, combinations
 
 
 class Semester:
+    """
+    This class represent a Semester.
+    TODO: Now it is just a set of courses - if it stays that way this class will not be necessary.
+          If we don't delete this class maybe move it to another file.
+    """
+
     def __init__(self, courses: frozenset[Course]):
         self.__courses = courses
 
@@ -14,18 +18,38 @@ class Semester:
 
 
 class DegreePlan:
-    def __init__(self, degree_courses: frozenset[Course], mandatory_courses_points: int, min_points: int,
-                 min_semester_points: int = 0, max_semester_points: int = math.inf):
+    """
+    This class represent a Degree Plan.
+    This class is immutable and can be used as state in search problem.
+    Each Degree Plane (state) contains the requirements for finishing the degree, all courses already
+    placed in previous semesters, all courses available fot this degree and more.
+    """
+
+    def __init__(self, degree_courses: frozenset[Course], mandatory_courses_points: int,
+                 min_degree_points: int, min_semester_points: int, max_semester_points: int):
+        """
+        :param degree_courses: a frozenset of courses available for this degree
+        :param mandatory_courses_points: number of points of mandatory courses
+        :param min_degree_points: minimum number of points to complete the degree
+        :param min_semester_points: minimum number of points in each semester
+        :param max_semester_points: maximum number of points in each semester
+        """
         self.__degree_courses = degree_courses
         self.__mandatory_points_left = mandatory_courses_points
-        self.__total_points_left = min_points
+        self.__total_points_left = min_degree_points
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
         self.__semester_num = 0
         self.__courses_so_far: set[int] = set()
 
     def add_semester(self, semester: Semester) -> "DegreePlan":
-        if not self._is_valid_semester(semester):
+        """
+        creates a new Degree Plan with the added semester
+        :raises ValueError if the semester is invalid
+        :param semester: a Semester object
+        :return: the new Degree Plan with the added semester
+        """
+        if any(self._is_invalid_course(course) for course in semester.courses):
             raise ValueError("Semester is not allowed")
 
         new_degree_plan = self.__copy__()
@@ -37,17 +61,20 @@ class DegreePlan:
             new_degree_plan.__courses_so_far.add(course.number)
         return new_degree_plan
 
-    def _is_valid_semester(self, semester: Semester) -> bool:
-        for course in semester.courses:
-            if self._is_invalid_course(course):
-                return False
-        return True
-
     def _is_invalid_course(self, course: Course) -> bool:
+        """
+        checks if a course is invalid - means the course already placed in previous semester or there are
+        prerequisites not satisfied.
+        :param course: a Course object
+        :return: True iff the course is invalid
+        """
         return course.number in self.__courses_so_far or not course.can_take_this_course(
             self.__courses_so_far)
 
     def get_legal_semesters(self) -> list[Semester]:
+        """
+        :return: list of all possible legal semesters according to the constraints.
+        """
         legal_courses = filter(self._is_invalid_course, self.__degree_courses)
         legal_course_subsets = chain.from_iterable(
             combinations(legal_courses, r) for r in range(len(legal_courses) + 1))
@@ -55,6 +82,12 @@ class DegreePlan:
             lambda subset: self.__min_semester_points <= sum(course.points for course in subset) <=
                            self.__max_semester_points, legal_course_subsets)
         return [Semester(frozenset(subset)) for subset in legal_course_subsets]
+
+    def is_legal_degree_plan(self) -> bool:
+        """
+        :return: True iff the plan meets all the requirements of the degree.
+        """
+        return self.__mandatory_points_left <= 0 and self.__total_points_left <= 0
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
     def __eq__(self, other) -> bool:

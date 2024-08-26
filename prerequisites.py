@@ -1,4 +1,11 @@
 class Prerequisites:
+    """
+    This class represent Prerequisites for some course.
+    Prerequisites object is like CNF - every clause is 'or' courses.
+    For example - the Prerequisites: [frozenset({1,2,3}),frozenset({2,4}),frozenset({7})] means that
+    the prerequisites are the following:
+    (1 or 2 or 3) and (2 or 4) and (7).
+    """
     def __init__(self, cnf_course_numbers: set[frozenset[int]] = None):
         """
         :param cnf_course_numbers: set contains the prerequisite course numbers.
@@ -34,6 +41,4 @@ class Prerequisites:
             clause_str = ", ".join(str(course_num) for course_num in sorted(clause))
             prereqs.append(f"({clause_str})")
         prereqs_str = " and ".join(prereqs)
-        return (
-            f"[{prereqs_str}])"
-        )
+        return f"[{prereqs_str}])"
