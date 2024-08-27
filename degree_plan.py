@@ -8,6 +8,8 @@ class Semester:
     TODO: Now it is just a set of courses - if it stays that way this class will not be necessary.
           If we don't delete this class maybe move it to another file.
     """
+    A = 'A'
+    B = 'B'
 
     def __init__(self, courses: frozenset[Course]):
         self.__courses = courses
@@ -39,7 +41,7 @@ class DegreePlan:
         self.__total_points_left = min_degree_points
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
-        self.__semester_num = 0
+        self.__next_semester_num = 1
         self.__courses_so_far: set[int] = set()
 
     def add_semester(self, semester: Semester) -> "DegreePlan":
@@ -53,7 +55,7 @@ class DegreePlan:
             raise ValueError("Semester is not allowed")
 
         new_degree_plan = self.__copy__()
-        new_degree_plan.__semester_num += 1
+        new_degree_plan.__next_semester_num += 1
         for course in semester.courses:
             new_degree_plan.__total_points_left -= course.points
             if course.is_mandatory:
@@ -61,15 +63,19 @@ class DegreePlan:
             new_degree_plan.__courses_so_far.add(course.number)
         return new_degree_plan
 
+    def _next_semester(self) -> str:
+        return Semester.A if self.__next_semester_num % 2 == 1 else Semester.B
+
     def _is_invalid_course(self, course: Course) -> bool:
         """
         checks if a course is invalid - means the course already placed in previous semester or there are
-        prerequisites not satisfied.
+        prerequisites not satisfied or not in the right semester.
         :param course: a Course object
         :return: True iff the course is invalid
         """
-        return course.number in self.__courses_so_far or not course.can_take_this_course(
-            self.__courses_so_far)
+        return (self._next_semester() != course.semester or
+                course.number in self.__courses_so_far or
+                not course.can_take_this_course(self.__courses_so_far))
 
     def get_legal_semesters(self) -> list[Semester]:
         """
@@ -96,7 +102,7 @@ class DegreePlan:
         return (
                 self.__mandatory_points_left == other.__mandatory_points_left and
                 self.__total_points_left == other.__total_points_left and
-                self.__semester_num == other.__semester_num and
+                self.__next_semester_num == other.__next_semester_num and
                 self.__courses_so_far == other.__courses_so_far
         )
 
@@ -104,13 +110,13 @@ class DegreePlan:
         return hash((
             self.__mandatory_points_left,
             self.__total_points_left,
-            self.__semester_num,
+            self.__next_semester_num,
             frozenset(self.__courses_so_far)
         ))
 
     def __copy__(self):
         new_plan = DegreePlan(self.__degree_courses, self.__mandatory_points_left, self.__total_points_left,
                               self.__min_semester_points, self.__max_semester_points)
-        new_plan.__semester_num = self.__semester_num
+        new_plan.__next_semester_num = self.__next_semester_num
         new_plan.__courses_so_far = self.__courses_so_far.copy()
         return new_plan
