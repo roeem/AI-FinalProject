@@ -51,7 +51,7 @@ class DegreePlan:
         :param semester: a Semester object
         :return: the new Degree Plan with the added semester
         """
-        if any(self._is_invalid_course(course) for course in semester.courses):
+        if any(not self._is_valid_course(course) for course in semester.courses):
             raise ValueError("Semester is not allowed")
 
         new_degree_plan = self.__copy__()
@@ -66,22 +66,22 @@ class DegreePlan:
     def _next_semester(self) -> str:
         return Semester.A if self.__next_semester_num % 2 == 1 else Semester.B
 
-    def _is_invalid_course(self, course: Course) -> bool:
+    def _is_valid_course(self, course: Course) -> bool:
         """
         checks if a course is invalid - means the course already placed in previous semester or there are
         prerequisites not satisfied or not in the right semester.
         :param course: a Course object
         :return: True iff the course is invalid
         """
-        return (self._next_semester() != course.semester or
-                course.number in self.__courses_so_far or
-                not course.can_take_this_course(self.__courses_so_far))
+        return (self._next_semester() == course.semester and
+                course.number not in self.__courses_so_far and
+                course.can_take_this_course(self.__courses_so_far))
 
     def get_legal_semesters(self) -> list[Semester]:
         """
         :return: list of all possible legal semesters according to the constraints.
         """
-        legal_courses = filter(self._is_invalid_course, self.__degree_courses)
+        legal_courses = filter(self._is_valid_course, self.__degree_courses)
         legal_course_subsets = chain.from_iterable(
             combinations(legal_courses, r) for r in range(len(legal_courses) + 1))
         legal_course_subsets = filter(
