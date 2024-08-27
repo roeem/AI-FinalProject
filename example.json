@@ -1,0 +1,28 @@
+{
+  "degree_courses": [
+    {
+      "course_number": 101,
+      "semester_type": "A",
+      "name": "Introduction to Programming",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": [
+        [1,2],[3,4,5],[7]
+      ]
+    },
+    {
+      "course_number": 102,
+      "semester_type": "B",
+      "name": "Data Structures",
+      "points": 8,
+      "is_mandatory": true,
+      "prerequisites": [
+        [101]
+      ]
+    }
+  ],
+  "mandatory_courses_points": 14,
+  "min_degree_points": 100,
+  "min_semester_points": 12,
+  "max_semester_points": 20
+}

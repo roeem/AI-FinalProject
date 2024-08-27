@@ -59,8 +59,10 @@ class Course:
         For debugging
         """
         return (
-            f"Course(id={self.__number}, "
-            f"name={self.__name}, "
-            f"semester={self.__semester_type}, "
-            f"prerequisites={self.__prerequisites.__repr__()}"
+            f"Course(num={self.number}, "
+            f"semester={self.semester_type}, "
+            f'name="{self.name}", '
+            f"points={self.points}, "
+            f"is_mandatory={self.is_mandatory}, "
+            f"prerequisites={self.prerequisites.__repr__()})"
         )

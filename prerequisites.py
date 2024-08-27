@@ -6,6 +6,7 @@ class Prerequisites:
     the prerequisites are the following:
     (1 or 2 or 3) and (2 or 4) and (7).
     """
+
     def __init__(self, cnf_course_numbers: set[frozenset[int]] = None):
         """
         :param cnf_course_numbers: set contains the prerequisite course numbers.
@@ -41,4 +42,4 @@ class Prerequisites:
             clause_str = " or ".join(str(course_num) for course_num in sorted(clause))
             prereqs.append(f"({clause_str})")
         prereqs_str = " and ".join(prereqs)
-        return f"{prereqs_str}"
+        return f"[{prereqs_str}]"

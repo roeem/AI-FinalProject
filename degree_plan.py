@@ -21,10 +21,14 @@ class Semester:
     def semester_type(self) -> str:
         return self.__semester_type
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         For debugging
         """
+        return (
+            f"Semester {self.semester_type}:\n"
+            "\n".join([course.__repr__() for course in self.courses])
+        )
 
 
 class DegreePlan:
@@ -123,7 +127,7 @@ class DegreePlan:
             frozenset(self.__courses_so_far)
         ))
 
-    def __copy__(self):
+    def __copy__(self) -> "DegreePlan":
         new_plan = DegreePlan(self.__degree_courses, self.__mandatory_points_left, self.__total_points_left,
                               self.__min_semester_points, self.__max_semester_points)
         new_plan.__next_semester_num = self.__next_semester_num
