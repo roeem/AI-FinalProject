@@ -5,18 +5,26 @@ from itertools import chain, combinations
 class Semester:
     """
     This class represent a Semester.
-    TODO: Now it is just a set of courses - if it stays that way this class will not be necessary.
-          If we don't delete this class maybe move it to another file.
     """
     A = 'A'
     B = 'B'
 
-    def __init__(self, courses: frozenset[Course]):
+    def __init__(self, courses: frozenset[Course], semester_type: str):
         self.__courses = courses
+        self.__semester_type = semester_type
 
     @property
     def courses(self) -> frozenset[Course]:
         return self.__courses
+
+    @property
+    def semester_type(self) -> str:
+        return self.__semester_type
+
+    def __repr__(self):
+        """
+        For debugging
+        """
 
 
 class DegreePlan:
@@ -63,7 +71,8 @@ class DegreePlan:
             new_degree_plan.__courses_so_far.add(course.number)
         return new_degree_plan
 
-    def _next_semester(self) -> str:
+    @property
+    def _next_semester_type(self) -> str:
         return Semester.A if self.__next_semester_num % 2 == 1 else Semester.B
 
     def _is_valid_course(self, course: Course) -> bool:
@@ -73,7 +82,7 @@ class DegreePlan:
         :param course: a Course object
         :return: True iff the course is invalid
         """
-        return (self._next_semester() == course.semester and
+        return (self._next_semester_type == course.semester_type and
                 course.number not in self.__courses_so_far and
                 course.can_take_this_course(self.__courses_so_far))
 
@@ -87,7 +96,7 @@ class DegreePlan:
         legal_course_subsets = filter(
             lambda subset: self.__min_semester_points <= sum(course.points for course in subset) <=
                            self.__max_semester_points, legal_course_subsets)
-        return [Semester(frozenset(subset)) for subset in legal_course_subsets]
+        return [Semester(frozenset(subset), self._next_semester_type) for subset in legal_course_subsets]
 
     def is_legal_degree_plan(self) -> bool:
         """

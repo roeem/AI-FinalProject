@@ -6,17 +6,17 @@ class Course:
     This class represent a Course of some degree.
     """
 
-    def __init__(self, course_number: int, semester: str, name: str, points: int, is_mandatory: bool = False,
-                 prerequisites: Prerequisites = Prerequisites()):
+    def __init__(self, course_number: int, semester_type: str, name: str, points: int,
+                 is_mandatory: bool = False, prerequisites: Prerequisites = Prerequisites()):
         """
         :param course_number: the number of the course
-        :param semester: the semester in which the course is studied - should be 'A' or 'B'.
+        :param semester_type: the semester in which the course is studied - should be 'A' or 'B'.
         :param name: the course name.
         :param prerequisites: prerequisites for this course.
         """
         # TODO: in the future - maybe add course avg.
         self.__number: int = course_number
-        self.__semester: str = semester
+        self.__semester_type: str = semester_type
         self.__name: str = name
         self.__points: int = points
         self.__is_mandatory: bool = is_mandatory
@@ -27,8 +27,8 @@ class Course:
         return self.__number
 
     @property
-    def semester(self) -> str:
-        return self.__semester
+    def semester_type(self) -> str:
+        return self.__semester_type
 
     @property
     def name(self) -> str:
@@ -60,7 +60,7 @@ class Course:
         """
         return (
             f"Course(id={self.__number}, "
-            f"semester={self.__semester}, "
             f"name={self.__name}, "
+            f"semester={self.__semester_type}, "
             f"prerequisites={self.__prerequisites.__repr__()}"
         )
