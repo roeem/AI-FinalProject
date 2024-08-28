@@ -7,7 +7,7 @@ class Course:
     """
 
     def __init__(self, course_number: int, semester_type: str, name: str, points: int,
-                 is_mandatory: bool = False, prerequisites: Prerequisites = Prerequisites()):
+                 is_mandatory: bool = False, prerequisites: Prerequisites = None):
         """
         :param course_number: the number of the course
         :param semester_type: the semester in which the course is studied - should be 'A' or 'B'.
@@ -20,7 +20,7 @@ class Course:
         self.__name: str = name
         self.__points: int = points
         self.__is_mandatory: bool = is_mandatory
-        self.__prerequisites: Prerequisites = prerequisites
+        self.__prerequisites: Prerequisites = prerequisites if prerequisites is not None else Prerequisites()
 
     @property
     def number(self) -> int:
