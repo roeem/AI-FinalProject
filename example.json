@@ -16,9 +16,7 @@
       "name": "Data Structures",
       "points": 8,
       "is_mandatory": true,
-      "prerequisites": [
-        [101]
-      ]
+      "prerequisites": null
     }
   ],
   "mandatory_courses_points": 14,

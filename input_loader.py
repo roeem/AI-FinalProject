@@ -17,7 +17,9 @@ def load_degree_plan(json_file: str) -> DegreePlan:
             name=course_data['name'],
             points=course_data['points'],
             is_mandatory=course_data['is_mandatory'],
-            prerequisites=Prerequisites(set(map(frozenset, course_data['prerequisites'])))
+            prerequisites=Prerequisites(
+                set(map(frozenset, course_data.get('prerequisites', [])))) if course_data.get(
+                'prerequisites') is not None else None
         )
         for course_data in data['degree_courses']
     )
@@ -30,4 +32,9 @@ def load_degree_plan(json_file: str) -> DegreePlan:
         min_semester_points=data['min_semester_points'],
         max_semester_points=data['max_semester_points']
     )
+    print(degree_courses)
     return degree_plan
+
+
+if __name__ == '__main__':
+    d = load_degree_plan("example.json")
