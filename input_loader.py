@@ -1,10 +1,13 @@
 import json
+import math
+
 from course import Course
-from degree_plan import DegreePlan
+from degree_planning_problems import DegreePlanningSearch
 from prerequisites import Prerequisites
 
 
-def load_degree_plan(json_file: str) -> DegreePlan:
+def load_degree_plan(json_file: str, min_semester_points: int = 0, max_semester_points: int = math.inf) -> (
+        DegreePlanningSearch):
     # Load JSON data from file
     with open(json_file, 'r') as file:
         data = json.load(file)
@@ -25,16 +28,11 @@ def load_degree_plan(json_file: str) -> DegreePlan:
     )
 
     # Create the DegreePlan object
-    degree_plan = DegreePlan(
+    degree_planning_search = DegreePlanningSearch(
         degree_courses=degree_courses,
         mandatory_courses_points=data['mandatory_courses_points'],
         min_degree_points=data['min_degree_points'],
-        min_semester_points=data['min_semester_points'],
-        max_semester_points=data['max_semester_points']
+        min_semester_points=min_semester_points,
+        max_semester_points=max_semester_points
     )
-    print(degree_courses)
-    return degree_plan
-
-
-if __name__ == '__main__':
-    d = load_degree_plan("example.json")
+    return degree_planning_search

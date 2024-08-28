@@ -10,9 +10,9 @@ class DegreePlanningSearch(SearchProblem):
     Implementation of Search Problem for Degree Planning problem.
     """
 
-    def __init__(self, degree_courses: frozenset[Course], mandatory_courses_points: int, min_points: int,
-                 min_semester_points: int = 0, max_semester_points: int = math.inf):
-        self.degree_plan = DegreePlan(degree_courses, mandatory_courses_points, min_points,
+    def __init__(self, degree_courses: frozenset[Course], mandatory_courses_points: int,
+                 min_degree_points: int, min_semester_points: int = 0, max_semester_points: int = math.inf):
+        self.degree_plan = DegreePlan(degree_courses, mandatory_courses_points, min_degree_points,
                                       min_semester_points, max_semester_points)
         self.expanded = 0
 
