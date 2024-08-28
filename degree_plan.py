@@ -1,5 +1,5 @@
 from course import Course
-from itertools import chain, combinations
+from itertools import chain, combinations, tee
 
 
 class Semester:
@@ -94,9 +94,10 @@ class DegreePlan:
         """
         :return: list of all possible legal semesters according to the constraints.
         """
-        legal_courses = filter(self._is_valid_course, self.__degree_courses)
+        legal_courses, legal_courses_for_count = tee(filter(self._is_valid_course, self.__degree_courses))
+        legal_courses_count = sum(1 for _ in legal_courses_for_count)
         legal_course_subsets = chain.from_iterable(
-            combinations(legal_courses, r) for r in range(len(legal_courses) + 1))
+            combinations(legal_courses, r) for r in range(legal_courses_count + 1))
         legal_course_subsets = filter(
             lambda subset: self.__min_semester_points <= sum(course.points for course in subset) <=
                            self.__max_semester_points, legal_course_subsets)
