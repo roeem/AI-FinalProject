@@ -1,11 +1,12 @@
 from prerequisites import Prerequisites
 
+
 class Course:
     """
     This class represent a Course of some degree.
     """
 
-    def __init__(self, course_number: int, semester_type: str, name: str, points: int,
+    def __init__(self, course_number: int, semester_type: str, name: str, points: int, avg_grade: float,
                  is_mandatory: bool = False, prerequisites: Prerequisites = None):
         """
         :param course_number: the number of the course
@@ -18,6 +19,7 @@ class Course:
         self.__semester_type: str = semester_type
         self.__name: str = name
         self.__points: int = points
+        self.__avg_grade = avg_grade
         self.__is_mandatory: bool = is_mandatory
         self.__prerequisites: Prerequisites = prerequisites if prerequisites is not None else Prerequisites()
 
@@ -36,6 +38,10 @@ class Course:
     @property
     def points(self) -> int:
         return self.__points
+
+    @property
+    def avg_grade(self) -> float:
+        return self.__avg_grade
 
     @property
     def is_mandatory(self) -> bool:
@@ -62,6 +68,7 @@ class Course:
             f"semester={self.semester_type}, "
             f'name="{self.name}", '
             f"points={self.points}, "
+            f"avg_grade={self.avg_grade}, "
             f"is_mandatory={self.is_mandatory}, "
             f"prerequisites={self.prerequisites.__repr__()})"
         )

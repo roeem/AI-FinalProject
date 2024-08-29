@@ -1,6 +1,6 @@
 {
-  "mandatory_courses_points": 84,
-  "min_degree_points": 120,
+  "mandatory_points": 84,
+  "target_points": 120,
   "degree_courses": [
     {
       "course_number": 67101,

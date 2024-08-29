@@ -12,6 +12,8 @@ class Semester:
     def __init__(self, courses: frozenset[Course], semester_type: str):
         self.__courses = courses
         self.__semester_type = semester_type
+        self.__avg_grade = None
+        self.__points = None
 
     @property
     def courses(self) -> frozenset[Course]:
@@ -20,6 +22,28 @@ class Semester:
     @property
     def semester_type(self) -> str:
         return self.__semester_type
+
+    @property
+    def avg_grade(self) -> float:
+        if self.__avg_grade is not None:
+            return self.__avg_grade
+        self.__avg_grade, self.__points = self._calc_avg_grade_and_points()
+        return self.__avg_grade
+
+    @property
+    def points(self) -> int:
+        if self.__points is not None:
+            return self.__points
+        self.__avg_grade, self.__points = self._calc_avg_grade_and_points()
+        return self.__points
+
+    def _calc_avg_grade_and_points(self) -> tuple[float, int]:
+        points = 0
+        grade_sum = 0
+        for course in self.courses:
+            points += course.points
+            grade_sum += course.avg_grade * course.points
+        return grade_sum / points, points
 
     def __repr__(self) -> str:
         """
@@ -39,20 +63,13 @@ class DegreePlan:
     placed in previous semesters, all courses available fot this degree and more.
     """
 
-    def __init__(self, degree_courses: frozenset[Course], mandatory_courses_points: int,
-                 min_degree_points: int, min_semester_points: int, max_semester_points: int):
+    def __init__(self, degree_courses: frozenset[Course]):
         """
         :param degree_courses: a frozenset of courses available for this degree
-        :param mandatory_courses_points: number of points of mandatory courses
-        :param min_degree_points: minimum number of points to complete the degree
-        :param min_semester_points: minimum number of points in each semester
-        :param max_semester_points: maximum number of points in each semester
         """
         self.__degree_courses = degree_courses
-        self.__mandatory_points_left = mandatory_courses_points
-        self.__total_points_left = min_degree_points
-        self.__min_semester_points = min_semester_points
-        self.__max_semester_points = max_semester_points
+        self.__mandatory_points = 0
+        self.__total_points = 0
         self.__next_semester_num = 1
         self.__courses_so_far: set[Course] = set()
 
@@ -69,11 +86,19 @@ class DegreePlan:
         new_degree_plan = self.__copy__()
         new_degree_plan.__next_semester_num += 1
         for course in semester.courses:
-            new_degree_plan.__total_points_left -= course.points
+            new_degree_plan.__total_points += course.points
             if course.is_mandatory:
-                new_degree_plan.__mandatory_points_left -= course.points
+                new_degree_plan.__mandatory_points += course.points
             new_degree_plan.__courses_so_far.add(course)
         return new_degree_plan
+
+    @property
+    def mandatory_points(self) -> int:
+        return self.__mandatory_points
+
+    @property
+    def total_points(self) -> int:
+        return self.__total_points
 
     @property
     def _next_semester_type(self) -> str:
@@ -90,7 +115,7 @@ class DegreePlan:
                 course not in self.__courses_so_far and
                 course.can_take_this_course(self.__courses_so_far))
 
-    def get_legal_semesters(self) -> list[Semester]:
+    def get_legal_semesters(self, min_semester_points: int, max_semester_points: int) -> list[Semester]:
         """
         :return: list of all possible legal semesters according to the constraints.
         """
@@ -99,38 +124,33 @@ class DegreePlan:
         legal_course_subsets = chain.from_iterable(
             combinations(legal_courses, r) for r in range(legal_courses_count + 1))
         legal_course_subsets = filter(
-            lambda subset: self.__min_semester_points <= sum(course.points for course in subset) <=
-                           self.__max_semester_points, legal_course_subsets)
+            lambda subset: min_semester_points <= sum(course.points for course in subset) <=
+                           max_semester_points, legal_course_subsets)
         return [Semester(frozenset(subset), self._next_semester_type) for subset in legal_course_subsets]
-
-    def is_legal_degree_plan(self) -> bool:
-        """
-        :return: True iff the plan meets all the requirements of the degree.
-        """
-        return self.__mandatory_points_left <= 0 and self.__total_points_left == 0
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
     def __eq__(self, other) -> bool:
         if not isinstance(other, DegreePlan):
             return False
         return (
-                self.__mandatory_points_left == other.__mandatory_points_left and
-                self.__total_points_left == other.__total_points_left and
+                self.__mandatory_points == other.__mandatory_points and
+                self.__total_points == other.__total_points and
                 self.__next_semester_num == other.__next_semester_num and
                 self.__courses_so_far == other.__courses_so_far
         )
 
     def __hash__(self) -> int:
         return hash((
-            self.__mandatory_points_left,
-            self.__total_points_left,
+            self.__mandatory_points,
+            self.__total_points,
             self.__next_semester_num,
             frozenset(self.__courses_so_far)
         ))
 
     def __copy__(self) -> "DegreePlan":
-        new_plan = DegreePlan(self.__degree_courses, self.__mandatory_points_left, self.__total_points_left,
-                              self.__min_semester_points, self.__max_semester_points)
+        new_plan = DegreePlan(self.__degree_courses)
+        new_plan.__mandatory_points = self.__mandatory_points
+        new_plan.__total_points = self.__total_points
         new_plan.__next_semester_num = self.__next_semester_num
         new_plan.__courses_so_far = self.__courses_so_far.copy()
         return new_plan
