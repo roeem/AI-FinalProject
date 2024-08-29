@@ -66,3 +66,6 @@ class Course:
             f"is_mandatory={self.is_mandatory}, "
             f"prerequisites={self.prerequisites.__repr__()})"
         )
+
+    def __eq__(self, other) -> bool:
+        return self.number == other.number and self.semester_type == other.semester_type
