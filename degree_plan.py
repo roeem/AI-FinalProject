@@ -17,7 +17,6 @@ class Semester:
     def courses(self) -> frozenset[Course]:
         return self.__courses
 
-
     @property
     def semester_type(self) -> str:
         return self.__semester_type
@@ -51,12 +50,11 @@ class DegreePlan:
         """
         self.__degree_courses = degree_courses
         self.__mandatory_points_left = mandatory_courses_points
-        self.__required_points = min_degree_points
+        self.__total_points_left = min_degree_points
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
         self.__next_semester_num = 1
-        self.__courses_so_far: set[Course] = set()
-        self.__points_so_far: int = 0
+        self.__courses_so_far: set[int] = set()
 
     def add_semester(self, semester: Semester) -> "DegreePlan":
         """
@@ -70,17 +68,12 @@ class DegreePlan:
 
         new_degree_plan = self.__copy__()
         new_degree_plan.__next_semester_num += 1
-
         for course in semester.courses:
-            new_degree_plan.__points_so_far += course.points
+            new_degree_plan.__total_points_left -= course.points
             if course.is_mandatory:
                 new_degree_plan.__mandatory_points_left -= course.points
             new_degree_plan.__courses_so_far.add(course.number)
         return new_degree_plan
-
-    @property
-    def points_so_far(self) -> int:
-        return self.__points_so_far
 
     @property
     def _next_semester_type(self) -> str:
@@ -114,7 +107,7 @@ class DegreePlan:
         """
         :return: True iff the plan meets all the requirements of the degree.
         """
-        return self.__required_points == self.__points_so_far and self.__mandatory_points_left == 0
+        return self.__mandatory_points_left <= 0 and self.__total_points_left <= 0
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
     def __eq__(self, other) -> bool:
@@ -122,25 +115,22 @@ class DegreePlan:
             return False
         return (
                 self.__mandatory_points_left == other.__mandatory_points_left and
-                self.__required_points == other.__required_points and
+                self.__total_points_left == other.__total_points_left and
                 self.__next_semester_num == other.__next_semester_num and
-                self.__courses_so_far == other.__courses_so_far and
-                self.points_so_far == other.__points_so_far
+                self.__courses_so_far == other.__courses_so_far
         )
 
     def __hash__(self) -> int:
         return hash((
             self.__mandatory_points_left,
-            self.__required_points,
+            self.__total_points_left,
             self.__next_semester_num,
-            frozenset(self.__courses_so_far),
-            self.__points_so_far
+            frozenset(self.__courses_so_far)
         ))
 
     def __copy__(self) -> "DegreePlan":
-        new_plan = DegreePlan(self.__degree_courses, self.__mandatory_points_left, self.__required_points,
+        new_plan = DegreePlan(self.__degree_courses, self.__mandatory_points_left, self.__total_points_left,
                               self.__min_semester_points, self.__max_semester_points)
         new_plan.__next_semester_num = self.__next_semester_num
-        new_plan.__points_so_far = self.__points_so_far
         new_plan.__courses_so_far = self.__courses_so_far.copy()
         return new_plan
