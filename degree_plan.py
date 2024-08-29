@@ -72,6 +72,7 @@ class DegreePlan:
         self.__total_points = 0
         self.__next_semester_num = 1
         self.__courses_so_far: dict[int, Course] = {}
+        self.__avg_grade = 0
 
     def add_semester(self, semester: Semester) -> "DegreePlan":
         """
@@ -86,11 +87,17 @@ class DegreePlan:
         new_degree_plan = self.__copy__()
         new_degree_plan.__next_semester_num += 1
         for course in semester.courses:
+            self.__avg_grade = (self.__avg_grade * self.total_points + course.avg_grade * course.points) / (
+                        self.total_points + course.points)
             new_degree_plan.__total_points += course.points
             if course.is_mandatory:
                 new_degree_plan.__mandatory_points += course.points
             new_degree_plan.__courses_so_far[course.number] = course
         return new_degree_plan
+
+    @property
+    def semester_count(self):
+        return self.__next_semester_num - 1
 
     @property
     def mandatory_points(self) -> int:
@@ -103,6 +110,10 @@ class DegreePlan:
     @property
     def _next_semester_type(self) -> str:
         return Semester.A if self.__next_semester_num % 2 == 1 else Semester.B
+
+    @property
+    def avg_grade(self) -> float:
+        return self.__avg_grade
 
     def _is_valid_course(self, course: Course) -> bool:
         """

@@ -1,13 +1,13 @@
 {
-  "mandatory_points": 70,
-  "target_points": 70,
+  "mandatory_points": 84,
+  "target_points": 134,
   "degree_courses": [
     {
       "course_number": 67101,
       "semester_type": "A",
       "name": "Introduction to Computer Science",
       "points": 7,
-      "avg_grade": 85,
+      "avg_grade": 90,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -104,7 +104,7 @@
       "semester_type": "B",
       "name": "LINEAR ALGEBRA (1)",
       "points": 6,
-      "avg_grade": 76,
+      "avg_grade": 68,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -113,7 +113,7 @@
       "semester_type": "A",
       "name": "LINEAR ALGEBRA (2)",
       "points": 6,
-      "avg_grade": 74,
+      "avg_grade": 100,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -161,7 +161,7 @@
       "semester_type": "B",
       "name": "DISCRETE MATHEMATICS",
       "points": 5,
-      "avg_grade": 82,
+      "avg_grade": 93,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -210,7 +210,7 @@
       "semester_type": "A",
       "name": "Algorithms",
       "points": 5,
-      "avg_grade": 80,
+      "avg_grade": 61,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -404,7 +404,7 @@
       "semester_type": "B",
       "name": "Introduction to Object Oriented",
       "points": 4,
-      "avg_grade": 84,
+      "avg_grade": 63,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -596,7 +596,7 @@
       "semester_type": "B",
       "name": "A Needle in a Data Haystack: Introduction to Data Science",
       "points": 3,
-      "avg_grade": 84,
+      "avg_grade": 95,
       "is_mandatory": false,
       "prerequisites": null
     },
@@ -653,7 +653,7 @@
       "semester_type": "B",
       "name": "Introduction to Communication Networks",
       "points": 4,
-      "avg_grade": 80,
+      "avg_grade": 60,
       "is_mandatory": true,
       "prerequisites": [
         [

@@ -1,4 +1,6 @@
 import sys
+
+import degree_planning_problems
 from degree_planning_problems import *
 from input_loader import load_degree_plan
 from search import bfs, dfs, astar, ucs
@@ -44,8 +46,11 @@ def main():
 
     if problem == 'min_time':
         degree_planning_search = DegreePlanningMinTime(**degree_planning_search_params)
+        heuristic = degree_planning_problems.min_time_heuristic
     elif problem == 'max_avg':
         degree_planning_search = DegreePlanningMaxAvg(**degree_planning_search_params)
+        heuristic = degree_planning_problems.max_avg_heuristic
+
     else:
         raise ValueError('Invalid problem type')
 
@@ -54,7 +59,7 @@ def main():
     elif algorithm == 'dfs':
         solution = dfs(degree_planning_search)
     elif algorithm == 'astar':
-        solution = astar(degree_planning_search)
+        solution = astar(degree_planning_search, heuristic)
     elif algorithm == 'ucs':
         solution = ucs(degree_planning_search)
     else:

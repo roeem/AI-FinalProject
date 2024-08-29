@@ -69,6 +69,12 @@ class DegreePlanningMaxAvg(SearchProblem):
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
         self.expanded = 0
+        self.total_grade_avg = Semester(degree_courses, "A").avg_grade
+        print("")
+
+    @property
+    def target_points(self) -> int:
+        return self.__target_points
 
     def get_start_state(self) -> DegreePlan:
         """
@@ -110,3 +116,12 @@ class DegreePlanningMaxAvg(SearchProblem):
 
     def _get_cost_of_action(self, action: Semester) -> float:
         return (100 - action.avg_grade) * (action.points / self.__target_points)
+
+
+def min_time_heuristic(state: DegreePlan, problem: DegreePlanningMinTime) -> float:
+    return 0
+
+
+def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
+    # return (100 - state.avg_grade) + (problem.target_points - state.total_points)
+    return (state.avg_grade * state.total_points + 25 * (problem.target_points - state.total_points)) / problem.target_points
