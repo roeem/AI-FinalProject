@@ -57,7 +57,8 @@ class Course:
         :param finished_courses: set of course numbers the student already done.
         :return: True if and only if the student can take this course.
         """
-        return self.__prerequisites.meets_prerequisites(finished_courses)
+        course_numbers = {course.number for course in finished_courses}
+        return self.__prerequisites.meets_prerequisites(course_numbers)
 
     def __repr__(self) -> str:
         """

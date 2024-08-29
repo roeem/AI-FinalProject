@@ -1,5 +1,3 @@
-from course import Course
-
 
 class Prerequisites:
     """
@@ -17,15 +15,14 @@ class Prerequisites:
         """
         self.__cnf_course_numbers = cnf_course_numbers
 
-    def meets_prerequisites(self, courses: set[Course]) -> bool:
+    def meets_prerequisites(self, course_numbers: set[int]) -> bool:
         """
         Checks if the courses in the set are sufficient to meet the prerequisites
-        :param courses: set of course.
+        :param course_numbers: set of course numbers.
         :return: True if and only if these courses are satisfies the prerequisites.
         """
         if self.__cnf_course_numbers is None:
             return True
-        course_numbers: set[int] = {course.number for course in courses}
         for clause in self.__cnf_course_numbers:
             for course_num in clause:
                 if course_num in course_numbers:

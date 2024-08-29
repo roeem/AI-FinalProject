@@ -50,8 +50,8 @@ class Semester:
         For debugging
         """
         return (
-            f"Semester {self.semester_type}:\n"
-            "\n".join([course.__repr__() for course in self.courses])
+                f"Semester {self.semester_type}:\n" +
+                "\n".join([course.__repr__() for course in self.courses])
         )
 
 
@@ -115,18 +115,34 @@ class DegreePlan:
                 course not in self.__courses_so_far and
                 course.can_take_this_course(self.__courses_so_far))
 
-    def get_legal_semesters(self, min_semester_points: int, max_semester_points: int) -> list[Semester]:
+    # def get_legal_semesters(self, min_semester_points: int, max_semester_points: int) -> list[Semester]:
+    #     """
+    #     :return: list of all possible legal semesters according to the constraints.
+    #     """
+    #     legal_courses = list(filter(self._is_valid_course, self.__degree_courses))
+    #     legal_courses_count = len(legal_courses)
+    #
+    #     legal_course_subsets = chain.from_iterable(
+    #         combinations(legal_courses, r) for r in range(legal_courses_count + 1))
+    #     legal_course_subsets = filter(
+    #         lambda subset: min_semester_points <= sum(course.points for course in subset) <=
+    #                        max_semester_points, legal_course_subsets)
+    #     return [Semester(frozenset(subset), self._next_semester_type) for subset in legal_course_subsets]
+
+    def get_legal_semesters(self, min_semester_points: int, max_semester_points: int) -> list:
         """
         :return: list of all possible legal semesters according to the constraints.
         """
-        legal_courses, legal_courses_for_count = tee(filter(self._is_valid_course, self.__degree_courses))
-        legal_courses_count = sum(1 for _ in legal_courses_for_count)
-        legal_course_subsets = chain.from_iterable(
-            combinations(legal_courses, r) for r in range(legal_courses_count + 1))
-        legal_course_subsets = filter(
-            lambda subset: min_semester_points <= sum(course.points for course in subset) <=
-                           max_semester_points, legal_course_subsets)
-        return [Semester(frozenset(subset), self._next_semester_type) for subset in legal_course_subsets]
+        legal_courses = [course for course in self.__degree_courses if self._is_valid_course(course)]
+        legal_semesters = []
+
+        # Prune subsets early based on points
+        for r in range(1, len(legal_courses) + 1):
+            for subset in combinations(legal_courses, r):
+                total_points = sum(course.points for course in subset)
+                if min_semester_points <= total_points <= max_semester_points:
+                    legal_semesters.append(Semester(frozenset(subset), self._next_semester_type))
+        return legal_semesters
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
     def __eq__(self, other) -> bool:
