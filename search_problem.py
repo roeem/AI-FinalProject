@@ -15,6 +15,15 @@ def timer(func):
     return wrapper
 
 
+def calculate_avg(semesters: list[Semester]) -> float:
+    points = 0
+    grade_sum = 0
+    for semester in semesters:
+        points += semester.points
+        grade_sum += semester.avg_grade * semester.points
+    return grade_sum / points
+
+
 @timer
 def main():
     problem = sys.argv[1]
@@ -51,7 +60,10 @@ def main():
     else:
         raise ValueError('Invalid algorithm type')
 
-    print(solution)
+    print(f"Average: {calculate_avg(solution)}")
+    print(f"Expanded: {degree_planning_search.expanded}")
+    for semester in solution:
+        print(semester)
 
 
 if __name__ == '__main__':

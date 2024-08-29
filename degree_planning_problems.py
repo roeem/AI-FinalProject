@@ -30,8 +30,9 @@ class DegreePlanningMinTime(SearchProblem):
         :param state: a degree plan
         :return: true if and only if the state is a valid goal state
         """
-        return (state.total_points == self.__target_points and
-                state.mandatory_points == self.__mandatory_points)
+        # TODO: check >=
+        return (state.total_points >= self.__target_points and
+                state.mandatory_points >= self.__mandatory_points)
 
     def get_successors(self, state: DegreePlan) -> list[tuple[DegreePlan, Semester, float]]:
         """
