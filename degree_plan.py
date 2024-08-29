@@ -54,7 +54,7 @@ class DegreePlan:
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
         self.__next_semester_num = 1
-        self.__courses_so_far: set[int] = set()
+        self.__courses_so_far: set[Course] = set()
 
     def add_semester(self, semester: Semester) -> "DegreePlan":
         """
@@ -72,7 +72,7 @@ class DegreePlan:
             new_degree_plan.__total_points_left -= course.points
             if course.is_mandatory:
                 new_degree_plan.__mandatory_points_left -= course.points
-            new_degree_plan.__courses_so_far.add(course.number)
+            new_degree_plan.__courses_so_far.add(course)
         return new_degree_plan
 
     @property
@@ -87,7 +87,7 @@ class DegreePlan:
         :return: True iff the course is invalid
         """
         return (self._next_semester_type == course.semester_type and
-                course.number not in self.__courses_so_far and
+                course not in self.__courses_so_far and
                 course.can_take_this_course(self.__courses_so_far))
 
     def get_legal_semesters(self) -> list[Semester]:
@@ -107,7 +107,7 @@ class DegreePlan:
         """
         :return: True iff the plan meets all the requirements of the degree.
         """
-        return self.__mandatory_points_left <= 0 and self.__total_points_left <= 0
+        return self.__mandatory_points_left <= 0 and self.__total_points_left == 0
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
     def __eq__(self, other) -> bool:

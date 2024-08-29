@@ -1,6 +1,5 @@
 from prerequisites import Prerequisites
 
-
 class Course:
     """
     This class represent a Course of some degree.
@@ -46,7 +45,7 @@ class Course:
     def prerequisites(self) -> Prerequisites:
         return self.__prerequisites
 
-    def can_take_this_course(self, finished_courses: set[int]) -> bool:
+    def can_take_this_course(self, finished_courses: set["Course"]) -> bool:
         """
         Checks whether a student who studied all the courses in the set can take this course
         :param finished_courses: set of course numbers the student already done.
@@ -66,3 +65,11 @@ class Course:
             f"is_mandatory={self.is_mandatory}, "
             f"prerequisites={self.prerequisites.__repr__()})"
         )
+
+    def __eq__(self, other):
+        if not isinstance(other, Course):
+            return False
+        return self.number == other.number and self.semester_type == other.semester_type
+
+    def __hash__(self):
+        return hash((self.number, self.semester_type))
