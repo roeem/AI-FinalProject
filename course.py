@@ -51,14 +51,13 @@ class Course:
     def prerequisites(self) -> Prerequisites:
         return self.__prerequisites
 
-    def can_take_this_course(self, finished_courses: set["Course"]) -> bool:
+    def can_take_this_course(self, finished_courses: set[int]) -> bool:
         """
         Checks whether a student who studied all the courses in the set can take this course
         :param finished_courses: set of course numbers the student already done.
         :return: True if and only if the student can take this course.
         """
-        course_numbers = {course.number for course in finished_courses}
-        return self.__prerequisites.meets_prerequisites(course_numbers)
+        return self.__prerequisites.meets_prerequisites(finished_courses)
 
     def __repr__(self) -> str:
         """

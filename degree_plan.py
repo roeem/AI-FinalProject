@@ -71,7 +71,7 @@ class DegreePlan:
         self.__mandatory_points = 0
         self.__total_points = 0
         self.__next_semester_num = 1
-        self.__courses_so_far: set[Course] = set()
+        self.__courses_so_far: dict[int, Course] = {}
 
     def add_semester(self, semester: Semester) -> "DegreePlan":
         """
@@ -89,7 +89,7 @@ class DegreePlan:
             new_degree_plan.__total_points += course.points
             if course.is_mandatory:
                 new_degree_plan.__mandatory_points += course.points
-            new_degree_plan.__courses_so_far.add(course)
+            new_degree_plan.__courses_so_far[course.number] = course
         return new_degree_plan
 
     @property
@@ -112,22 +112,8 @@ class DegreePlan:
         :return: True iff the course is invalid
         """
         return (self._next_semester_type == course.semester_type and
-                course not in self.__courses_so_far and
-                course.can_take_this_course(self.__courses_so_far))
-
-    # def get_legal_semesters(self, min_semester_points: int, max_semester_points: int) -> list[Semester]:
-    #     """
-    #     :return: list of all possible legal semesters according to the constraints.
-    #     """
-    #     legal_courses = list(filter(self._is_valid_course, self.__degree_courses))
-    #     legal_courses_count = len(legal_courses)
-    #
-    #     legal_course_subsets = chain.from_iterable(
-    #         combinations(legal_courses, r) for r in range(legal_courses_count + 1))
-    #     legal_course_subsets = filter(
-    #         lambda subset: min_semester_points <= sum(course.points for course in subset) <=
-    #                        max_semester_points, legal_course_subsets)
-    #     return [Semester(frozenset(subset), self._next_semester_type) for subset in legal_course_subsets]
+                course.number not in self.__courses_so_far.keys() and
+                course.can_take_this_course(set(self.__courses_so_far)))
 
     def get_legal_semesters(self, min_semester_points: int, max_semester_points: int) -> list:
         """

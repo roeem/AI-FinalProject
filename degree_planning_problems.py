@@ -30,9 +30,8 @@ class DegreePlanningMinTime(SearchProblem):
         :param state: a degree plan
         :return: true if and only if the state is a valid goal state
         """
-        # TODO: check >=
-        return (state.total_points >= self.__target_points and
-                state.mandatory_points >= self.__mandatory_points)
+        return (state.total_points == self.__target_points and
+                state.mandatory_points == self.__mandatory_points)
 
     def get_successors(self, state: DegreePlan) -> list[tuple[DegreePlan, Semester, float]]:
         """
@@ -94,11 +93,13 @@ class DegreePlanningMaxAvg(SearchProblem):
         required to get there, and 'stepCost' is the incremental
         cost of expanding to that successor
         """
-        # Note that for the search problem, there is only one player - #0
         self.expanded = self.expanded + 1
-        return [(state.add_semester(semester), semester, self._get_cost_of_action(semester))
-                for semester in
-                state.get_legal_semesters(self.__min_semester_points, self.__max_semester_points)]
+        successors = []
+        for semester in state.get_legal_semesters(self.__min_semester_points, self.__max_semester_points):
+            if state.total_points + semester.points <= self.__target_points:
+                successors.append(
+                    (state.add_semester(semester), semester, self._get_cost_of_action(semester)))
+        return successors
 
     def get_cost_of_actions(self, actions: list[Semester]) -> float:
         """

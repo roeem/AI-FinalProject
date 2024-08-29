@@ -15,13 +15,13 @@ def timer(func):
     return wrapper
 
 
-def calculate_avg(semesters: list[Semester]) -> float:
+def calculate_avg(semesters: list[Semester]) -> tuple[float, int]:
     points = 0
     grade_sum = 0
     for semester in semesters:
         points += semester.points
         grade_sum += semester.avg_grade * semester.points
-    return grade_sum / points
+    return grade_sum / points, points
 
 
 @timer
@@ -60,7 +60,11 @@ def main():
     else:
         raise ValueError('Invalid algorithm type')
 
-    print(f"Average: {calculate_avg(solution)}")
+    avg, points = calculate_avg(solution)
+    print(f"Target points: {target_points}")
+    print(f"Mandatory points: {mandatory_points}")
+    print(f"Average: {avg}")
+    print(f"Points: {points}")
     print(f"Expanded: {degree_planning_search.expanded}")
     for semester in solution:
         print(semester)
