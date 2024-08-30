@@ -1,0 +1,417 @@
+{
+  "mandatory_points": 113,
+  "target_points": 145,
+  "degree_courses": [
+    {
+      "course_number": 77101,
+      "semester_type": "3",
+      "name": "Mechanics and Special relativity",
+      "points": 7,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": []
+    },
+    {
+      "course_number": 77102,
+      "semester_type": "2",
+      "name": "Electricity and Magnetism",
+      "points": 6,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[77101, 77910], [80114]]
+    },
+    {
+      "course_number": 77114,
+      "semester_type": "1",
+      "name": "PHYSICS LAB A1",
+      "points": 2,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": []
+    },
+    {
+      "course_number": 77622,
+      "semester_type": "2",
+      "name": "PHYSICS LAB A2",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[77110, 77114]]
+    },
+    {
+      "course_number": 80114,
+      "semester_type": "1",
+      "name": "Mathematical Methods I",
+      "points": 6,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": []
+    },
+    {
+      "course_number": 80153,
+      "semester_type": "1",
+      "name": "Linear algebra for engineering and science students 1",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": []
+    },
+    {
+      "course_number": 80154,
+      "semester_type": "2",
+      "name": "Linear algebra for engineering and science students 2",
+      "points": 3,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[80153]]
+    },
+    {
+      "course_number": 80155,
+      "semester_type": "2",
+      "name": "Calculus for Physics students",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": []
+    },
+    {
+      "course_number": 80157,
+      "semester_type": "2",
+      "name": "Mathematical Methods II",
+      "points": 6,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[80114], [80153, 80152, 80134]]
+    },
+    {
+      "course_number": 69322,
+      "semester_type": "2",
+      "name": "GENERAL CHEMISTRY FOR PHYSICS STUDENTS",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": []
+    },
+    {
+      "course_number": 77152,
+      "semester_type": "2",
+      "name": "Thermal Physics",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[80114], [77101, 77115, 77910]]
+    },
+    {
+      "course_number": 77303,
+      "semester_type": "1",
+      "name": "Analytical Mechanics",
+      "points": 6,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[80114], [77101]]
+    },
+    {
+      "course_number": 77305,
+      "semester_type": "1",
+      "name": "Waves and Optics",
+      "points": 5,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[80114], [80157], [77102, 77106], [77101]]
+    },
+    {
+      "course_number": 77313,
+      "semester_type": "1",
+      "name": "Equations of Mathematical Physics",
+      "points": 6,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[77101], [77106, 77102], [80114], [80157]]
+    },
+    {
+      "course_number": 77318,
+      "semester_type": "2",
+      "name": "Quantum Theory I",
+      "points": 6,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[77305], [77303]]
+    },
+    {
+      "course_number": 77335,
+      "semester_type": "1",
+      "name": "Physics Lab II-1-Waves, dynamical systems and materials properties",
+      "points": 3,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[77622, 77174, 77110, 77103, 77111, 77114, 77125, 77159]]
+    },
+    {
+      "course_number": 77336,
+      "semester_type": "2",
+      "name": "Physics Lab II-2-Waves, dynamical systems and materials properties",
+      "points": 3,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[77114, 77335, 77110, 77111, 77103]]
+    },
+    {
+      "course_number": 77401,
+      "semester_type": "2",
+      "name": "Analytical Electrodynamics",
+      "points": 5,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[80114, 80132], [80157, 80315], [77305], [77303], [77106, 77102]]
+    },
+    {
+      "course_number": 80312,
+      "semester_type": "1",
+      "name": "PROBABILITY THEORY AND APPLICATIONS",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[80131, 80114]]
+    },
+    {
+      "course_number": 80314,
+      "semester_type": "2",
+      "name": "COMPLEX VARIABLES AND APPLICATIONS",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": true,
+      "prerequisites": [[80132, 80157, 80142]]
+    },
+    {
+      "course_number": 77606,
+      "semester_type": "2",
+      "name": "Theory of Continua",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": false,
+      "prerequisites": [[80157], [77152], [77106, 77102, 83313]]
+    },
+    {
+      "course_number": 77315,
+      "semester_type": "2",
+      "name": "Introduction to Computational Physics",
+      "points": 4,
+      "avg_grade": null,
+      "is_mandatory": false,
+      "prerequisites": [[80157], [67101, 76628, 76641], [67101, 76639, 76641]]
+    },
+    {
+      "course_number": 77412,
+      "semester_type": "2",
+      "name": "Order of Magnitude in Physics Problems",
+      "points": 2,
+      "avg_grade": null,
+      "is_mandatory": false,
+      "prerequisites": [[77152]]
+    },
+    {
+      "course_number": 77153,
+      "semester_type": "2",
+      "name": "Basic Ideas of Modern Physics",
+      "points": 2,
+      "avg_grade": null,
+      "is_mandatory": false,
+      "prerequisites": [],
+      "note": "Not taught this year"
+    },
+     {
+        "course_number": 76224,
+        "semester_type": "A or B",
+        "name": "computer based safety training- 3",
+        "points": 0,
+        "avg_grade": null,
+        "is_mandatory": true,
+        "prerequisites": []
+    },
+    {
+        "course_number": 77307,
+        "semester_type": "A",
+        "name": "Intro. to Statistical Physics",
+        "points": 4,
+        "avg_grade": null,
+        "is_mandatory": true,
+        "prerequisites": [[69123, 77152], [80312, 80420]]
+    },
+    {
+        "course_number": 77508,
+        "semester_type": "A or B",
+        "name": "Physics Lab III: Advanced experiments in quantum and modern physics",
+        "points": 6,
+        "avg_grade": null,
+        "is_mandatory": true,
+        "prerequisites": [[76223], [77318], [77365, 77302, 77322, 77336, 77335, 77367]]
+    },
+    {
+        "course_number": 77605,
+        "semester_type": "A",
+        "name": "Quantum Theory II",
+        "points": 7,
+        "avg_grade": null,
+        "is_mandatory": true,
+        "prerequisites": []
+    },
+    {
+        "course_number": 77594,
+        "semester_type": "1",
+        "name": "Physical processes in astrophysics",
+        "points": 2,
+        "avg_grade": null,
+        "is_mandatory": false,
+        "prerequisites": []
+    },
+    {
+        "course_number": 77634,
+        "semester_type": "2",
+        "name": "Environmental Physics- The science of climate change",
+        "points": 2,
+        "avg_grade": null,
+        "is_mandatory": false,
+        "prerequisites": [[76412]]
+    },
+    {
+        "course_number": 77656,
+        "semester_type": "1",
+        "name": "Quantum structures in semiconductors",
+        "points": 2,
+        "avg_grade": null,
+        "is_mandatory": false,
+        "prerequisites": [[76412]]
+    },
+    {
+        "course_number": 77740,
+        "semester_type": "2",
+        "name": "Seminar in Quantum Optics",
+        "points": 2,
+        "avg_grade": null,
+        "is_mandatory": false,
+        "prerequisites": [[76412]]
+    },
+    {
+        "course_number": 77874,
+        "semester_type": "1",
+        "name": "Nonlinear Dynamics in Biological Systems",
+        "points": 2,
+        "avg_grade": null,
+        "is_mandatory": false,
+        "prerequisites": []
+    },
+    {
+        "course_number": 77892,
+        "semester_type": "2",
+        "name": "Introduction to string theory - seminarion",
+        "points": 2,
+        "avg_grade": null,
+        "is_mandatory": false,
+        "prerequisites": []
+    },
+    {
+        "course_number": 77568,
+        "name": "The Physics of Musical Instruments",
+        "points": 2,
+        "semester_type": "2",
+        "is_mandatory": false,
+        "prerequisites": [[77305], [76412]]
+    },
+    {
+        "course_number": 77638,
+        "name": "Dynamical Systems and Chaos",
+        "points": 2,
+        "semester_type": "1",
+        "is_mandatory": false,
+        "prerequisites": [[77303, 76412]]
+    },
+    {
+        "course_number": 77925,
+        "name": "Symmetry in Physics, Principles & Application",
+        "points": 2,
+        "semester_type": "2",
+        "is_mandatory": false,
+        "prerequisites": [[76412]]
+    },
+    {
+        "course_number": 77501,
+        "name": "Astrophysics and Cosmology",
+        "points": 3,
+        "semester_type": "1",
+        "is_mandatory": false,
+        "prerequisites": [[80157], [77102, 77106]]
+    },
+    {
+        "course_number": 77532,
+        "name": "Introduction to Physics Research",
+        "points": 1,
+        "semester_type": "1",
+        "is_mandatory": false,
+        "prerequisites": []
+    },
+    {
+        "course_number": 77542,
+        "name": "Quantum Theory C",
+        "points": 3,
+        "semester_type": "2",
+        "is_mandatory": false,
+        "prerequisites": [[77605]]
+    },
+    {
+        "course_number": 77602,
+        "name": "Solid State Physics",
+        "points": 4,
+        "semester_type": "2",
+        "is_mandatory": false,
+        "prerequisites": [[77307, 69315], [77605]]
+    },
+    {
+        "course_number": 77603,
+        "name": "Nuclear Physics",
+        "points": 3,
+        "semester_type": "2",
+        "is_mandatory": false,
+        "prerequisites": [[77605]]
+    },
+    {
+        "course_number": 77606,
+        "name": "Mechanics of Continua",
+        "points": 4,
+        "semester_type": "2",
+        "is_mandatory": false,
+        "prerequisites": [[80157], [77152], [77106, 77102, 83313]]
+    },
+    {
+        "course_number": 77607,
+        "name": "Introduction to Nonlinear Physics",
+        "points": 4,
+        "semester_type": "1",
+        "is_mandatory": false,
+        "prerequisites": [[77303], [77313]]
+    },
+    {
+        "course_number": 77609,
+        "name": "Introduction to Elementary Particles",
+        "points": 3,
+        "semester_type": "2",
+        "is_mandatory": false,
+        "prerequisites": [[77605]]
+    },
+    {
+        "course_number": 77693,
+        "name": "Physical Optics",
+        "points": 3,
+        "semester_type": "1",
+        "is_mandatory": false,
+        "prerequisites": [[77305]]
+    },
+    {
+        "course_number": 77972,
+        "name": "Physical Models of biological systems",
+        "points": 3,
+        "semester_type": "1",
+        "is_mandatory": false,
+        "prerequisites": null
+    }
+  ]
+}

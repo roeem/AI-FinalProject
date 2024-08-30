@@ -19,6 +19,22 @@ class DegreePlanningMinTime(SearchProblem):
         self.__max_semester_points = max_semester_points
         self.expanded = 0
 
+    @property
+    def target_points(self) -> int:
+        return self.__target_points
+
+    @property
+    def mandatory_points(self) -> int:
+        return self.__mandatory_points
+
+    @property
+    def min_semester_points(self) -> int:
+        return self.__min_semester_points
+
+    @property
+    def max_semester_points(self) -> int:
+        return self.__max_semester_points
+
     def get_start_state(self) -> DegreePlan:
         """
         :return: the start state for the search problem
@@ -69,12 +85,15 @@ class DegreePlanningMaxAvg(SearchProblem):
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
         self.expanded = 0
-        self.total_grade_avg = Semester(degree_courses, "A").avg_grade
-        print("")
+        self.total_grade_avg = Semester(degree_courses, "A").avg_grade  # TODO: remove
 
     @property
     def target_points(self) -> int:
         return self.__target_points
+
+    @property
+    def mandatory_points(self) -> int:
+        return self.__mandatory_points
 
     def get_start_state(self) -> DegreePlan:
         """
@@ -100,6 +119,7 @@ class DegreePlanningMaxAvg(SearchProblem):
         cost of expanding to that successor
         """
         self.expanded = self.expanded + 1
+        if self.expanded % 10000 == 0: print(f"Expanded: {self.expanded}")
         successors = []
         for semester in state.get_legal_semesters(self.__min_semester_points, self.__max_semester_points):
             if state.total_points + semester.points <= self.__target_points:
@@ -119,9 +139,12 @@ class DegreePlanningMaxAvg(SearchProblem):
 
 
 def min_time_heuristic(state: DegreePlan, problem: DegreePlanningMinTime) -> float:
-    return 0
+    avg_points_per_semester = (
+            state.total_points / state.semester_count) if state.semester_count > 0 else problem.max_semester_points
+    return (problem.target_points - state.total_points) / problem.max_semester_points
 
 
 def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
     # return (100 - state.avg_grade) + (problem.target_points - state.total_points)
-    return (state.avg_grade * state.total_points + 25 * (problem.target_points - state.total_points)) / problem.target_points
+    # return 100 - ((state.avg_grade * state.total_points + 100 * (problem.target_points - state.total_points)) / problem.target_points)
+    return ((problem.target_points - state.total_points) / problem.target_points) * 60

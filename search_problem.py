@@ -66,6 +66,7 @@ def main():
         raise ValueError('Invalid algorithm type')
 
     avg, points = calculate_avg(solution)
+    print(f"num of semesters: {len(solution)}")
     print(f"Target points: {target_points}")
     print(f"Mandatory points: {mandatory_points}")
     print(f"Average: {avg}")
