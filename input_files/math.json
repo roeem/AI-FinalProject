@@ -1,0 +1,494 @@
+{
+  "mandatory_points": 63,
+  "target_points": 134,
+  "degree_courses": [
+    {
+      "course_number":  80131,
+      "semester_type": "A",
+      "name": "INFINITESIMAL CALCULUS (1)",
+      "points": 7,
+      "is_mandatory": true,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80131,
+      "semester_type": "B",
+      "name": "INFINITESIMAL CALCULUS (1)",
+      "points": 7,
+      "is_mandatory": true,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80132,
+      "semester_type": "A",
+      "name": "INFINITESIMAL CALCULUS (2)",
+      "points": 7,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80131]
+      ]
+    },
+    {
+      "course_number":  80132,
+      "semester_type": "B",
+      "name": "INFINITESIMAL CALCULUS (2)",
+      "points": 7,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80131]
+      ]
+    },
+    {
+      "course_number":  80134,
+      "semester_type": "A",
+      "name": "LINEAR ALGEBRA (1)",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80134,
+      "semester_type": "B",
+      "name": "LINEAR ALGEBRA (1)",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80135,
+      "semester_type": "A",
+      "name": "LINEAR ALGEBRA (2)",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80134]
+      ]
+    },
+    {
+      "course_number":  80135,
+      "semester_type": "B",
+      "name": "LINEAR ALGEBRA (2)",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80134]
+      ]
+    },
+    {
+      "course_number":  80181,
+      "semester_type": "A",
+      "name": "DISCRETE MATHEMATICS",
+      "points": 5,
+      "is_mandatory": true,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80181,
+      "semester_type": "B",
+      "name": "DISCRETE MATHEMATICS",
+      "points": 5,
+      "is_mandatory": true,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80111,
+      "semester_type": "A",
+      "name": "Elementary analysis 1",
+      "points": 3,
+      "is_mandatory": true,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80111,
+      "semester_type": "B",
+      "name": "Elementary analysis 1",
+      "points": 3,
+      "is_mandatory": true,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80116,
+      "semester_type": "A",
+      "name": "Elementary analysis 2",
+      "points": 3,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80111],[80134],[80131]
+      ]
+    },
+    {
+      "course_number":  80116,
+      "semester_type": "B",
+      "name": "Elementary analysis 2",
+      "points": 3,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80111],[80134],[80131]
+      ]
+    },
+    {
+      "course_number":  77154,
+      "semester_type": "B",
+      "name": "Mechanics for math students",
+      "points": 7,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80111]
+      ]
+    },
+    {
+      "course_number":  80200,
+      "semester_type": "B",
+      "name": "SET THEORY",
+      "points": 3,
+      "is_mandatory": false,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80115,
+      "semester_type": "B",
+      "name": "Elementary Number Theory",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": null
+    },
+    {
+      "course_number":  76637,
+      "semester_type": "B",
+      "name": "programming in python",
+      "points": 2,
+      "is_mandatory": false,
+      "prerequisites": null
+    },
+    {
+      "course_number":  76631,
+      "semester_type": "A",
+      "name": "PYTHON1",
+      "points": 2,
+      "is_mandatory": false,
+      "prerequisites": null
+    },
+    {
+      "course_number":  76632,
+      "semester_type": "B",
+      "name": "PYTHON2",
+      "points": 2,
+      "is_mandatory": false,
+      "prerequisites": [
+        [6141, 8402, 40358, 51719, 52304, 54260, 71137, 76608, 76631, 76634, 76637, 76638, 76639]
+      ]
+    },
+    {
+      "course_number":  76628,
+      "semester_type": "B",
+      "name": "MATLAB FOR EARTH SCIENCES",
+      "points": 2,
+      "is_mandatory": false,
+      "prerequisites": [
+        [6141, 8402, 40358, 51719, 52304, 54260, 71137, 76608, 76631, 76634, 76637, 76638, 76639]
+      ]
+    },
+    {
+      "course_number":  76629,
+      "semester_type": "A",
+      "name": "MATHEMATICAL PROGRAMMING WITH MATLAB FOR CHEMISTRY",
+      "points": 3,
+      "is_mandatory": false,
+      "prerequisites": [
+        [71007, 71071, 71072, 71740, 80109, 80112, 80131, 80132]
+      ]
+    },
+    {
+      "course_number":  76629,
+      "semester_type": "B",
+      "name": "MATHEMATICAL PROGRAMMING WITH MATLAB FOR CHEMISTRY",
+      "points": 3,
+      "is_mandatory": false,
+      "prerequisites": [
+        [71007, 71071, 71072, 71740, 80109, 80112, 80131, 80132]
+      ]
+    },
+    {
+      "course_number":  76634,
+      "semester_type": "A",
+      "name": "PYTHON FOR EARTH SCIENCES",
+      "points": 2,
+      "is_mandatory": false,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80415,
+      "semester_type": "A",
+      "name": "INFINITESIMAL CALCULUS 3",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80131],[80132,80142],[80134],[80135],[80116]
+      ]
+    },
+    {
+      "course_number":  80415,
+      "semester_type": "B",
+      "name": "INFINITESIMAL CALCULUS 3",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80131],[80132,80142],[80134],[80135],[80116]
+      ]
+    },
+    {
+      "course_number":  80445,
+      "semester_type": "A",
+      "name": "ALGEBRAIC STRUCTURES (1)",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80131],[80132,80133,80142],[80134],[80135]
+      ]
+    },
+    {
+      "course_number":  80445,
+      "semester_type": "B",
+      "name": "ALGEBRAIC STRUCTURES (1)",
+      "points": 6,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80131],[80132,80133,80142],[80134],[80135]
+      ]
+    },
+    {
+      "course_number":  80416,
+      "semester_type": "B",
+      "name": "Analysis on manifolds",
+      "points": 4,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80415]
+      ]
+    },
+    {
+      "course_number":  80417,
+      "semester_type": "B",
+      "name": "Functional analysis",
+      "points": 3,
+      "is_mandatory": true,
+      "prerequisites": [
+        [80415]
+      ]
+    },
+    {
+      "course_number":  80320,
+      "semester_type": "B",
+      "name": "DIFFERENTIAL EQUATIONS",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80131],[80132,80142],[80134],[80135],[80415]
+      ]
+    },
+    {
+      "course_number":  80420,
+      "semester_type": "A",
+      "name": "PROBABILITY THEORY (1)",
+      "points": 5,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80131],[80132,80133,80142]
+      ]
+    },
+    {
+      "course_number":  80423,
+      "semester_type": "A",
+      "name": "MATHEMATICAL LOGIC (1)",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80134,80152],[80181]
+      ]
+    },
+    {
+      "course_number":  80446,
+      "semester_type": "B",
+      "name": "ALGEBRAIC STRUCTURES (2)",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80445]
+      ]
+    },
+    {
+      "course_number":  80516,
+      "semester_type": "B",
+      "name": "INTRODUCTION TO TOPOLOGY",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80315,80415]
+      ]
+    },
+    {
+      "course_number":  80637,
+      "semester_type": "B",
+      "name": "ALGEBRAIC GEOMETRY",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80599]
+      ]
+    },
+    {
+      "course_number":  80756,
+      "semester_type": "A",
+      "name": "ALGEBRAIC NUMBER THEORY",
+      "points": 3,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80445],[80446]
+      ]
+    },
+    {
+      "course_number":  80428,
+      "semester_type": "B",
+      "name": "GAME THEORY (1)",
+      "points": 3,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80132,80142],[80135],[80415]
+      ]
+    },
+    {
+      "course_number":  80627,
+      "semester_type": "B",
+      "name": "Elliptic Curves",
+      "points": 2,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80446]
+      ]
+    },
+    {
+      "course_number":  80610,
+      "semester_type": "B",
+      "name": "Analytic Number Theory",
+      "points": 3,
+      "is_mandatory": false,
+      "prerequisites": null
+    },
+    {
+      "course_number":  80424,
+      "semester_type": "B",
+      "name": "MATHEMATICAL LOGIC (2)",
+      "points": 3,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80423]
+      ]
+    },
+    {
+      "course_number":  80520,
+      "semester_type": "A",
+      "name": "COMBINATORICS",
+      "points": 3,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80181]
+      ]
+    },
+    {
+      "course_number":  80545,
+      "semester_type": "A",
+      "name": "Elementary geometry",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80134,80135]
+      ]
+    },
+    {
+      "course_number":  67504,
+      "semester_type": "A",
+      "name": "Algorithms",
+      "points": 5,
+      "is_mandatory": false,
+      "prerequisites": [
+        [67109],[80134,80153]
+      ]
+    },
+    {
+      "course_number":  67504,
+      "semester_type": "B",
+      "name": "Algorithms",
+      "points": 5,
+      "is_mandatory": false,
+      "prerequisites": [
+        [67109],[80134,80153]
+      ]
+    },
+    {
+      "course_number":  67521,
+      "semester_type": "A",
+      "name": "Computational Models, Computability and Complexity",
+      "points": 5,
+      "is_mandatory": false,
+      "prerequisites": [
+        [67504]
+      ]
+    },
+    {
+      "course_number":  67521,
+      "semester_type": "B",
+      "name": "Computational Models, Computability and Complexity",
+      "points": 5,
+      "is_mandatory": false,
+      "prerequisites": [
+        [67504]
+      ]
+    },
+    {
+      "course_number":  77313,
+      "semester_type": "A",
+      "name": "Equations of Mathematical Physics",
+      "points": 6,
+      "is_mandatory": false,
+      "prerequisites": [
+        [77101],[77102,77106],[80114],[80157]
+      ]
+    },
+    {
+      "course_number": 67101,
+      "semester_type": "A",
+      "name": "Introduction to Computer Science",
+      "points": 7,
+      "is_mandatory": false,
+      "prerequisites": null
+    },
+    {
+      "course_number": 67101,
+      "semester_type": "B",
+      "name": "Introduction to Computer Science",
+      "points": 7,
+      "is_mandatory": false,
+      "prerequisites": null
+    },
+    {
+      "course_number": 80517,
+      "semester_type": "A",
+      "name": "MEASURE THEORY",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80131],[80132,80142],[80315,80415]
+      ]
+    },
+    {
+      "course_number": 80519,
+      "semester_type": "A",
+      "name": "COMPLEX VARIABLES",
+      "points": 4,
+      "is_mandatory": false,
+      "prerequisites": [
+        [80132,80142],[80415]
+      ]
+    }
+  ]
+}
