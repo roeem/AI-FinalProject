@@ -7,7 +7,7 @@
       "semester_type": "A",
       "name": "Introduction to Computer Science",
       "points": 7,
-      "avg_grade": 90,
+      "avg_grade": 75,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -16,7 +16,7 @@
       "semester_type": "B",
       "name": "Introduction to Computer Science",
       "points": 7,
-      "avg_grade": 85,
+      "avg_grade": 73,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -51,7 +51,7 @@
       "semester_type": "B",
       "name": "Data Structures",
       "points": 4,
-      "avg_grade": 100,
+      "avg_grade": 82,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -77,7 +77,7 @@
       "semester_type": "A",
       "name": "INFINITESIMAL CALCULUS (1)",
       "points": 7,
-      "avg_grade": 78,
+      "avg_grade": 72,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -86,7 +86,7 @@
       "semester_type": "B",
       "name": "INFINITESIMAL CALCULUS (1)",
       "points": 7,
-      "avg_grade": 78,
+      "avg_grade": 71,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -95,7 +95,7 @@
       "semester_type": "A",
       "name": "LINEAR ALGEBRA (1)",
       "points": 6,
-      "avg_grade": 76,
+      "avg_grade": 74,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -113,20 +113,7 @@
       "semester_type": "A",
       "name": "LINEAR ALGEBRA (2)",
       "points": 6,
-      "avg_grade": 100,
-      "is_mandatory": true,
-      "prerequisites": [
-        [
-          80134
-        ]
-      ]
-    },
-    {
-      "course_number": 80135,
-      "semester_type": "A",
-      "name": "LINEAR ALGEBRA (2)",
-      "points": 6,
-      "avg_grade": 74,
+      "avg_grade": 71,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -152,7 +139,7 @@
       "semester_type": "A",
       "name": "DISCRETE MATHEMATICS",
       "points": 5,
-      "avg_grade": 82,
+      "avg_grade": 76,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -161,7 +148,7 @@
       "semester_type": "B",
       "name": "DISCRETE MATHEMATICS",
       "points": 5,
-      "avg_grade": 93,
+      "avg_grade": 80,
       "is_mandatory": true,
       "prerequisites": null
     },
@@ -184,7 +171,7 @@
       "semester_type": "A",
       "name": "INFINITESIMAL CALCULUS (2)",
       "points": 7,
-      "avg_grade": 77,
+      "avg_grade": 69,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -197,7 +184,7 @@
       "semester_type": "B",
       "name": "INFINITESIMAL CALCULUS (2)",
       "points": 7,
-      "avg_grade": 77,
+      "avg_grade": 70,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -210,7 +197,7 @@
       "semester_type": "A",
       "name": "Algorithms",
       "points": 5,
-      "avg_grade": 61,
+      "avg_grade": 82,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -257,7 +244,7 @@
       "semester_type": "B",
       "name": "Computational Models, Computability and Complexity",
       "points": 5,
-      "avg_grade": 75,
+      "avg_grade": 78,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -270,7 +257,7 @@
       "semester_type": "B",
       "name": "Introduction to Machine Learning",
       "points": 5,
-      "avg_grade": 82,
+      "avg_grade": 86,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -293,7 +280,7 @@
       "semester_type": "B",
       "name": "Operating Systems",
       "points": 4,
-      "avg_grade": 78,
+      "avg_grade": 82,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -312,7 +299,7 @@
       "semester_type": "A",
       "name": "Computer Cons. Workshop: From Nand to Tetris",
       "points": 5,
-      "avg_grade": 83,
+      "avg_grade": 85,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -338,7 +325,7 @@
       "semester_type": "A",
       "name": "Introduction to Probability and Statistics",
       "points": 6,
-      "avg_grade": 77,
+      "avg_grade": 70,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -362,7 +349,7 @@
       "semester_type": "B",
       "name": "Introduction to Probability and Statistics",
       "points": 6,
-      "avg_grade": 77,
+      "avg_grade": 72,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -386,7 +373,7 @@
       "semester_type": "A",
       "name": "Introduction to Object Oriented",
       "points": 4,
-      "avg_grade": 84,
+      "avg_grade": 89,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -404,7 +391,7 @@
       "semester_type": "B",
       "name": "Introduction to Object Oriented",
       "points": 4,
-      "avg_grade": 63,
+      "avg_grade": 90,
       "is_mandatory": true,
       "prerequisites": [
         [
@@ -422,7 +409,7 @@
       "semester_type": "B",
       "name": "Computer Architecture",
       "points": 5,
-      "avg_grade": 81,
+      "avg_grade": 83,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -437,7 +424,7 @@
       "semester_type": "A",
       "name": "Introduction to Cryptography and Software Security",
       "points": 4,
-      "avg_grade": 79,
+      "avg_grade": 84,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -460,7 +447,7 @@
       "semester_type": "A",
       "name": "Databases",
       "points": 5,
-      "avg_grade": 78,
+      "avg_grade": 88,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -473,7 +460,7 @@
       "semester_type": "B",
       "name": "Databases",
       "points": 5,
-      "avg_grade": 78,
+      "avg_grade": 84,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -486,7 +473,7 @@
       "semester_type": "A",
       "name": "Software Engineering",
       "points": 4,
-      "avg_grade": 76,
+      "avg_grade": 92,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -499,7 +486,7 @@
       "semester_type": "A",
       "name": "Image Processing",
       "points": 4,
-      "avg_grade": 80,
+      "avg_grade": 89,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -521,7 +508,7 @@
       "semester_type": "A",
       "name": "Computer Graphics",
       "points": 5,
-      "avg_grade": 79,
+      "avg_grade": 83,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -536,7 +523,7 @@
       "semester_type": "A",
       "name": "ELEMENTS OF INFORMATION THEORY",
       "points": 4,
-      "avg_grade": 82,
+      "avg_grade": 83,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -551,7 +538,7 @@
       "semester_type": "A",
       "name": "Natural Language Processing",
       "points": 3,
-      "avg_grade": 78,
+      "avg_grade": 88,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -564,7 +551,7 @@
       "semester_type": "B",
       "name": "Introduction to Deep Learning",
       "points": 4,
-      "avg_grade": 81,
+      "avg_grade": 85,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -578,7 +565,7 @@
       "semester_type": "A",
       "name": "Convex Optimization and Applications",
       "points": 4,
-      "avg_grade": 77,
+      "avg_grade": 80,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -596,7 +583,7 @@
       "semester_type": "B",
       "name": "A Needle in a Data Haystack: Introduction to Data Science",
       "points": 3,
-      "avg_grade": 95,
+      "avg_grade": 90,
       "is_mandatory": false,
       "prerequisites": null
     },
@@ -605,7 +592,7 @@
       "semester_type": "B",
       "name": "Advanced Course in Machine Learning",
       "points": 3,
-      "avg_grade": 83,
+      "avg_grade": 80,
       "is_mandatory": false,
       "prerequisites": [
         [
@@ -618,7 +605,7 @@
       "semester_type": "A",
       "name": "Machine Learning Methods",
       "points": 3,
-      "avg_grade": 82,
+      "avg_grade": 78,
       "is_mandatory": false,
       "prerequisites": null
     },
@@ -627,7 +614,7 @@
       "semester_type": "B",
       "name": "Introduction to Stochastic Processes",
       "points": 3,
-      "avg_grade": 80,
+      "avg_grade": 77,
       "is_mandatory": false,
       "prerequisites": [
         [
