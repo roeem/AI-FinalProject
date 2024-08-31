@@ -1,6 +1,6 @@
 from prerequisites import Prerequisites
 
-
+#Branch for Genetic ALGOgit
 class Course:
     """
     This class represent a Course of some degree.
