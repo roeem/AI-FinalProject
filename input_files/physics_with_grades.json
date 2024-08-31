@@ -1,6 +1,6 @@
 {
-    "mandatory_points": 113,
-    "target_points": 145,
+    "mandatory_points": 100,
+    "target_points": 140,
     "degree_courses": [
         {
             "course_number": 77101,
@@ -693,6 +693,42 @@
             "is_mandatory": false,
             "prerequisites": null,
             "avg_grade": 66.95
+        },
+        {
+            "course_number": 55772,
+            "name": "Using Exact Sciences Modeling Tools to Understand Social Phenomena",
+            "points": 3,
+            "semester_type": "B",
+            "is_mandatory": false,
+            "prerequisites": null,
+            "avg_grade": 81.95
+        },
+        {
+            "course_number": 77412,
+            "name": "Order of Magnitude in Physics Problems ",
+            "points": 2,
+            "semester_type": "B",
+            "is_mandatory": false,
+            "prerequisites": [[77152]],
+            "avg_grade": 86.3
+        },
+        {
+            "course_number": 77874,
+            "name": "Non linear Dynamics in Biological Systems",
+            "points": 2,
+            "semester_type": "A",
+            "is_mandatory": false,
+            "prerequisites": [],
+            "avg_grade": 88.7
+        },
+        {
+            "course_number": 80519,
+            "name": "COMPLEX VARIABLES",
+            "points": 3,
+            "semester_type": "A",
+            "is_mandatory": false,
+            "prerequisites": [[80132, 80142], [80415]],
+            "avg_grade": 92.5
         }
     ]
 }
