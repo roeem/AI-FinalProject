@@ -87,12 +87,11 @@ class DegreePlan:
         new_degree_plan = self.__copy__()
         new_degree_plan.__next_semester_num += 1
         for course in semester.courses:
-            self.__avg_grade = (self.__avg_grade * self.total_points + course.avg_grade * course.points) / (
-                        self.total_points + course.points)
-            new_degree_plan.__total_points += course.points
             if course.is_mandatory:
                 new_degree_plan.__mandatory_points += course.points
             new_degree_plan.__courses_so_far[course.number] = course
+        new_degree_plan.__total_points += semester.points
+        new_degree_plan.__avg_grade = (semester.avg_grade*semester.points + self.__avg_grade*self.__total_points) / new_degree_plan.__total_points
         return new_degree_plan
 
     @property
@@ -166,4 +165,5 @@ class DegreePlan:
         new_plan.__total_points = self.__total_points
         new_plan.__next_semester_num = self.__next_semester_num
         new_plan.__courses_so_far = self.__courses_so_far.copy()
+        new_plan.__avg_grade = self.__avg_grade
         return new_plan
