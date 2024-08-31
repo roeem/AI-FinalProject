@@ -1,7 +1,6 @@
 import sys
-
-import degree_planning_problems
-from degree_planning_problems import *
+from degree_plan import *
+from genetic_algorithm import GeneticAlgorithmDegreePlan
 from input_loader import load_degree_plan
 from search import bfs, dfs, astar, ucs
 
@@ -44,36 +43,34 @@ def main():
         'max_semester_points': max_semester_points
     }
 
-    if problem == 'min_time':
-        degree_planning_search = DegreePlanningMinTime(**degree_planning_search_params)
-        heuristic = degree_planning_problems.min_time_heuristic
-    elif problem == 'max_avg':
-        degree_planning_search = DegreePlanningMaxAvg(**degree_planning_search_params)
-        heuristic = degree_planning_problems.max_avg_heuristic
+    if problem == 'gen':
+        pass
+    if problem == 'FUCK U BALOUKA':
+        print("SHIT IT'S BALOUCKA")
 
+    solution = "BALAGAN"
+    # avg, points = calculate_avg(solution)
+    # print(f"num of semesters: {len(solution)}")
+    # print(f"Target points: {target_points}")
+    # print(f"Mandatory points: {mandatory_points}")
+    # print(f"Average: {avg}")
+    # print(f"Points: {points}")
+    # # print(f"Expanded: {}")
+    # for semester in solution:
+    #     print(semester)
+    ga_degree_plan = GeneticAlgorithmDegreePlan(degree_courses, mandatory_points, target_points,
+                                                min_semester_points=15, max_semester_points=26)
+
+    best_plan = ga_degree_plan.run_genetic_algorithm()
+
+    if best_plan:
+        print(f"Best plan found:")
+        print(f"Average grade: {best_plan.avg_grade}")
+        print(f"Total points: {best_plan.total_points}")
+        print(f"Number of semesters: {best_plan.semester_count}")
+        # Print more details about the plan as needed
     else:
-        raise ValueError('Invalid problem type')
-
-    if algorithm == 'bfs':
-        solution = bfs(degree_planning_search)
-    elif algorithm == 'dfs':
-        solution = dfs(degree_planning_search)
-    elif algorithm == 'astar':
-        solution = astar(degree_planning_search, heuristic)
-    elif algorithm == 'ucs':
-        solution = ucs(degree_planning_search)
-    else:
-        raise ValueError('Invalid algorithm type')
-
-    avg, points = calculate_avg(solution)
-    print(f"num of semesters: {len(solution)}")
-    print(f"Target points: {target_points}")
-    print(f"Mandatory points: {mandatory_points}")
-    print(f"Average: {avg}")
-    print(f"Points: {points}")
-    print(f"Expanded: {degree_planning_search.expanded}")
-    for semester in solution:
-        print(semester)
+        print("No valid solution found.")
 
 
 if __name__ == '__main__':
