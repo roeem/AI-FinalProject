@@ -94,6 +94,7 @@ class DegreePlan:
         new_degree_plan.__avg_grade = (semester.avg_grade*semester.points + self.__avg_grade*self.__total_points) / new_degree_plan.__total_points
         return new_degree_plan
 
+
     @property
     def semester_count(self):
         return self.__next_semester_num - 1
@@ -138,7 +139,11 @@ class DegreePlan:
                 total_points = sum(course.points for course in subset)
                 if min_semester_points <= total_points <= max_semester_points:
                     legal_semesters.append(Semester(frozenset(subset), self._next_semester_type))
+
         return legal_semesters
+
+    def get_optional_courses(self) -> frozenset[Course]:
+        return self.__degree_courses - set(self.__courses_so_far.values())
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
     def __eq__(self, other) -> bool:
