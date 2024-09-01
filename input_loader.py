@@ -1,8 +1,6 @@
 import json
-import math
 
 from course import Course
-from degree_planning_problems import DegreePlanningMinTime
 from prerequisites import Prerequisites
 
 
