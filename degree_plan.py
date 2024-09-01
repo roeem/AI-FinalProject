@@ -1,5 +1,5 @@
 from course import Course
-from itertools import chain, combinations, tee
+from itertools import combinations
 
 
 class Semester:
@@ -55,6 +55,18 @@ class Semester:
         )
 
 
+def calculate_avg(semesters: list[Semester]) -> tuple[float, int, int]:
+    if not semesters:
+        return 0, 0, 0
+
+    grade_sum, points, mandatory = 0, 0, 0
+    for semester in semesters:
+        points += semester.points
+        grade_sum += semester.avg_grade * semester.points
+        mandatory += sum(course.points for course in semester.courses if course.is_mandatory)
+    return grade_sum / points, points, mandatory
+
+
 class DegreePlan:
     """
     This class represent a Degree Plan.
@@ -63,7 +75,7 @@ class DegreePlan:
     placed in previous semesters, all courses available fot this degree and more.
     """
 
-    def __init__(self, degree_courses: frozenset[Course]):
+    def __init__(self, degree_courses: frozenset[Course], semesters: list[Semester] = None):
         """
         :param degree_courses: a frozenset of courses available for this degree
         """
@@ -71,8 +83,17 @@ class DegreePlan:
         self.__mandatory_points = 0
         self.__total_points = 0
         self.__next_semester_num = 1
+        self.__semesters: list[Semester] = semesters if semesters else []
         self.__courses_so_far: dict[int, Course] = {}
         self.__avg_grade = 0
+        self.update()
+
+    def update(self):
+        if self.__semesters:
+            avg, total_points, mandatory_points = calculate_avg(self.__semesters)
+            self.__avg_grade = avg
+            self.__total_points = total_points
+            self.__mandatory_points = mandatory_points
 
     def add_semester(self, semester: Semester) -> "DegreePlan":
         """
@@ -81,23 +102,29 @@ class DegreePlan:
         :param semester: a Semester object
         :return: the new Degree Plan with the added semester
         """
-        if any(not self._is_valid_course(course) for course in semester.courses):
-            raise ValueError("Semester is not allowed")
+        # if any(not self._is_valid_course(course) for course in semester.courses):
+        #     raise ValueError("Semester is not allowed") # TODO: check if needed
 
         new_degree_plan = self.__copy__()
+        new_degree_plan.__semesters.append(semester)
+
         new_degree_plan.__next_semester_num += 1
         for course in semester.courses:
             if course.is_mandatory:
                 new_degree_plan.__mandatory_points += course.points
             new_degree_plan.__courses_so_far[course.number] = course
         new_degree_plan.__total_points += semester.points
-        new_degree_plan.__avg_grade = (semester.avg_grade*semester.points + self.__avg_grade*self.__total_points) / new_degree_plan.__total_points
+        new_degree_plan.__avg_grade = ((semester.avg_grade * semester.points + self.__avg_grade * self.__total_points)
+                                       / new_degree_plan.__total_points)
         return new_degree_plan
-
 
     @property
     def semester_count(self):
         return self.__next_semester_num - 1
+
+    @property
+    def semesters(self) -> list[Semester]:
+        return self.__semesters.copy()
 
     @property
     def mandatory_points(self) -> int:
@@ -108,7 +135,7 @@ class DegreePlan:
         return self.__total_points
 
     @property
-    def _next_semester_type(self) -> str:
+    def next_semester_type(self) -> str:
         return Semester.A if self.__next_semester_num % 2 == 1 else Semester.B
 
     @property
@@ -122,7 +149,7 @@ class DegreePlan:
         :param course: a Course object
         :return: True iff the course is invalid
         """
-        return (self._next_semester_type == course.semester_type and
+        return (self.next_semester_type == course.semester_type and
                 course.number not in self.__courses_so_far.keys() and
                 course.can_take_this_course(set(self.__courses_so_far)))
 
@@ -138,7 +165,7 @@ class DegreePlan:
             for subset in combinations(legal_courses, r):
                 total_points = sum(course.points for course in subset)
                 if min_semester_points <= total_points <= max_semester_points:
-                    legal_semesters.append(Semester(frozenset(subset), self._next_semester_type))
+                    legal_semesters.append(Semester(frozenset(subset), self.next_semester_type))
 
         return legal_semesters
 
@@ -171,4 +198,5 @@ class DegreePlan:
         new_plan.__next_semester_num = self.__next_semester_num
         new_plan.__courses_so_far = self.__courses_so_far.copy()
         new_plan.__avg_grade = self.__avg_grade
+        new_plan.__semesters = self.__semesters.copy()
         return new_plan
