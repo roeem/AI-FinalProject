@@ -124,6 +124,10 @@ class DegreePlanningMaxAvg(SearchProblem):
         """
         self.expanded = self.expanded + 1
         if self.expanded % 10000 == 0: print(f"Expanded: {self.expanded}")
+
+        if self.target_points - state.total_points < self.mandatory_points - state.mandatory_points:
+            return []
+
         successors = []
         semesters = state.get_legal_semesters(self.__min_semester_points, self.__max_semester_points)
         for semester in semesters:
@@ -149,26 +153,23 @@ class DegreePlanningMaxAvg(SearchProblem):
 def min_time_heuristic(state: DegreePlan, problem: DegreePlanningMinTime) -> float:
     avg_points_per_semester = (
             state.total_points / state.semester_count) if state.semester_count > 0 else problem.max_semester_points
+
     return (problem.target_points - state.total_points) / problem.max_semester_points
 
 
 def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
-    # return (100 - state.avg_grade) + (problem.target_points - state.total_points)
-    # return 100 - ((state.avg_grade * state.total_points + 100 * (problem.target_points - state.total_points)) / problem.target_points)
-    # if state.avg_grade==0:return 0
-    # return 1/state.avg_grade
+    return max_avg_h_1_1(state, problem)
+
     if state.semester_count == 0:
         return 0
-    semester_loss = ((100-state.avg_grade)*state.total_points/problem.target_points) / state.semester_count
-    pts_per_semester = state.total_points/state.semester_count
-    semesters_left = (problem.target_points-state.total_points) / pts_per_semester
-    min_semester_left = (problem.target_points-state.total_points) // problem.max_semester_points
-    return semesters_left*semester_loss
-    # return max_avg_h_1_1(state, problem) #if coin == 0 else 100 - (state.mandatory_points)
-    # return 100 - ((state.mandatory_points)+ state.avg_grade/100)
+    semester_loss = ((100 - state.avg_grade) * state.total_points / problem.target_points) / state.semester_count
+    pts_per_semester = state.total_points / state.semester_count
+    semesters_left = (problem.target_points - state.total_points) / pts_per_semester
+    min_semester_left = (problem.target_points - state.total_points) // problem.max_semester_points
+    return semesters_left * semester_loss + (problem.mandatory_points - state.mandatory_points) * 0.2
 
 def max_avg_h_1_1(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
-    pts_left_to_do = problem.target_points-state.total_points
+    pts_left_to_do = problem.target_points - state.total_points
     optional_courses = state.get_optional_courses()
     # optional_courses = sorted(optional_courses, key=lambda x: x.avg_grade/x.points , reverse=True)
     sum_of_potential_grade, points = 0, 0
@@ -177,9 +178,9 @@ def max_avg_h_1_1(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
     #     if pts_left_to_do > 0:
     #         if course.points <= pts_left_to_do:
     #             pts_left_to_do -= course.points
-                # sum_of_potential_grade += course.avg_grade*course.points
-                # points += course.points
-        # else:
-        #     break
+    # sum_of_potential_grade += course.avg_grade*course.points
+    # points += course.points
+    # else:
+    #     break
     # avg_potential_grade = sum_of_potential_grade / points
-    return (100 - max_course.avg_grade) * pts_left_to_do / problem.target_points
+    return (100 - max_course.avg_grade) * pts_left_to_do / problem.target_points + (problem.mandatory_points - state.mandatory_points) * 0.12

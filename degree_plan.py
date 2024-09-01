@@ -91,9 +91,8 @@ class DegreePlan:
                 new_degree_plan.__mandatory_points += course.points
             new_degree_plan.__courses_so_far[course.number] = course
         new_degree_plan.__total_points += semester.points
-        new_degree_plan.__avg_grade = (semester.avg_grade*semester.points + self.__avg_grade*self.__total_points) / new_degree_plan.__total_points
+        new_degree_plan.__avg_grade = (semester.avg_grade * semester.points + self.__avg_grade * self.__total_points) / new_degree_plan.__total_points
         return new_degree_plan
-
 
     @property
     def semester_count(self):
@@ -143,7 +142,8 @@ class DegreePlan:
         return legal_semesters
 
     def get_optional_courses(self) -> frozenset[Course]:
-        return self.__degree_courses - set(self.__courses_so_far.values())
+        optional = {course for course in self.__degree_courses if course.number not in self.__courses_so_far.keys()}
+        return frozenset(optional)
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
     def __eq__(self, other) -> bool:
