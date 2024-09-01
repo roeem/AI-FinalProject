@@ -165,7 +165,6 @@ def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float
     pts_left = problem.target_points - state.total_points
     left_avg = sum((course.avg_grade for course in state.get_optional_courses())) / sum(
         (course.points for course in state.get_optional_courses()))
-    penalty = (problem.mandatory_points - state.mandatory_points) * 0.12
     return (100 - left_avg) * pts_left / problem.target_points
 
 def max_avg_h_1_1(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:

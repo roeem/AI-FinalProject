@@ -9,7 +9,7 @@
       "points": 7,
       "is_mandatory": true,
       "prerequisites": null,
-      "avg_grade": 78
+      "avg_grade": 70
     },
     {
       "course_number": 80131,
@@ -44,7 +44,7 @@
           80131
         ]
       ],
-      "avg_grade": 74
+      "avg_grade": 69
     },
     {
       "course_number": 80134,
@@ -115,7 +115,7 @@
       "points": 3,
       "is_mandatory": true,
       "prerequisites": null,
-      "avg_grade": 88
+      "avg_grade": 80
     },
     {
       "course_number": 80111,
@@ -510,7 +510,7 @@
           80445
         ]
       ],
-      "avg_grade": 73
+      "avg_grade": 80
     },
     {
       "course_number": 80516,
@@ -680,7 +680,7 @@
       "prerequisites": [
         [67504]
       ],
-      "avg_grade": 77
+      "avg_grade": 85
     },
     {
       "course_number": 67521,
