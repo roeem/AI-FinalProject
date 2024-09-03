@@ -112,11 +112,12 @@ class DegreePlan:
             return False
         return (
                 self.current_semester_type == other.current_semester_type and
-                self.__courses_so_far == other.__courses_so_far
+                {course for course, sem in self.__courses_so_far.values()} == {course for course, sem in
+                                                                               other.__courses_so_far.values()}
         )
 
     def __hash__(self) -> int:
-        return hash((self.current_semester_type, frozenset(self.__courses_so_far)))
+        return hash((frozenset({course for course, sem in self.__courses_so_far.values()}), self.current_semester_type))
 
     def __copy__(self) -> "DegreePlan":
         new_plan = DegreePlan(self.__degree_courses)

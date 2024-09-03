@@ -36,40 +36,6 @@ def num_of_semesters(courses: list[Course]) -> int:
     return count
 
 
-def get_upper_bound_avg(courses: list[Course], total_points: int) -> float:
-    mandatory_courses = {}
-    for course in courses:
-        if course.is_mandatory:
-            if course.number in mandatory_courses:
-                mandatory_courses[course.number] = max([mandatory_courses[course.number], course], key=lambda x: x.avg_grade)
-            else:
-                mandatory_courses[course.number] = course
-
-    weighted_sum_mandatory = sum([course.avg_grade * course.points for course in mandatory_courses.values()])
-    sum_mandatory_points = sum([course.points for course in mandatory_courses.values()])
-
-    elective_courses = {}
-    for course in courses:
-        if not course.is_mandatory:
-            if course.number in elective_courses:
-                elective_courses[course.number] = max([elective_courses[course.number], course], key=lambda x: x.avg_grade)
-            else:
-                elective_courses[course.number] = course
-
-    # Sort elective courses by avg grade in descending order
-    elective_courses = sorted(elective_courses.values(), key=lambda x: x.avg_grade)
-
-    sum_elective_points = 0
-    weighted_elective_sum = 0
-    while sum_elective_points < total_points - sum_mandatory_points:
-        course = elective_courses.pop()
-        sum_elective_points += course.points
-        weighted_elective_sum += course.avg_grade * course.points
-
-    total_average = (weighted_sum_mandatory + weighted_elective_sum) / (sum_mandatory_points + sum_elective_points)
-    return total_average
-
-
 @timer
 def main():
     problem = sys.argv[1]
@@ -88,7 +54,8 @@ def main():
         'max_semester_points': max_semester_points
     }
 
-    # print("Suprimum avg: ", get_suprimum_avg(list(degree_courses), target_points))
+    # print(f"Degree: {input_file_path[12:-5]}")
+    # print("upper bound avg: ", get_upper_bound_avg(degree_courses, target_points))
     # exit(0)
 
     if problem == 'min_time':

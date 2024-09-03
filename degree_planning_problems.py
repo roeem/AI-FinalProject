@@ -138,9 +138,9 @@ class DegreePlanningMaxAvg(SearchProblem):
             if state.total_points + course.points <= self.__target_points:
                 successors.append((state.add_course(course, self.__min_semester_points, self.__max_semester_points),
                                    course, self._get_cost_of_action(course)))
-        if not successors:
-            p = "No more courses!" if not courses else ""
-            print(f"{p} Total Points are {state.total_points}, and mandatory : {state.mandatory_points}")
+        # if not successors:
+        #     p = "No more courses!" if not courses else ""
+        #     print(f"{p} Total Points are {state.total_points}, and mandatory : {state.mandatory_points}")
         return successors
 
     def get_cost_of_actions(self, actions: list[Course]) -> float:
@@ -151,7 +151,8 @@ class DegreePlanningMaxAvg(SearchProblem):
         return sum(self._get_cost_of_action(action) for action in actions)
 
     def _get_cost_of_action(self, action: Course) -> float:
-        return (100 - action.avg_grade) * (action.points / self.__target_points)
+        cost = (100 - action.avg_grade) * (action.points / self.__target_points)
+        return cost
 
 
 def min_time_heuristic(state: DegreePlan, problem: DegreePlanningMinTime) -> float:
@@ -161,26 +162,53 @@ def min_time_heuristic(state: DegreePlan, problem: DegreePlanningMinTime) -> flo
     return (problem.target_points - state.total_points) / problem.max_semester_points
 
 
-def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
-    pts_left = problem.target_points - state.total_points
-    left_avg = sum((course.avg_grade for course in state.get_optional_courses())) / sum(
-        (course.points for course in state.get_optional_courses()))
-    return (100 - left_avg) * pts_left / problem.target_points
+def get_upper_bound_avg(courses: frozenset[Course], total_points_left: int) -> float:
+    if total_points_left == 0:
+        return 100
+    mandatory_courses = {}
+    for course in courses:
+        if course.is_mandatory:
+            if course.number in mandatory_courses:
+                max_option = max([mandatory_courses[course.number], course], key=lambda x: x.avg_grade)
+                mandatory_courses[course.number] = max_option
+            else:
+                mandatory_courses[course.number] = course
 
-def max_avg_h_1_1(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
-    pts_left_to_do = problem.target_points - state.total_points
-    optional_courses = state.get_optional_courses()
-    # optional_courses = sorted(optional_courses, key=lambda x: x.avg_grade/x.points , reverse=True)
-    sum_of_potential_grade, points = 0, 0
-    max_course = max(optional_courses, key=lambda x: x.avg_grade)
-    # for course in optional_courses:
-    #     if pts_left_to_do > 0:
-    #         if course.points <= pts_left_to_do:
-    #             pts_left_to_do -= course.points
-    # sum_of_potential_grade += course.avg_grade*course.points
-    # points += course.points
-    # else:
-    #     break
-    # avg_potential_grade = sum_of_potential_grade / points
-    return (100 - max_course.avg_grade) * pts_left_to_do / problem.target_points + (
-            problem.mandatory_points - state.mandatory_points) * 0.12
+    weighted_sum_mandatory = sum([course.avg_grade * course.points for course in mandatory_courses.values()])
+    sum_mandatory_points = sum([course.points for course in mandatory_courses.values()])
+    # TODO: pass mandatory_points as a parameter and check legality
+
+    elective_courses = {}
+    for course in courses:
+        if not course.is_mandatory:
+            if course.number in elective_courses:
+                max_option = max([elective_courses[course.number], course], key=lambda x: x.avg_grade)
+                elective_courses[course.number] = max_option
+            else:
+                elective_courses[course.number] = course
+
+    # Sort elective courses by avg grade in descending order
+    elective_courses = sorted(elective_courses.values(), key=lambda x: x.avg_grade)
+
+    sum_elective_points, weighted_sum_elective = 0, 0
+    elective_points_left = total_points_left - sum_mandatory_points
+
+    while sum_elective_points + elective_courses[-1].points <= elective_points_left:
+        course = elective_courses.pop()
+        sum_elective_points += course.points
+        weighted_sum_elective += course.avg_grade * course.points
+
+    if sum_elective_points == 0:
+        elective_avg = 100
+    else:
+        elective_avg = weighted_sum_elective / sum_elective_points
+    # TODO: multiply last course instead of avg
+    total_average = (weighted_sum_mandatory + elective_avg * elective_points_left) / total_points_left
+    return total_average
+
+
+def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
+    points_left = problem.target_points - state.total_points
+    lef_avg = get_upper_bound_avg(state.get_optional_courses(), points_left)
+    res = (100 - lef_avg) * points_left / problem.target_points  # TODO: why not deterministic and optimal 81.3, 81.15
+    return res

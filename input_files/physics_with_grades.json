@@ -1,6 +1,6 @@
 {
-    "mandatory_points": 100,
-    "target_points": 140,
+    "mandatory_points": 113,
+    "target_points": 137,
     "degree_courses": [
         {
             "course_number": 77101,
@@ -8,6 +8,24 @@
             "name": "Mechanics and Special relativity",
             "points": 7,
             "avg_grade": 73.11,
+            "is_mandatory": true,
+            "prerequisites": null
+        },
+        {
+            "course_number": 76641,
+            "semester_type": "A",
+            "name": "PYTHON PROGRAMMING FOR PHYSICS STUDENTS",
+            "points": 4,
+            "avg_grade": 63.41,
+            "is_mandatory": true,
+            "prerequisites": null
+        },
+        {
+            "course_number": 76641,
+            "semester_type": "B",
+            "name": "PYTHON PROGRAMMING FOR PHYSICS STUDENTS",
+            "points": 4,
+            "avg_grade": 65.8,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -385,15 +403,6 @@
             "note": "Not taught this year"
         },
         {
-            "course_number": 76224,
-            "semester_type": "A or B",
-            "name": "computer based safety training- 3",
-            "points": 0,
-            "avg_grade": 76.31,
-            "is_mandatory": true,
-            "prerequisites": null
-        },
-        {
             "course_number": 77307,
             "semester_type": "A",
             "name": "Intro. to Statistical Physics",
@@ -413,7 +422,31 @@
         },
         {
             "course_number": 77508,
-            "semester_type": "A or B",
+            "semester_type": "A",
+            "name": "Physics Lab III: Advanced experiments in quantum and modern physics",
+            "points": 6,
+            "avg_grade": 83.4,
+            "is_mandatory": true,
+            "prerequisites": [
+                [
+                    76223
+                ],
+                [
+                    77318
+                ],
+                [
+                    77365,
+                    77302,
+                    77322,
+                    77336,
+                    77335,
+                    77367
+                ]
+            ]
+        },
+        {
+            "course_number": 77508,
+            "semester_type": "B",
             "name": "Physics Lab III: Advanced experiments in quantum and modern physics",
             "points": 6,
             "avg_grade": 88.29,
