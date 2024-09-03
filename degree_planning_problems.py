@@ -129,18 +129,13 @@ class DegreePlanningMaxAvg(SearchProblem):
         if self.expanded % 10000 == 0:
             print(f"Expanded: {self.expanded}")
 
-        if self.target_points - state.total_points < self.mandatory_points - state.mandatory_points:
-            return []
-
         successors = []
         courses = state.get_legal_courses(self.__min_semester_points, self.__max_semester_points)
         for course in courses:
             if state.total_points + course.points <= self.__target_points:
-                successors.append((state.add_course(course, self.__min_semester_points, self.__max_semester_points),
-                                   course, self._get_cost_of_action(course)))
-        # if not successors:
-        #     p = "No more courses!" if not courses else ""
-        #     print(f"{p} Total Points are {state.total_points}, and mandatory : {state.mandatory_points}")
+                new_state = state.add_course(course, self.__min_semester_points, self.__max_semester_points)
+                if self.target_points - new_state.total_points >= self.mandatory_points - new_state.mandatory_points:
+                    successors.append((new_state, course, self._get_cost_of_action(course)))
         return successors
 
     def get_cost_of_actions(self, actions: list[Course]) -> float:
@@ -152,7 +147,7 @@ class DegreePlanningMaxAvg(SearchProblem):
 
     def _get_cost_of_action(self, action: Course) -> float:
         cost = (100 - action.avg_grade) * (action.points / self.__target_points)
-        return cost
+        return round(cost, 5)   # TODO check round, maybe multiply by 100,000 for int
 
 
 def min_time_heuristic(state: DegreePlan, problem: DegreePlanningMinTime) -> float:
@@ -165,6 +160,7 @@ def min_time_heuristic(state: DegreePlan, problem: DegreePlanningMinTime) -> flo
 def get_upper_bound_avg(courses: frozenset[Course], total_points_left: int) -> float:
     if total_points_left == 0:
         return 100
+
     mandatory_courses = {}
     for course in courses:
         if course.is_mandatory:
@@ -193,22 +189,21 @@ def get_upper_bound_avg(courses: frozenset[Course], total_points_left: int) -> f
     sum_elective_points, weighted_sum_elective = 0, 0
     elective_points_left = total_points_left - sum_mandatory_points
 
+    course = elective_courses[-1]
     while sum_elective_points + elective_courses[-1].points <= elective_points_left:
         course = elective_courses.pop()
         sum_elective_points += course.points
         weighted_sum_elective += course.avg_grade * course.points
 
-    if sum_elective_points == 0:
-        elective_avg = 100
-    else:
-        elective_avg = weighted_sum_elective / sum_elective_points
-    # TODO: multiply last course instead of avg
-    total_average = (weighted_sum_mandatory + elective_avg * elective_points_left) / total_points_left
+    weighted_sum_elective += course.avg_grade * (elective_points_left - sum_elective_points)
+    total_average = (weighted_sum_mandatory + weighted_sum_elective) / total_points_left
+    assert total_average <= 100
     return total_average
 
 
 def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
     points_left = problem.target_points - state.total_points
-    lef_avg = get_upper_bound_avg(state.get_optional_courses(), points_left)
-    res = (100 - lef_avg) * points_left / problem.target_points  # TODO: why not deterministic and optimal 81.3, 81.15
-    return res
+    left_avg = get_upper_bound_avg(state.get_optional_courses(), points_left)
+    res = (100 - left_avg) * points_left / problem.target_points  # TODO: why not deterministic and optimal 81.3, 81.15
+    assert res >= 0
+    return round(res, 5)

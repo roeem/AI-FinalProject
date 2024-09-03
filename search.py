@@ -185,6 +185,12 @@ def a_star_search(problem, heuristic=null_heuristic):
         if problem.is_goal_state(current_state):
             actions = []
             while stage.predecessor is not None:
+                # TODO remove from here
+                if not (0 <= heuristic(stage.predecessor.state, problem) <= heuristic(stage.state, problem) + (stage.total_cost - stage.predecessor.total_cost)):
+                    res = heuristic(stage.predecessor.state, problem) - (heuristic(stage.state, problem) + (stage.total_cost - stage.predecessor.total_cost))
+                    if res > 0.001:
+                        print(f"Heuristic not consistent - {res}")
+                # TODO: remove until here
                 actions.append(stage.action)
                 stage = stage.predecessor
             return actions[::-1]
