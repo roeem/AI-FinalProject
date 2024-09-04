@@ -14,7 +14,6 @@ class Course:
         :param name: the course name.
         :param prerequisites: prerequisites for this course.
         """
-        # TODO: in the future - maybe add course avg.
         self.__number: int = course_number
         self.__semester_type: str = semester_type
         self.__name: str = name

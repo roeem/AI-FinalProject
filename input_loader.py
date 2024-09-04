@@ -4,13 +4,13 @@ from course import Course
 from prerequisites import Prerequisites
 
 
-def load_degree_plan(json_file: str) -> tuple[int, int, frozenset[Course]]:
+def load_degree_plan(json_file: str) -> tuple[int, int, list[Course]]:
     # Load JSON data from file
     with open(json_file, 'r') as file:
         data = json.load(file)
 
     # Extract courses from the JSON data
-    degree_courses = frozenset(
+    degree_courses = [
         Course(
             course_number=course_data['course_number'],
             semester_type=course_data['semester_type'],
@@ -23,6 +23,6 @@ def load_degree_plan(json_file: str) -> tuple[int, int, frozenset[Course]]:
                 'prerequisites') is not None else None
         )
         for course_data in data['degree_courses']
-    )
+    ]
 
     return data['mandatory_points'], data['target_points'], degree_courses

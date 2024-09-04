@@ -5,7 +5,7 @@ from search import SearchProblem
 from degree_plan import DegreePlan, Semester
 
 
-class DegreePlanningMinTime(SearchProblem):
+class DegreePlanningMinTime(SearchProblem):  # todo: maybe delete this problem
     """
     Implementation of Search Problem for Degree Planning problem.
     """
@@ -77,7 +77,7 @@ class DegreePlanningMaxAvg(SearchProblem):
     Implementation of Search Problem for Degree Planning problem.
     """
 
-    def __init__(self, degree_courses: frozenset[Course], mandatory_points: int,
+    def __init__(self, degree_courses: list[Course], mandatory_points: int,
                  target_points: int, min_semester_points: int = 0, max_semester_points: int = math.inf):
         self.degree_plan = DegreePlan(degree_courses)
         self.__target_points = target_points
@@ -134,7 +134,8 @@ class DegreePlanningMaxAvg(SearchProblem):
         for course in courses:
             if state.total_points + course.points <= self.__target_points:
                 new_state = state.add_course(course, self.__min_semester_points, self.__max_semester_points)
-                if self.target_points - new_state.total_points >= self.mandatory_points - new_state.mandatory_points:
+                if (self.target_points - new_state.total_points >=
+                        self.mandatory_points - new_state.mandatory_points):
                     successors.append((new_state, course, self._get_cost_of_action(course)))
         return successors
 
@@ -147,7 +148,7 @@ class DegreePlanningMaxAvg(SearchProblem):
 
     def _get_cost_of_action(self, action: Course) -> float:
         cost = (100 - action.avg_grade) * (action.points / self.__target_points)
-        return round(cost, 5)   # TODO check round, maybe multiply by 100,000 for int
+        return round(cost * 100000)  # todo: check this
 
 
 def min_time_heuristic(state: DegreePlan, problem: DegreePlanningMinTime) -> float:
@@ -204,6 +205,6 @@ def get_upper_bound_avg(courses: frozenset[Course], total_points_left: int) -> f
 def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningMaxAvg) -> float:
     points_left = problem.target_points - state.total_points
     left_avg = get_upper_bound_avg(state.get_optional_courses(), points_left)
-    res = (100 - left_avg) * points_left / problem.target_points  # TODO: why not deterministic and optimal 81.3, 81.15
+    res = (100 - left_avg) * points_left / problem.target_points
     assert res >= 0
-    return round(res, 5)
+    return round(res * 100000)  # todo: check this

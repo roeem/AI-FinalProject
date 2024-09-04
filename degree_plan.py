@@ -1,5 +1,3 @@
-from enum import Enum
-
 from course import Course
 
 
@@ -16,7 +14,7 @@ class DegreePlan:
     placed in previous semesters, all courses available fot this degree and more.
     """
 
-    def __init__(self, degree_courses: frozenset[Course]):
+    def __init__(self, degree_courses: list[Course]):
         """
         :param degree_courses: a frozenset of courses available for this degree
         """
@@ -51,8 +49,9 @@ class DegreePlan:
         new_degree_plan.__courses_so_far[course.number] = course, self.__current_semester_num
         new_degree_plan.__current_semester_points += course.points
 
-        new_degree_plan.__avg_grade = ((course.avg_grade * course.points + self.__avg_grade * self.__total_points) /
-                                       new_degree_plan.__total_points)
+        new_degree_plan.__avg_grade = (
+                (course.avg_grade * course.points + self.__avg_grade * self.__total_points) /
+                new_degree_plan.__total_points)
         return new_degree_plan
 
     @property
@@ -103,7 +102,8 @@ class DegreePlan:
                 self.is_valid_course(course, min_semester_points, max_semester_points)]
 
     def get_optional_courses(self) -> frozenset[Course]:
-        optional = {course for course in self.__degree_courses if course.number not in self.__courses_so_far.keys()}
+        optional = {course for course in self.__degree_courses if
+                    course.number not in self.__courses_so_far.keys()}
         return frozenset(optional)
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
@@ -112,12 +112,13 @@ class DegreePlan:
             return False
         return (
                 self.current_semester_type == other.current_semester_type and
-                {course for course, sem in self.__courses_so_far.values()} == {course for course, sem in
-                                                                               other.__courses_so_far.values()}
+                {course for course, sem in self.__courses_so_far.values()} ==
+                {course for course, sem in other.__courses_so_far.values()}
         )
 
     def __hash__(self) -> int:
-        return hash((frozenset({course for course, sem in self.__courses_so_far.values()}), self.current_semester_type))
+        return hash((frozenset({course for course, sem in self.__courses_so_far.values()}),
+                     self.current_semester_type))
 
     def __copy__(self) -> "DegreePlan":
         new_plan = DegreePlan(self.__degree_courses)
