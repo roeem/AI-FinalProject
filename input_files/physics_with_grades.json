@@ -429,9 +429,6 @@
             "is_mandatory": true,
             "prerequisites": [
                 [
-                    76223
-                ],
-                [
                     77318
                 ],
                 [
@@ -452,9 +449,6 @@
             "avg_grade": 88.29,
             "is_mandatory": true,
             "prerequisites": [
-                [
-                    76223
-                ],
                 [
                     77318
                 ],

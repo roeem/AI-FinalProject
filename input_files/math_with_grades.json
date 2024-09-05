@@ -1,6 +1,6 @@
 {
   "mandatory_points": 63,
-  "target_points": 126,
+  "target_points": 120,
   "degree_courses": [
     {
       "course_number": 80131,
@@ -636,62 +636,6 @@
         ]
       ],
       "avg_grade": 90
-    },
-    {
-      "course_number": 67504,
-      "semester_type": "A",
-      "name": "Algorithms",
-      "points": 5,
-      "is_mandatory": false,
-      "prerequisites": [
-        [
-          67109
-        ],
-        [
-          80134,
-          80153
-        ]
-      ],
-      "avg_grade": 81
-    },
-    {
-      "course_number": 67504,
-      "semester_type": "B",
-      "name": "Algorithms",
-      "points": 5,
-      "is_mandatory": false,
-      "prerequisites": [
-        [
-          67109
-        ],
-        [
-          80134,
-          80153
-        ]
-      ],
-      "avg_grade": 79
-    },
-    {
-      "course_number": 67521,
-      "semester_type": "A",
-      "name": "Computational Models, Computability and Complexity",
-      "points": 5,
-      "is_mandatory": false,
-      "prerequisites": [
-        [67504]
-      ],
-      "avg_grade": 85
-    },
-    {
-      "course_number": 67521,
-      "semester_type": "B",
-      "name": "Computational Models, Computability and Complexity",
-      "points": 5,
-      "is_mandatory": false,
-      "prerequisites": [
-        [67504]
-      ],
-      "avg_grade": 75
     },
     {
       "course_number": 77313,
