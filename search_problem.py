@@ -84,7 +84,7 @@ def main():
     print(f"num of semesters: {num_of_semesters(solution)}")
     print(f"Target points: {target_points}")
     print(f"Mandatory points: {mandatory_points}")
-    print(f"Average: {avg}")
+    print(f"Average: {avg}, upperbound: {get_upper_bound_avg(degree_courses, target_points)}")
     print(f"Points: {points}")
     print(f"Expanded: {degree_planning_search.expanded}")
     for course in solution:
