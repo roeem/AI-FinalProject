@@ -54,6 +54,9 @@ class DegreePlan:
                 new_degree_plan.__total_points)
         return new_degree_plan
 
+    def took_course(self, course: Course) -> bool:
+        return course.number in self.__courses_so_far.keys()
+
     @property
     def semester_count(self):
         return self.__current_semester_num - 1
@@ -73,6 +76,9 @@ class DegreePlan:
     @property
     def avg_grade(self) -> float:
         return self.__avg_grade
+
+    @property
+    def deg
 
     def is_valid_course(self, course: Course, min_semester_points: int, max_semester_points: int) -> bool:
         """

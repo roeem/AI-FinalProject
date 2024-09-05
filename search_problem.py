@@ -3,7 +3,7 @@ import sys
 import degree_planning_problems
 from degree_planning_problems import *
 from input_loader import load_degree_plan
-from search import bfs, dfs, astar, ucs
+from local_search import bfs, dfs, astar, ucs
 
 
 def timer(func):
