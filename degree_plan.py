@@ -21,45 +21,61 @@ class DegreePlan:
         self.__degree_courses = degree_courses
         self.__mandatory_points = 0
         self.__total_points = 0
-        self.__current_semester_num = 1
-        self.__courses_so_far: dict[int, tuple[Course, int]] = {}
+        self.__courses_so_far: dict[int, int] = {}
+        self.__semesters: list[set[Course]] = []
         self.__avg_grade = 0
-        self.__current_semester_points = 0
 
-    def add_course(self, course: Course, min_semester_points: int, max_semester_points: int) -> "DegreePlan":
-        """
-        creates a new Degree Plan with the added semester
-        :raises ValueError if the semester is invalid
-        :param course: a Course object
-        :return: the new Degree Plan with the added semester
-        """
-        if not self.is_valid_course(course, min_semester_points, max_semester_points):
-            raise ValueError("Semester is not allowed")
+    def add_course(self, course: Course, semester: int) -> "DegreePlan":
+        if len(self.__semesters) < semester or semester < 0 or course.number in self.__courses_so_far.keys():
+            raise ValueError("Invalid semester number/ course already taken.")
 
         new_degree_plan = self.__copy__()
-
-        if new_degree_plan.current_semester_type != course.semester_type:
-            new_degree_plan.__current_semester_num += 1
-            new_degree_plan.__current_semester_points = 0
+        if len(self.__semesters) == semester:
+            new_degree_plan.__semesters.append(set())
 
         if course.is_mandatory:
             new_degree_plan.__mandatory_points += course.points
 
         new_degree_plan.__total_points += course.points
-        new_degree_plan.__courses_so_far[course.number] = course, self.__current_semester_num
-        new_degree_plan.__current_semester_points += course.points
-
+        new_degree_plan.__courses_so_far[course.number] = semester
+        new_degree_plan.__semesters[semester].add(course)
         new_degree_plan.__avg_grade = (
                 (course.avg_grade * course.points + self.__avg_grade * self.__total_points) /
                 new_degree_plan.__total_points)
         return new_degree_plan
 
-    def took_course(self, course: Course) -> bool:
-        return course.number in self.__courses_so_far.keys()
+    def remove_course(self, course: Course) -> "DegreePlan":
+        if course.number not in self.__courses_so_far.keys():
+            raise ValueError("Course not taken yet.")
 
-    @property
-    def semester_count(self):
-        return self.__current_semester_num - 1
+        new_degree_plan = self.__copy__()
+
+        if course.is_mandatory:
+            new_degree_plan.__mandatory_points -= course.points
+
+        new_degree_plan.__total_points -= course.points
+        semester = new_degree_plan.__courses_so_far.pop(course.number)
+        new_degree_plan.__semesters[semester].remove(course)
+        if new_degree_plan.__total_points == 0:
+            new_degree_plan.__avg_grade = 0
+        else:
+            new_degree_plan.__avg_grade = (
+                    (self.__avg_grade * self.__total_points - course.avg_grade * course.points) /
+                    new_degree_plan.__total_points)
+        if semester == len(new_degree_plan.__semesters) - 1 and not new_degree_plan.__semesters[semester]:
+            new_degree_plan.__semesters.pop()
+        return new_degree_plan
+
+    def took_course_number(self, course: int) -> bool:
+        return course in self.__courses_so_far.keys()
+
+    def took_course(self, course: Course) -> bool:
+        return course.number in self.__courses_so_far.keys() and course in self.__semesters[
+            self.__courses_so_far[course.number]]
+
+    def related_semesters_to_course(self, course: Course) -> list[int]:
+        course_semester = 0 if course.semester_type == "A" else 1
+        return list(range(course_semester, len(self.__semesters) + 1, 2))
 
     @property
     def mandatory_points(self) -> int:
@@ -70,68 +86,50 @@ class DegreePlan:
         return self.__total_points
 
     @property
-    def current_semester_type(self) -> str:
-        return Semester.A if self.__current_semester_num % 2 == 1 else Semester.B
-
-    @property
     def avg_grade(self) -> float:
         return self.__avg_grade
 
-    @property
-    def deg
-
-    def is_valid_course(self, course: Course, min_semester_points: int, max_semester_points: int) -> bool:
-        """
-        checks if a course is invalid - means the course already placed in previous semester or there are
-        prerequisites not satisfied or not in the right semester.
-        :param course: a Course object
-        :return: True iff the course is invalid
-        """
-        if self.current_semester_type != course.semester_type:
-            did_finish_current_semester = min_semester_points <= self.__current_semester_points
-            if not did_finish_current_semester:
-                return False
-        else:
-            if self.__current_semester_points + course.points > max_semester_points:
-                return False
-
-        return (course.number not in self.__courses_so_far.keys()
-                and course.can_take_this_course(
-                    {course_num for course_num, (_, sem) in self.__courses_so_far.items() if
-                     sem < self.__current_semester_num}))
-
-    def get_legal_courses(self, min_semester_points: int, max_semester_points: int) -> list:
-        """
-        :return: list of all possible legal semesters according to the constraints.
-        """
-        return [course for course in self.__degree_courses if
-                self.is_valid_course(course, min_semester_points, max_semester_points)]
-
-    def get_optional_courses(self) -> frozenset[Course]:
-        optional = {course for course in self.__degree_courses if
-                    course.number not in self.__courses_so_far.keys()}
-        return frozenset(optional)
+    # def get_legal_courses(self, min_semester_points: int, max_semester_points: int) -> list:
+    #     """
+    #     :return: list of all possible legal semesters according to the constraints.
+    #     """
+    #     return [course for course in self.__degree_courses if
+    #             self.is_valid_course(course, min_semester_points, max_semester_points)]
+    #
+    # def get_optional_courses(self) -> frozenset[Course]:
+    #     optional = {course for course in self.__degree_courses if
+    #                 course.number not in self.__courses_so_far.keys()}
+    #     return frozenset(optional)
 
     # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, DegreePlan):
-            return False
-        return (
-                self.current_semester_type == other.current_semester_type and
-                {course for course, sem in self.__courses_so_far.values()} ==
-                {course for course, sem in other.__courses_so_far.values()}
-        )
+    # def __eq__(self, other) -> bool:
+    #     if not isinstance(other, DegreePlan):
+    #         return False
+    #     return True
 
-    def __hash__(self) -> int:
-        return hash((frozenset({course for course, sem in self.__courses_so_far.values()}),
-                     self.current_semester_type))
+    # def __hash__(self) -> int:
+    #     return hash((frozenset({course for course, sem in self.__courses_so_far.values()}),
+    #                  self.current_semester_type))
 
     def __copy__(self) -> "DegreePlan":
         new_plan = DegreePlan(self.__degree_courses)
         new_plan.__mandatory_points = self.__mandatory_points
         new_plan.__total_points = self.__total_points
-        new_plan.__current_semester_num = self.__current_semester_num
+        new_plan.__semesters = [semester.copy() for semester in self.__semesters]
         new_plan.__courses_so_far = self.__courses_so_far.copy()
         new_plan.__avg_grade = self.__avg_grade
-        new_plan.__current_semester_points = self.__current_semester_points
+
         return new_plan
+
+    def __str__(self):
+        pts = "Total Points: " + str(self.__total_points) + "\n"
+        m_pts = "Mandatory points: " + str(self.__mandatory_points) + "\n"
+        avg = "Average grade: " + str(self.__avg_grade) + "\n"
+        sems = "Semesters: " + str(len(self.__semesters)) + "\n"
+        s = ""
+        for i, sem in enumerate(self.__semesters):
+            t = "A" if i % 2 == 0 else "B"
+            s += f"Semester {t}\n"
+            for course in sem:
+                s += str(course) + "\n"
+        return pts + m_pts + avg + sems + s

@@ -4,7 +4,7 @@ from degree_plan import DegreePlan
 from local_search import LocalSearchProblem
 
 
-class LegalDegreePlanningProblem(LocalSearchProblem):
+class DegreePlanningProblem(LocalSearchProblem):
 
     def __init__(self, degree_courses: list[Course], mandatory_points: int,
                  target_points: int, min_semester_points: int = 0, max_semester_points: int = math.inf):
@@ -25,11 +25,13 @@ class LegalDegreePlanningProblem(LocalSearchProblem):
         neighbors = []
         for c in self.__degree_courses:
             if state.took_course(c):
-                neighbors.append(state.remove_course(c))  # TODO IMPLEMENT remove course
-            else:
-                neighbors.append(state.add_course(c))  # TODO IMPLEMENT add course again
+                neighbors.append(state.remove_course(c))
+            elif not state.took_course_number(c.number) and state.total_points + c.points <= self.__target_points:
+                available_semesters = state.related_semesters_to_course(c)
+                neighbors.extend([state.add_course(c, sem) for sem in available_semesters])
 
         return neighbors
 
-    def fitness(self, state) -> float:
-        super().fitness(state)
+    def fitness(self, state: DegreePlan) -> float:
+        # preq, num pts in semester, mando and elective, avg grade
+        return state.total_points

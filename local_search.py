@@ -53,3 +53,5 @@ def hill_climbing(problem: LocalSearchProblem, max_iter=10**5):
         current = best_neighbor
         max_iter -= 1
     return current
+
+
