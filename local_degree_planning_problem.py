@@ -7,7 +7,7 @@ from local_search import LocalSearchProblem
 class DegreePlanningProblem(LocalSearchProblem):
 
     def __init__(self, degree_courses: list[Course], mandatory_points: int,
-                 target_points: int, min_semester_points: int = 0, max_semester_points: int = math.inf):
+                 target_points: int, min_semester_points, max_semester_points):
         self.__degree_plan = DegreePlan(degree_courses)
         self.__degree_courses = degree_courses
         self.__target_points = target_points
@@ -20,13 +20,16 @@ class DegreePlanningProblem(LocalSearchProblem):
         return self.__degree_plan  # TODO make it random / not stupid
 
     def get_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
-        # TODO maybe another mutate function
+        # TODO: add replace function - replace 2 courses in different semester or replace course in degree
+        #  plan with course not in degree plan
         self.expanded += 1
         neighbors = []
         for c in self.__degree_courses:
             if state.took_course(c):
                 neighbors.append(state.remove_course(c))
-            elif not state.took_course_number(c.number) and state.total_points + c.points <= self.__target_points:
+
+            elif not state.took_course_number(
+                    c.number) and state.total_points + c.points <= self.__target_points:
                 available_semesters = state.related_semesters_to_course(c)
                 neighbors.extend([state.add_course(c, sem) for sem in available_semesters])
 
@@ -34,4 +37,10 @@ class DegreePlanningProblem(LocalSearchProblem):
 
     def fitness(self, state: DegreePlan) -> float:
         # preq, num pts in semester, mando and elective, avg grade
-        return state.total_points
+        miss_preq = state.sum_missing_prerequisites()
+        invalid_sem = state.sum_invalid_semesters(self.__min_semester_points, self.__max_semester_points)
+        mandatory_left = self.__mandatory_points - state.mandatory_points
+        elective_left = self.__target_points - state.total_points
+        avg = state.avg_grade
+        # return -miss_preq + avg
+        return avg - (miss_preq + invalid_sem + mandatory_left + elective_left)

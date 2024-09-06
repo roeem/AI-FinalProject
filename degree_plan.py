@@ -77,6 +77,25 @@ class DegreePlan:
         course_semester = 0 if course.semester_type == "A" else 1
         return list(range(course_semester, len(self.__semesters) + 1, 2))
 
+    def sum_missing_prerequisites(self) -> int:
+        sum_miss_preq = 0
+        taken_courses = set()
+        for sem in self.__semesters:
+            for c in sem:
+                sum_miss_preq += c.get_num_miss_preqs(taken_courses)
+            taken_courses |= sem  # Ron likes elegant ways to union sets
+        return sum_miss_preq
+
+    def sum_invalid_semesters(self, min_semester_points: int, max_semester_points: int) -> int:
+        sem_points = map(lambda sem: sum(c.points for c in sem), self.__semesters)
+        invalid_sem_error = 0
+        for points in sem_points:
+            if points < min_semester_points:
+                invalid_sem_error += min_semester_points - points
+            elif points > max_semester_points:
+                invalid_sem_error += points - max_semester_points
+        return invalid_sem_error
+
     @property
     def mandatory_points(self) -> int:
         return self.__mandatory_points

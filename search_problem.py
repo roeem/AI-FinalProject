@@ -41,8 +41,8 @@ def num_of_semesters(courses: list[Course]) -> int:
 def main():
     algorithm = sys.argv[1]
     input_file_path = "input_files/" + sys.argv[2]
-    # min_semester_points = int(sys.argv[3])
-    # max_semester_points = int(sys.argv[4])
+    min_semester_points = int(sys.argv[3])
+    max_semester_points = int(sys.argv[4])
 
     mandatory_points, target_points, degree_courses = load_degree_plan(input_file_path)
 
@@ -50,8 +50,8 @@ def main():
         'degree_courses': degree_courses,
         'mandatory_points': mandatory_points,
         'target_points': target_points,
-        # 'min_semester_points': min_semester_points,
-        # 'max_semester_points': max_semester_points
+        'min_semester_points': min_semester_points,
+        'max_semester_points': max_semester_points
     }
 
     # print(f"Degree: {input_file_path[12:-5]}")
@@ -67,7 +67,7 @@ def main():
     dpp = DegreePlanningProblem(**degree_planning_search_params)
 
     if algorithm == 'hill':
-        solution:DegreePlan = hill_climbing(dpp)
+        solution: DegreePlan = hill_climbing(dpp)
     # elif algorithm == 'HAMAS':
     #     solution = dfs(degree_planning_search)
     # elif algorithm == 'astar':
@@ -80,7 +80,6 @@ def main():
     dec = "###############################"
     print(f"{dec}DEGREE PLAN:{dec}")
     print(f"Expanded: {dpp.expanded}\n{solution}")
-
 
 
 if __name__ == '__main__':

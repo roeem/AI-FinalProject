@@ -58,6 +58,9 @@ class Course:
         """
         return self.__prerequisites.meets_prerequisites(finished_courses)
 
+    def get_num_miss_preqs(self, finished_courses: set[int]) -> int:
+        return self.__prerequisites.num_missing_prerequisites(finished_courses)
+
     def __repr__(self) -> str:
         """
         For debugging
