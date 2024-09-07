@@ -28,13 +28,14 @@ class DegreePlanningProblem(LocalSearchProblem):
     def fitness(self, state: DegreePlan) -> float:
         # preq, num pts in semester, mando and elective, avg grade
         miss_preq = state.sum_missing_prerequisites()
-        invalid_sem = state.sum_exceeded_points_in_semesters(self.__min_semester_points,
-                                                             self.__max_semester_points)
+        exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points,
+                                                                 self.__max_semester_points)
         mandatory_left = self.__mandatory_points - state.mandatory_points
-        elective_left = self.__target_points - state.total_points
+        elective_left = (self.__target_points - self.__mandatory_points) - (
+                state.total_points - state.mandatory_points)
         avg = state.avg_grade
         # return -miss_preq + avg
-        return avg - (miss_preq + invalid_sem + mandatory_left + elective_left)
+        return avg - (miss_preq + exceeded_points + mandatory_left + elective_left)
 
     # region ########### HELPERS ###########
 
