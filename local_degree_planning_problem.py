@@ -20,18 +20,9 @@ class DegreePlanningProblem(LocalSearchProblem):
         return self.__degree_plan  # TODO make it random / not stupid
 
     def get_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
-        # TODO: add replace function - replace 2 courses in different semester or replace course in degree
-        #  plan with course not in degree plan
         self.expanded += 1
-        neighbors = []
-        for c in self.__degree_courses:
-            if state.took_course(c):
-                neighbors.append(state.remove_course(c))
-
-            elif not state.took_course_number(
-                    c.number) and state.total_points + c.points <= self.__target_points:
-                available_semesters = state.related_semesters_to_course(c)
-                neighbors.extend([state.add_course(c, sem) for sem in available_semesters])
+        neighbors = self._single_step_neighbors(state)
+        neighbors.extend(self._double_step_neighbors(state))
 
         return neighbors
 
@@ -44,3 +35,37 @@ class DegreePlanningProblem(LocalSearchProblem):
         avg = state.avg_grade
         # return -miss_preq + avg
         return avg - (miss_preq + invalid_sem + mandatory_left + elective_left)
+
+    # region ########### HELPERS ###########
+
+    def _single_step_neighbors(self, state:DegreePlan) -> list[DegreePlan]:
+        neighbors = []
+        for c in self.__degree_courses:
+            if state.took_course(c):
+                # Remove course taken
+                neighbors.append(state.remove_course(c))
+                # Add not taken course in all possible semesters
+            elif not state.took_course_number(
+                    c.number) and state.total_points + c.points <= self.__target_points:
+                available_semesters = state.related_semesters_to_course(c)
+                neighbors.extend([state.add_course(c, sem) for sem in available_semesters])
+        return neighbors
+
+    def _double_step_neighbors(self, state:DegreePlan) -> list[DegreePlan]:
+        neighbors = []
+        for c1 in self.__degree_courses:
+            for c2 in self.__degree_courses:
+                if state.took_course(c1):
+                    # Remove course taken
+                    new_state: DegreePlan = state.remove_course(c1)
+                    if new_state.took_course(c2):
+                        new_state: DegreePlan = new_state.remove_course(c2)
+                    if new_state.took_course_number(c2.number):
+                        continue
+
+                    if new_state.total_points + c2.points <= self.__target_points:
+                        available_semesters = new_state.related_semesters_to_course(c2)
+                        neighbors.extend([new_state.add_course(c2, sem) for sem in available_semesters])
+        return neighbors
+
+# endregion
