@@ -26,7 +26,9 @@ class DegreePlan:
         self.__avg_grade = 0
 
     def add_course(self, course: Course, semester: int) -> "DegreePlan":
-        if len(self.__semesters) < semester or semester < 0 or course.number in self.__courses_so_far.keys():
+        semester_type = Semester.A if semester % 2 == 0 else Semester.B
+        if (len(self.__semesters) < semester or semester < 0 or self.took_course_number(course.number) or
+                semester_type != course.semester_type):
             raise ValueError("Invalid semester number/ course already taken.")
 
         new_degree_plan = self.__copy__()
@@ -45,7 +47,7 @@ class DegreePlan:
         return new_degree_plan
 
     def remove_course(self, course: Course) -> "DegreePlan":
-        if course.number not in self.__courses_so_far.keys():
+        if not self.took_course(course):
             raise ValueError("Course not taken yet.")
 
         new_degree_plan = self.__copy__()
@@ -66,15 +68,23 @@ class DegreePlan:
             new_degree_plan.__semesters.pop()
         return new_degree_plan
 
-    def took_course_number(self, course: int) -> bool:
-        return course in self.__courses_so_far.keys()
+    def calc_avg(self) -> float:
+        wsum, points = 0, 0
+        for sem in self.__semesters:
+            for c in sem:
+                wsum += c.avg_grade * c.points
+                points += c.points
+        return 0 if points == 0 else wsum / points
+
+    def took_course_number(self, course_number: int) -> bool:
+        return course_number in self.__courses_so_far.keys()
 
     def took_course(self, course: Course) -> bool:
         return course.number in self.__courses_so_far.keys() and course in self.__semesters[
             self.__courses_so_far[course.number]]
 
-    def related_semesters_to_course(self, course: Course) -> list[int]:
-        course_semester = 0 if course.semester_type == "A" else 1
+    def possible_semesters_to_course(self, course: Course) -> list[int]:
+        course_semester = 0 if course.semester_type == Semester.A else 1
         return list(range(course_semester, len(self.__semesters) + 1, 2))
 
     def sum_missing_prerequisites(self) -> int:
@@ -86,7 +96,7 @@ class DegreePlan:
             taken_courses |= sem  # Ron likes elegant ways to union sets
         return sum_miss_preq
 
-    def sum_invalid_semesters(self, min_semester_points: int, max_semester_points: int) -> int:
+    def sum_exceeded_points_in_semesters(self, min_semester_points: int, max_semester_points: int) -> int:
         sem_points = map(lambda sem: sum(c.points for c in sem), self.__semesters)
         invalid_sem_error = 0
         for points in sem_points:
@@ -107,28 +117,6 @@ class DegreePlan:
     @property
     def avg_grade(self) -> float:
         return self.__avg_grade
-
-    # def get_legal_courses(self, min_semester_points: int, max_semester_points: int) -> list:
-    #     """
-    #     :return: list of all possible legal semesters according to the constraints.
-    #     """
-    #     return [course for course in self.__degree_courses if
-    #             self.is_valid_course(course, min_semester_points, max_semester_points)]
-    #
-    # def get_optional_courses(self) -> frozenset[Course]:
-    #     optional = {course for course in self.__degree_courses if
-    #                 course.number not in self.__courses_so_far.keys()}
-    #     return frozenset(optional)
-
-    # __eq__ and __hash__ functions are needed for graph search when using 'visited' set.
-    # def __eq__(self, other) -> bool:
-    #     if not isinstance(other, DegreePlan):
-    #         return False
-    #     return True
-
-    # def __hash__(self) -> int:
-    #     return hash((frozenset({course for course, sem in self.__courses_so_far.values()}),
-    #                  self.current_semester_type))
 
     def __copy__(self) -> "DegreePlan":
         new_plan = DegreePlan(self.__degree_courses)

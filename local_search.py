@@ -35,7 +35,7 @@ class LocalSearchProblem:
         util.raiseNotDefined()
 
 
-def hill_climbing(problem: LocalSearchProblem, max_iter=10**5):
+def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
     """
     This function should implement the Hill Climbing algorithm
 
@@ -43,15 +43,12 @@ def hill_climbing(problem: LocalSearchProblem, max_iter=10**5):
     :return: a state that is a local maximum
     """
     current = problem.get_initial_state()
-    while True or max_iter > 0:
+    while max_iter > 0:
         neighbors = problem.get_neighbors(current)
         best_neighbor_val = problem.fitness(max(neighbors, key=problem.fitness))
         best_neighbors = [n for n in neighbors if problem.fitness(n) == best_neighbor_val]
-        best_neighbor = random.choice(best_neighbors)
-        if problem.fitness(best_neighbor) <= problem.fitness(current):
+        if best_neighbor_val <= problem.fitness(current):
             return current
-        current = best_neighbor
+        current = random.choice(best_neighbors)
         max_iter -= 1
     return current
-
-

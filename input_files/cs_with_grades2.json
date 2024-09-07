@@ -123,19 +123,6 @@
         },
         {
             "course_number": 80135,
-            "semester_type": "A",
-            "name": "LINEAR ALGEBRA (2)",
-            "points": 6,
-            "avg_grade": 53,
-            "is_mandatory": true,
-            "prerequisites": [
-                [
-                    80134
-                ]
-            ]
-        },
-        {
-            "course_number": 80135,
             "semester_type": "B",
             "name": "LINEAR ALGEBRA (2)",
             "points": 6,
