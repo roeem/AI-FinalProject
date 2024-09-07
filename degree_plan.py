@@ -1,3 +1,5 @@
+from functools import reduce
+
 from course import Course
 
 
@@ -84,8 +86,42 @@ class DegreePlan:
             self.__courses_so_far[course.number]]
 
     def possible_semesters_to_course(self, course: Course) -> list[int]:
+        if self.took_course_number(course.number): return []
         course_semester = 0 if course.semester_type == Semester.A else 1
-        return list(range(course_semester, len(self.__semesters) + 1, 2))
+        taken_courses = set()
+        possible_semesters = []
+        for i in range(len(self.__semesters) + 1):
+            if i % 2 == course_semester:
+                if course.can_take_this_course(taken_courses):
+                    possible_semesters.append(i)
+            if i < len(self.__semesters):
+                taken_courses |= self.__semesters[i]
+
+        return possible_semesters
+
+    def possible_courses_to_remove(self) -> list[Course]:
+        possible_removals = []
+        for sem in self.__semesters:
+            for course in sem:
+                if self.can_remove_course(course):
+                    possible_removals.append(course)
+        return possible_removals
+
+    def can_remove_course(self, course_to_remove) -> bool:
+        next_sem = self.__courses_so_far[course_to_remove.number] + 1
+        # TODO SLAP ROEE
+        taken_courses = set()
+        for i in range(next_sem):
+            taken_courses |= self.__semesters[i]
+        taken_courses2 = reduce(lambda acc, i: acc | self.__semesters[i], range(next_sem), set())
+        assert taken_courses == taken_courses2
+        taken_courses -= {course_to_remove}
+        for i in range(next_sem, len(self.__semesters)):
+            for course in self.__semesters[i]:
+                if not course.can_take_this_course(taken_courses):
+                    return False
+
+        return True
 
     def sum_missing_prerequisites(self) -> int:
         sum_miss_preq = 0

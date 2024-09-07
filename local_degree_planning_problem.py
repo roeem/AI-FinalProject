@@ -41,9 +41,12 @@ class DegreePlanningProblem(LocalSearchProblem):
 
     def _single_step_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
         neighbors = []
+
         for c in self.__degree_courses:
             if state.took_course(c):
-                # Remove course taken
+
+                # TODO: use state.possible_courses_to_remove()
+
                 neighbors.append(state.remove_course(c))
                 # Add not taken course in all possible semesters
             elif not state.took_course_number(
@@ -54,13 +57,13 @@ class DegreePlanningProblem(LocalSearchProblem):
 
     def _double_step_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
         neighbors = []
-        for c1 in self.__degree_courses:
+        removable_courses = state.possible_courses_to_remove()
+        for c1 in removable_courses:
             for c2 in self.__degree_courses:
-                if not state.took_course(c1):
-                    continue
+                if c1 == c2: continue
                 # TODO: check efficiency
                 new_state: DegreePlan = state.remove_course(c1)
-                if new_state.took_course(c2):
+                if c2 in removable_courses:
                     new_state: DegreePlan = new_state.remove_course(c2)
                 if new_state.took_course_number(c2.number):
                     continue
