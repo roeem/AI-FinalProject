@@ -2,6 +2,7 @@ import sys
 
 from course import Course
 from degree_plan import DegreePlan
+from gui import run_gui
 from input_loader import load_degree_plan
 from local_degree_planning_problem import DegreePlanningProblem
 from local_search import *
@@ -79,6 +80,7 @@ def main():
 
     dec = "###############################"
     print(f"{dec}DEGREE PLAN:{dec}")
+    run_gui(solution)
     print(f"Expanded: {dpp.expanded}\n{solution}")
 
 
