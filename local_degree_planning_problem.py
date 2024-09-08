@@ -62,9 +62,7 @@ class DegreePlanningProblem(LocalSearchProblem):
         removable_courses = state.possible_courses_to_remove()
         for c in self.__degree_courses:
             if c in removable_courses:
-                # TODO: use state.possible_courses_to_remove()
                 neighbors.append(state.remove_course(c))
-                # Add not taken course in all possible semesters
             elif not state.took_course_number(
                     c.number) and state.total_points + c.points <= self.__target_points:
                 available_semesters = state.possible_semesters_to_course(c)
@@ -90,4 +88,4 @@ class DegreePlanningProblem(LocalSearchProblem):
                     neighbors.extend([new_state.add_course(c2, sem) for sem in available_semesters])
         return neighbors
 
-# endregion
+    # endregion
