@@ -173,6 +173,11 @@ class DegreePlan:
         for i, sem in enumerate(self.__semesters):
             t = "A" if i % 2 == 0 else "B"
             s += f"Semester {t}\n"
-            for course in sem:
+            for course in sorted(sem, key=lambda c: c.number):
                 s += str(course) + "\n"
         return pts + m_pts + avg + sems + s
+
+    def __eq__(self, other):
+        return str(self)==str(other)
+    def __hash__(self):
+        return hash(str(self))

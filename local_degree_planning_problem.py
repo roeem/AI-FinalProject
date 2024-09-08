@@ -9,7 +9,7 @@ class DegreePlanningProblem(LocalSearchProblem):
 
     def __init__(self, degree_courses: list[Course], mandatory_points: int,
                  target_points: int, min_semester_points, max_semester_points):
-        self.__degree_plan = DegreePlan(degree_courses)
+
         self.__degree_courses = degree_courses
         self.__target_points = target_points
         self.__mandatory_points = mandatory_points
@@ -32,13 +32,14 @@ class DegreePlanningProblem(LocalSearchProblem):
 
             max_iter -= 1
         # return self.__degree_plan
-        return init_state  # TODO make it random / not stupid
+        return init_state
 
     def get_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
         self.expanded += 1
         neighbors = self._single_step_neighbors(state)
         neighbors.extend(self._double_step_neighbors(state))
-
+        # TODO: maybe expand such that there are no duplicates in neighbors (probability wise!)
+        neighbors = list(set(neighbors))
         return neighbors
 
     def fitness(self, state: DegreePlan) -> float:

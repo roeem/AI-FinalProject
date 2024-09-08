@@ -4,7 +4,7 @@ from course import Course
 from degree_plan import DegreePlan
 from input_loader import load_degree_plan
 from local_degree_planning_problem import DegreePlanningProblem
-from local_search import hill_climbing
+from local_search import *
 
 
 def timer(func):
@@ -68,12 +68,12 @@ def main():
 
     if algorithm == 'hill':
         solution: DegreePlan = hill_climbing(dpp)
-    # elif algorithm == 'HAMAS':
-    #     solution = dfs(degree_planning_search)
-    # elif algorithm == 'astar':
-    #     solution = astar(degree_planning_search, heuristic)
-    # elif algorithm == 'ucs':
-    #     solution = ucs(degree_planning_search)
+    elif algorithm == 'sa_exp':
+        solution: DegreePlan = simulated_annealing(dpp, exp_cool_schedule)
+    elif algorithm == 'sa_lin':
+        solution: DegreePlan = simulated_annealing(dpp, linear_cool_schedule)
+    elif algorithm == 'sa_log':
+        solution: DegreePlan = simulated_annealing(dpp, log_cool_schedule)
     else:
         raise ValueError('Invalid algorithm type')
 
