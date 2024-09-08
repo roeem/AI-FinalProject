@@ -81,5 +81,8 @@ def linear_cool_schedule(t: int, T0=1000, rate=1) -> float:
     return T0 - t * rate
 
 
-def log_cool_schedule(t: int, T0=100, beta=2) -> float:
+def log_cool_schedule(t: int, T0=100, beta=5) -> float:
     return T0 / (1 + beta * math.log(1 + t))
+
+#TODO : implement Beam Search: 1) using only LocalProblem API
+#       2) Try implement it using the hill-climbing/ simulated-annealing
