@@ -86,7 +86,8 @@ class DegreePlan:
             self.__courses_so_far[course.number]]
 
     def possible_semesters_to_course(self, course: Course) -> list[int]:
-        if self.took_course_number(course.number): return []
+        if self.took_course_number(course.number):
+            return []
         course_semester = 0 if course.semester_type == Semester.A else 1
         taken_courses: set[int] = set()
         possible_semesters = []
@@ -113,7 +114,8 @@ class DegreePlan:
         taken_courses_nums = set()
         for i in range(next_sem):
             taken_courses_nums |= {c.number for c in self.__semesters[i]}
-        taken_courses2 = reduce(lambda acc, i: acc | {c.number for c in self.__semesters[i]}, range(next_sem), set())
+        taken_courses2 = reduce(lambda acc, i: acc | {c.number for c in self.__semesters[i]}, range(next_sem),
+                                set())
         assert taken_courses_nums == taken_courses2
         taken_courses_nums -= {course_to_remove.number}
         for i in range(next_sem, len(self.__semesters)):
@@ -178,6 +180,7 @@ class DegreePlan:
         return pts + m_pts + avg + sems + s
 
     def __eq__(self, other):
-        return str(self)==str(other)
+        return str(self) == str(other)
+
     def __hash__(self):
         return hash(str(self))

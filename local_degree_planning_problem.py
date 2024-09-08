@@ -44,7 +44,7 @@ class DegreePlanningProblem(LocalSearchProblem):
 
     def fitness(self, state: DegreePlan) -> float:
         # preq, num pts in semester, mando and elective, avg grade
-        miss_preq = state.sum_missing_prerequisites()
+        miss_preq = state.sum_missing_prerequisites()  # todo: maybe remove
         exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points,
                                                                  self.__max_semester_points)
         mandatory_left = self.__mandatory_points - state.mandatory_points
@@ -76,7 +76,8 @@ class DegreePlanningProblem(LocalSearchProblem):
         removable_courses = state.possible_courses_to_remove()
         for c1 in removable_courses:
             for c2 in self.__degree_courses:
-                if c1 == c2: continue
+                if c1 == c2:
+                    continue
                 # TODO: check efficiency
                 new_state: DegreePlan = state.remove_course(c1)
                 if c2 in removable_courses:

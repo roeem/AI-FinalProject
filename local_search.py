@@ -3,12 +3,11 @@ In local_search.py, you will implement generic search algorithms
 """
 import math
 import random
-from typing import Callable
+from typing import Callable, Any
+from abc import ABC
 
-import util
 
-
-class LocalSearchProblem:
+class LocalSearchProblem(ABC):
     """
     This class outlines the structure of a local search problem, but doesn't implement
     any of the methods (in object-oriented terminology: an abstract class).
@@ -16,25 +15,25 @@ class LocalSearchProblem:
     You do not need to change anything in this class, ever.
     """
 
-    def get_initial_state(self):
+    def get_initial_state(self) -> Any:
         """
         Returns the start state for the search problem
         """
-        util.raiseNotDefined()
+        pass
 
-    def get_neighbors(self, state):
+    def get_neighbors(self, state: Any) -> list[Any]:
         """
         state: Search state
 
         For a given state, this should return a list of states.
         """
-        util.raiseNotDefined()
+        pass
 
-    def fitness(self, state):
+    def fitness(self, state: Any) -> float:
         """
         Returns the fitness of a state
         """
-        util.raiseNotDefined()
+        pass
 
 
 def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
@@ -42,6 +41,7 @@ def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
     This function should implement the Hill Climbing algorithm
 
     :param problem: a LocalSearchProblem object
+    :param max_iter: maximum of iterations
     :return: a state that is a local maximum
     """
     current = problem.get_initial_state()
@@ -57,7 +57,8 @@ def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
     return current
 
 
-def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], float], max_iter=10 ** 5, eps=1e-10):
+def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], float], max_iter=10 ** 5,
+                        eps=1e-10):
     current = problem.get_initial_state()
     for t in range(max_iter):
         T = schedule(t)
@@ -76,13 +77,14 @@ def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], f
 def exp_cool_schedule(t: int, T0=10000, alpha=0.9) -> float:
     return T0 * (alpha ** t)
 
+
 def linear_cool_schedule(t: int, T0=1000, rate=1) -> float:
-    #If we choose rate = T0/max_iter- we'll use all the iterations.
+    # If we choose rate = T0/max_iter- we'll use all the iterations.
     return T0 - t * rate
 
 
 def log_cool_schedule(t: int, T0=100, beta=5) -> float:
     return T0 / (1 + beta * math.log(1 + t))
 
-#TODO : implement Beam Search: 1) using only LocalProblem API
+# TODO : implement Beam Search: 1) using only LocalProblem API
 #       2) Try implement it using the hill-climbing/ simulated-annealing
