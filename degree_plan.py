@@ -88,14 +88,14 @@ class DegreePlan:
     def possible_semesters_to_course(self, course: Course) -> list[int]:
         if self.took_course_number(course.number): return []
         course_semester = 0 if course.semester_type == Semester.A else 1
-        taken_courses = set()
+        taken_courses: set[int] = set()
         possible_semesters = []
         for i in range(len(self.__semesters) + 1):
             if i % 2 == course_semester:
                 if course.can_take_this_course(taken_courses):
                     possible_semesters.append(i)
             if i < len(self.__semesters):
-                taken_courses |= self.__semesters[i]
+                taken_courses |= {c.number for c in self.__semesters[i]}
 
         return possible_semesters
 
@@ -110,26 +110,26 @@ class DegreePlan:
     def can_remove_course(self, course_to_remove) -> bool:
         next_sem = self.__courses_so_far[course_to_remove.number] + 1
         # TODO SLAP ROEE
-        taken_courses = set()
+        taken_courses_nums = set()
         for i in range(next_sem):
-            taken_courses |= self.__semesters[i]
-        taken_courses2 = reduce(lambda acc, i: acc | self.__semesters[i], range(next_sem), set())
-        assert taken_courses == taken_courses2
-        taken_courses -= {course_to_remove}
+            taken_courses_nums |= {c.number for c in self.__semesters[i]}
+        taken_courses2 = reduce(lambda acc, i: acc | {c.number for c in self.__semesters[i]}, range(next_sem), set())
+        assert taken_courses_nums == taken_courses2
+        taken_courses_nums -= {course_to_remove.number}
         for i in range(next_sem, len(self.__semesters)):
             for course in self.__semesters[i]:
-                if not course.can_take_this_course(taken_courses):
+                if not course.can_take_this_course(taken_courses_nums):
                     return False
 
         return True
 
     def sum_missing_prerequisites(self) -> int:
         sum_miss_preq = 0
-        taken_courses = set()
+        taken_courses: set[int] = set()
         for sem in self.__semesters:
             for c in sem:
                 sum_miss_preq += c.get_num_miss_preqs(taken_courses)
-            taken_courses |= sem  # Ron likes elegant ways to union sets
+            taken_courses |= {course.number for course in sem}  # Ron likes elegant ways to union sets
         return sum_miss_preq
 
     def sum_exceeded_points_in_semesters(self, min_semester_points: int, max_semester_points: int) -> int:

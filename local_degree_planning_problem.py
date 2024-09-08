@@ -35,18 +35,17 @@ class DegreePlanningProblem(LocalSearchProblem):
                 state.total_points - state.mandatory_points)
         avg = state.avg_grade
         # return -miss_preq + avg
-        return avg - (miss_preq + exceeded_points + mandatory_left + elective_left)
+        return avg- 5*(self.__target_points - state.total_points)
+        # return avg - (miss_preq + exceeded_points + mandatory_left + elective_left)
 
     # region ########### HELPERS ###########
 
     def _single_step_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
         neighbors = []
-
+        removable_courses = state.possible_courses_to_remove()
         for c in self.__degree_courses:
-            if state.took_course(c):
-
+            if c in removable_courses:
                 # TODO: use state.possible_courses_to_remove()
-
                 neighbors.append(state.remove_course(c))
                 # Add not taken course in all possible semesters
             elif not state.took_course_number(
