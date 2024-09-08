@@ -1,3 +1,5 @@
+import random
+
 from course import Course
 from degree_plan import DegreePlan
 from local_search import LocalSearchProblem
@@ -16,7 +18,21 @@ class DegreePlanningProblem(LocalSearchProblem):
         self.expanded = 0
 
     def get_initial_state(self) -> DegreePlan:
-        return self.__degree_plan  # TODO make it random / not stupid
+        init_state = DegreePlan(self.__degree_courses)
+        random_num_of_points = random.randint(1, self.__target_points)
+        max_iter = 10000
+        courses = self.__degree_courses.copy()
+        while max_iter > 0 and init_state.total_points < random_num_of_points:
+            random_course: Course = random.choice(courses)
+            possible_semesters = init_state.possible_semesters_to_course(random_course)
+            if possible_semesters:
+                random_semester = random.choice(possible_semesters)
+                init_state = init_state.add_course(random_course, random_semester)
+                courses.remove(random_course)
+
+            max_iter -= 1
+        # return self.__degree_plan
+        return init_state  # TODO make it random / not stupid
 
     def get_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
         self.expanded += 1
@@ -35,7 +51,7 @@ class DegreePlanningProblem(LocalSearchProblem):
                 state.total_points - state.mandatory_points)
         avg = state.avg_grade
         # return -miss_preq + avg
-        return avg- 5*(self.__target_points - state.total_points)
+        return avg - 5 * (5 * mandatory_left + 2 * elective_left + exceeded_points)
         # return avg - (miss_preq + exceeded_points + mandatory_left + elective_left)
 
     # region ########### HELPERS ###########
