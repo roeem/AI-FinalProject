@@ -15,6 +15,7 @@ class DegreePlanningProblem(LocalSearchProblem):
         self.__mandatory_points = mandatory_points
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
+        self.__max_semester_num = target_points // min_semester_points
         self.__upper_bound = None
         self.expanded = 0
 
@@ -33,7 +34,7 @@ class DegreePlanningProblem(LocalSearchProblem):
         courses = self.__degree_courses.copy()
         while max_iter > 0 and init_state.total_points < random_num_of_points:
             random_course: Course = random.choice(courses)
-            possible_semesters = init_state.possible_semesters_to_course(random_course, self.__max_semester_points)
+            possible_semesters = init_state.possible_semesters_to_course(random_course, self.__max_semester_points, self.__max_semester_num)
             if possible_semesters:
                 random_semester = random.choice(possible_semesters)
                 init_state = init_state.add_course(random_course, random_semester)
@@ -51,7 +52,7 @@ class DegreePlanningProblem(LocalSearchProblem):
         return neighbors
 
     def fitness(self, state: DegreePlan) -> float:
-        w_exceeded_points, w_mandatory_left, w_elective_left, w_avg = 0, 5, 2, 1
+        w_exceeded_points, w_mandatory_left, w_elective_left, w_avg = 3, 8, 2, 5
         w_legality = 1
 
         exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points, self.__max_semester_points)
@@ -116,7 +117,7 @@ class DegreePlanningProblem(LocalSearchProblem):
                 neighbors.append(state.remove_course(c))
             elif not state.took_course_number(
                     c.number) and state.total_points + c.points <= self.__target_points:
-                available_semesters = state.possible_semesters_to_course(c, self.__max_semester_points)
+                available_semesters = state.possible_semesters_to_course(c, self.__max_semester_points, self.__max_semester_num)
                 neighbors.extend([state.add_course(c, sem) for sem in available_semesters])
         return neighbors
 
@@ -135,7 +136,7 @@ class DegreePlanningProblem(LocalSearchProblem):
                     continue
 
                 if new_state.total_points + c2.points <= self.__target_points:
-                    available_semesters = new_state.possible_semesters_to_course(c2, self.__max_semester_points)
+                    available_semesters = new_state.possible_semesters_to_course(c2, self.__max_semester_points, self.__max_semester_num)
                     neighbors.extend([new_state.add_course(c2, sem) for sem in available_semesters])
         return neighbors
 
