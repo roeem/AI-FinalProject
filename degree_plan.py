@@ -81,18 +81,24 @@ class DegreePlan:
         return course.number in self.__courses_so_far.keys() and course in self.__semesters[
             self.__courses_so_far[course.number]]
 
-    def possible_semesters_to_course(self, course: Course) -> list[int]:
+    def possible_semesters_to_course(self, course: Course, max_semester_points: int) -> list[int]:
         if self.took_course_number(course.number):
             return []
+
         course_semester = 0 if course.semester_type == Semester.A else 1
         taken_courses: set[int] = set()
         possible_semesters = []
-        for i in range(len(self.__semesters) + 1):
-            if i % 2 == course_semester:
-                if course.can_take_this_course(taken_courses):
+
+        for i in range(len(self.__semesters)):
+            if i % 2 == course_semester and course.can_take_this_course(taken_courses):
+                sum_points_in_sem = sum(c.points for c in self.__semesters[i])
+                if sum_points_in_sem + course.points <= max_semester_points:
                     possible_semesters.append(i)
-            if i < len(self.__semesters):
-                taken_courses |= {c.number for c in self.__semesters[i]}
+            taken_courses |= {c.number for c in self.__semesters[i]}
+
+        # check if opening a new semester is possible
+        if len(self.__semesters) % 2 == course_semester and course.can_take_this_course(taken_courses):
+            possible_semesters.append(len(self.__semesters))
 
         return possible_semesters
 
