@@ -97,7 +97,7 @@ def log_cool_schedule(t: int, T0=100, beta=5) -> float:
 
 # endregion
 
-# region Stochastic Beam Search
+# region Stochastic Beam Search - specific to DegreePlanningProblem
 def single_beam_search(problem: LocalSearchProblem, state, all_neighbors: TsSet):
     for neighbor in problem.get_neighbors(state):
         all_neighbors.add(neighbor)
@@ -127,8 +127,20 @@ def sample_k_neighbors(problem: LocalSearchProblem, all_neighbors: TsSet, k: int
     return {all_neighbors[i] for i in chosen_indices}
 
 
-def stop_condition():
-    return False  # fixme
+def stop_condition(problem: LocalSearchProblem, state) -> bool:
+    ############ for Roee ###############
+    from degree_plan import DegreePlan
+    from local_degree_planning_problem import DegreePlanningProblem
+    if isinstance(problem, DegreePlanningProblem):
+        problem: DegreePlanningProblem = problem
+    if isinstance(state, DegreePlan):
+        state: DegreePlan = state
+    #####################################
+
+    eps = 0.5  # todo: check this
+    return (state.total_points == problem.target_points and
+            state.mandatory_points == problem.mandatory_points and
+            problem.get_upper_bound() - state.avg_grade <= eps)
 
 
 def create_threads(problem: LocalSearchProblem, states: set, all_neighbors: TsSet) -> list[Thread]:
@@ -141,9 +153,8 @@ def create_threads(problem: LocalSearchProblem, states: set, all_neighbors: TsSe
 
 
 def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 1, max_iter=10 ** 5):
-    # todo: consider adding global max state.
-    k_neighbors = set()
-    init_states = {problem.get_initial_state() for i in range(k)}
+    init_states = {problem.get_initial_state() for _ in range(k)}
+    best_state = max(init_states, key=problem.fitness)
     all_neighbors: TsSet = TsSet()
     # first iteration
     threads = create_threads(problem, init_states, all_neighbors)
@@ -151,10 +162,13 @@ def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 
     for _ in range(max_iter):
         wait_for_all_threads(threads)
         k_neighbors = sample_k_neighbors(problem, all_neighbors, k, T)
-        if stop_condition():
-            return  # todo: return the best
+        cur_best_state = max(k_neighbors, key=problem.fitness)
+        best_state = max(best_state, cur_best_state, key=problem.fitness)
+        if stop_condition(problem, best_state):
+            return best_state  # todo: return the best
         all_neighbors: TsSet = TsSet()
         threads = create_threads(problem, k_neighbors, all_neighbors)
-    return max(k_neighbors, key=problem.fitness)
+    print("******* Reached max_iterations ! *******\n" * 100)
+    return best_state
 
 # endregion
