@@ -3,8 +3,12 @@ In local_search.py, you will implement generic search algorithms
 """
 import math
 import random
+from threading import Thread
 from typing import Callable, Any
 from abc import ABC
+import numpy as np
+
+from thread_safe_set import TsSet
 
 
 class LocalSearchProblem(ABC):
@@ -36,6 +40,7 @@ class LocalSearchProblem(ABC):
         pass
 
 
+# region Hill Climbing
 def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
     """
     This function should implement the Hill Climbing algorithm
@@ -57,6 +62,9 @@ def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
     return current
 
 
+# endregion
+
+# region Simulated Annealing
 def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], float], max_iter=10 ** 5,
                         eps=1e-10):
     current = problem.get_initial_state()
@@ -86,5 +94,67 @@ def linear_cool_schedule(t: int, T0=1000, rate=1) -> float:
 def log_cool_schedule(t: int, T0=100, beta=5) -> float:
     return T0 / (1 + beta * math.log(1 + t))
 
-# TODO : implement Beam Search: 1) using only LocalProblem API
-#       2) Try implement it using the hill-climbing/ simulated-annealing
+
+# endregion
+
+# region Stochastic Beam Search
+def single_beam_search(problem: LocalSearchProblem, state, all_neighbors: TsSet):
+    for neighbor in problem.get_neighbors(state):
+        all_neighbors.add(neighbor)
+
+
+def wait_for_all_threads(threads: list[Thread]):
+    for thread in threads:
+        thread.join()
+
+
+def softmax(scores: list[float], T: float) -> np.ndarray[float]:
+    """Compute softmax probabilities from scores with temperature scaling."""
+    scores = np.array(scores) / T
+    exp_scores = np.exp(scores - np.max(scores))  # Numerical stability TODO: check the "- np.max(scores)"
+    return exp_scores / exp_scores.sum()
+
+
+def sample_k_neighbors(problem: LocalSearchProblem, all_neighbors: TsSet, k: int, T: float) -> set:
+    """Sample k neighbors based on their scores using softmax probabilities."""
+    all_neighbors = list(all_neighbors)
+    scores = [problem.fitness(neighbor) for neighbor in all_neighbors]
+    probabilities = softmax(scores, T)
+
+    # Sample k indices based on the computed probabilities
+    indices = np.arange(len(scores))
+    chosen_indices = np.random.choice(indices, size=k, p=probabilities, replace=False)
+    return {all_neighbors[i] for i in chosen_indices}
+
+
+def stop_condition():
+    return False  # fixme
+
+
+def create_threads(problem: LocalSearchProblem, states: set, all_neighbors: TsSet) -> list[Thread]:
+    threads = []
+    for state in states:
+        thread = Thread(target=single_beam_search, args=(problem, state, all_neighbors))
+        thread.start()
+        threads.append(thread)
+    return threads
+
+
+def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 1, max_iter=10 ** 5):
+    # todo: consider adding global max state.
+    k_neighbors = set()
+    init_states = {problem.get_initial_state() for i in range(k)}
+    all_neighbors: TsSet = TsSet()
+    # first iteration
+    threads = create_threads(problem, init_states, all_neighbors)
+
+    for _ in range(max_iter):
+        wait_for_all_threads(threads)
+        k_neighbors = sample_k_neighbors(problem, all_neighbors, k, T)
+        if stop_condition():
+            return  # todo: return the best
+        all_neighbors: TsSet = TsSet()
+        threads = create_threads(problem, k_neighbors, all_neighbors)
+    return max(k_neighbors, key=problem.fitness)
+
+# endregion

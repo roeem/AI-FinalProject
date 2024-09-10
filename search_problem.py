@@ -75,6 +75,8 @@ def main():
         solution: DegreePlan = simulated_annealing(dpp, linear_cool_schedule)
     elif algorithm == 'sa_log':
         solution: DegreePlan = simulated_annealing(dpp, log_cool_schedule)
+    elif algorithm == 'beam':
+        solution: DegreePlan = stochastic_beam_search(dpp, k=10, max_iter=10)
     else:
         raise ValueError('Invalid algorithm type')
 
