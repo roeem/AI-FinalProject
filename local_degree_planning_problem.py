@@ -27,7 +27,7 @@ class DegreePlanningProblem(LocalSearchProblem):
         return self.__mandatory_points
 
     def get_initial_state(self) -> DegreePlan:
-        init_state = DegreePlan(self.__degree_courses)
+        init_state = DegreePlan()
         random_num_of_points = random.randint(1, self.__target_points)
         max_iter = 10000
         courses = self.__degree_courses.copy()
@@ -40,7 +40,6 @@ class DegreePlanningProblem(LocalSearchProblem):
                 courses.remove(random_course)
 
             max_iter -= 1
-        # return self.__degree_plan
         return init_state
 
     def get_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
@@ -52,17 +51,16 @@ class DegreePlanningProblem(LocalSearchProblem):
         return neighbors
 
     def fitness(self, state: DegreePlan) -> float:
-        # preq, num pts in semester, mando and elective, avg grade
-        miss_preq = state.sum_missing_prerequisites()  # todo: maybe remove
-        exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points,
-                                                                 self.__max_semester_points)
+        w_exceeded_points, w_mandatory_left, w_elective_left, w_avg = 2, 5, 2, 1
+        w_legality = 1
+
+        exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points, self.__max_semester_points)
         mandatory_left = self.__mandatory_points - state.mandatory_points
-        elective_left = (self.__target_points - self.__mandatory_points) - (
-                state.total_points - state.mandatory_points)
+        elective_left = (self.__target_points - self.__mandatory_points) - (state.total_points - state.mandatory_points)
         avg = state.avg_grade
-        # return -miss_preq + avg
-        return avg - 5 * (5 * mandatory_left + 2 * elective_left + exceeded_points)
-        # return avg - (miss_preq + exceeded_points + mandatory_left + elective_left)
+
+        legality_fine = (w_mandatory_left * mandatory_left + w_elective_left * elective_left + w_exceeded_points * exceeded_points)
+        return w_avg * avg - w_legality * legality_fine
 
     def get_upper_bound(self) -> float:
         if self.__upper_bound:

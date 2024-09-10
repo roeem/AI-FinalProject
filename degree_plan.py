@@ -16,11 +16,7 @@ class DegreePlan:
     placed in previous semesters, all courses available fot this degree and more.
     """
 
-    def __init__(self, degree_courses: list[Course]):
-        """
-        :param degree_courses: a frozenset of courses available for this degree
-        """
-        self.__degree_courses = degree_courses
+    def __init__(self):
         self.__mandatory_points = 0
         self.__total_points = 0
         self.__courses_so_far: dict[int, int] = {}
@@ -157,7 +153,7 @@ class DegreePlan:
         return self.__avg_grade
 
     def __copy__(self) -> "DegreePlan":
-        new_plan = DegreePlan(self.__degree_courses)
+        new_plan = DegreePlan()
         new_plan.__mandatory_points = self.__mandatory_points
         new_plan.__total_points = self.__total_points
         new_plan.__semesters = [semester.copy() for semester in self.__semesters]
@@ -174,7 +170,10 @@ class DegreePlan:
         s = ""
         for i, sem in enumerate(self.__semesters):
             t = "A" if i % 2 == 0 else "B"
+            t += f" ({sum(c.points for c in sem)} points)"
+            s += f"----------\n"
             s += f"Semester {t}\n"
+            s += f"----------\n"
             for course in sorted(sem, key=lambda c: c.number):
                 s += str(course) + "\n"
         return pts + m_pts + avg + sems + s

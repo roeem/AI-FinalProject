@@ -58,7 +58,7 @@ def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
             return current
         current = random.choice(best_neighbors)
 
-    print("******* Reached max_iterations ! *******\n" * 100)
+    print("******* Reached max_iterations ! *******\n")
     return current
 
 
@@ -78,7 +78,7 @@ def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], f
             current = neighbor
         elif random.random() < math.e ** (delta / T):
             current = neighbor
-    print("******* Reached max_iterations ! *******\n" * 100)
+    print("******* Reached max_iterations ! *******\n")
     return current
 
 
@@ -168,7 +168,7 @@ def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 
             return best_state  # todo: return the best
         all_neighbors: TsSet = TsSet()
         threads = create_threads(problem, k_neighbors, all_neighbors)
-    print("******* Reached max_iterations ! *******\n" * 100)
+    print("******* Reached max_iterations ! *******\n")
     return best_state
 
 # endregion
