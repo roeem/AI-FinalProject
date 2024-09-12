@@ -7,7 +7,7 @@
             "semester_type": "A",
             "name": "Mechanics and Special relativity",
             "points": 7,
-            "avg_grade": 73.11,
+            "avg_grade": 73,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -16,7 +16,7 @@
             "semester_type": "A",
             "name": "PYTHON PROGRAMMING FOR PHYSICS STUDENTS",
             "points": 4,
-            "avg_grade": 63.41,
+            "avg_grade": 63,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -25,7 +25,7 @@
             "semester_type": "B",
             "name": "PYTHON PROGRAMMING FOR PHYSICS STUDENTS",
             "points": 4,
-            "avg_grade": 65.8,
+            "avg_grade": 66,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -34,7 +34,7 @@
             "semester_type": "B",
             "name": "Mechanics and Special relativity",
             "points": 7,
-            "avg_grade": 65.97,
+            "avg_grade": 66,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -43,7 +43,7 @@
             "semester_type": "B",
             "name": "Electricity and Magnetism",
             "points": 6,
-            "avg_grade": 83.86,
+            "avg_grade": 84,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -60,7 +60,7 @@
             "semester_type": "A",
             "name": "PHYSICS LAB A1",
             "points": 2,
-            "avg_grade": 81.62,
+            "avg_grade": 82,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -69,7 +69,7 @@
             "semester_type": "B",
             "name": "PHYSICS LAB A2",
             "points": 4,
-            "avg_grade": 67.48,
+            "avg_grade": 67,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -83,7 +83,7 @@
             "semester_type": "A",
             "name": "Mathematical Methods I",
             "points": 6,
-            "avg_grade": 60.82,
+            "avg_grade": 61,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -92,7 +92,7 @@
             "semester_type": "A",
             "name": "Linear algebra for engineering and science students 1",
             "points": 4,
-            "avg_grade": 74.49,
+            "avg_grade": 74,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -101,7 +101,7 @@
             "semester_type": "B",
             "name": "Linear algebra for engineering and science students 2",
             "points": 3,
-            "avg_grade": 83.99,
+            "avg_grade": 84,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -114,7 +114,7 @@
             "semester_type": "B",
             "name": "Calculus for Physics students",
             "points": 4,
-            "avg_grade": 82.53,
+            "avg_grade": 83,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -123,7 +123,7 @@
             "semester_type": "B",
             "name": "Mathematical Methods II",
             "points": 6,
-            "avg_grade": 63.69,
+            "avg_grade": 64,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -141,7 +141,7 @@
             "semester_type": "B",
             "name": "GENERAL CHEMISTRY FOR PHYSICS STUDENTS",
             "points": 4,
-            "avg_grade": 89.13,
+            "avg_grade": 89,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -150,7 +150,7 @@
             "semester_type": "B",
             "name": "Thermal Physics",
             "points": 4,
-            "avg_grade": 62.48,
+            "avg_grade": 62,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -168,7 +168,7 @@
             "semester_type": "A",
             "name": "Analytical Mechanics",
             "points": 6,
-            "avg_grade": 82.52,
+            "avg_grade": 83,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -184,7 +184,7 @@
             "semester_type": "A",
             "name": "Waves and Optics",
             "points": 5,
-            "avg_grade": 81.35,
+            "avg_grade": 81,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -207,7 +207,7 @@
             "semester_type": "A",
             "name": "Equations of Mathematical Physics",
             "points": 6,
-            "avg_grade": 63.7,
+            "avg_grade": 64,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -230,7 +230,7 @@
             "semester_type": "B",
             "name": "Quantum Theory I",
             "points": 6,
-            "avg_grade": 62.65,
+            "avg_grade": 63,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -246,7 +246,7 @@
             "semester_type": "A",
             "name": "Physics Lab II-1-Waves, dynamical systems and materials properties",
             "points": 3,
-            "avg_grade": 72.27,
+            "avg_grade": 72,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -266,7 +266,7 @@
             "semester_type": "B",
             "name": "Physics Lab II-2-Waves, dynamical systems and materials properties",
             "points": 3,
-            "avg_grade": 83.78,
+            "avg_grade": 84,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -283,7 +283,7 @@
             "semester_type": "B",
             "name": "Analytical Electrodynamics",
             "points": 5,
-            "avg_grade": 91.49,
+            "avg_grade": 91,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -311,7 +311,7 @@
             "semester_type": "A",
             "name": "PROBABILITY THEORY AND APPLICATIONS",
             "points": 4,
-            "avg_grade": 87.58,
+            "avg_grade": 88,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -325,7 +325,7 @@
             "semester_type": "B",
             "name": "COMPLEX VARIABLES AND APPLICATIONS",
             "points": 4,
-            "avg_grade": 61.67,
+            "avg_grade": 62,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -340,7 +340,7 @@
             "semester_type": "B",
             "name": "Theory of Continua",
             "points": 4,
-            "avg_grade": 64.53,
+            "avg_grade": 65,
             "is_mandatory": false,
             "prerequisites": [
                 [
@@ -361,7 +361,7 @@
             "semester_type": "B",
             "name": "Introduction to Computational Physics",
             "points": 4,
-            "avg_grade": 69.63,
+            "avg_grade": 70,
             "is_mandatory": false,
             "prerequisites": [
                 [
@@ -384,7 +384,7 @@
             "semester_type": "B",
             "name": "Order of Magnitude in Physics Problems",
             "points": 2,
-            "avg_grade": 66.46,
+            "avg_grade": 66,
             "is_mandatory": false,
             "prerequisites": [
                 [
@@ -397,7 +397,7 @@
             "semester_type": "B",
             "name": "Basic Ideas of Modern Physics",
             "points": 2,
-            "avg_grade": 99.52,
+            "avg_grade": 100,
             "is_mandatory": false,
             "prerequisites": null,
             "note": "Not taught this year"
@@ -407,7 +407,7 @@
             "semester_type": "A",
             "name": "Intro. to Statistical Physics",
             "points": 4,
-            "avg_grade": 69.19,
+            "avg_grade": 69,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -425,7 +425,7 @@
             "semester_type": "A",
             "name": "Physics Lab III: Advanced experiments in quantum and modern physics",
             "points": 6,
-            "avg_grade": 83.4,
+            "avg_grade": 83,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -446,7 +446,7 @@
             "semester_type": "B",
             "name": "Physics Lab III: Advanced experiments in quantum and modern physics",
             "points": 6,
-            "avg_grade": 88.29,
+            "avg_grade": 88,
             "is_mandatory": true,
             "prerequisites": [
                 [
@@ -467,7 +467,7 @@
             "semester_type": "A",
             "name": "Quantum Theory II",
             "points": 7,
-            "avg_grade": 86.91,
+            "avg_grade": 87,
             "is_mandatory": true,
             "prerequisites": null
         },
@@ -476,7 +476,7 @@
             "semester_type": "A",
             "name": "Physical processes in astrophysics",
             "points": 2,
-            "avg_grade": 98.66,
+            "avg_grade": 99,
             "is_mandatory": false,
             "prerequisites": null
         },
@@ -485,7 +485,7 @@
             "semester_type": "B",
             "name": "Environmental Physics- The science of climate change",
             "points": 2,
-            "avg_grade": 94.96,
+            "avg_grade": 95,
             "is_mandatory": false,
             "prerequisites": [
                 [
@@ -498,7 +498,7 @@
             "semester_type": "A",
             "name": "Quantum structures in semiconductors",
             "points": 2,
-            "avg_grade": 81.98,
+            "avg_grade": 82,
             "is_mandatory": false,
             "prerequisites": [
                 [
@@ -511,7 +511,7 @@
             "semester_type": "B",
             "name": "Seminar in Quantum Optics",
             "points": 2,
-            "avg_grade": 68.6,
+            "avg_grade": 69,
             "is_mandatory": false,
             "prerequisites": [
                 [
@@ -524,7 +524,7 @@
             "semester_type": "A",
             "name": "Nonlinear Dynamics in Biological Systems",
             "points": 2,
-            "avg_grade": 96.19,
+            "avg_grade": 96,
             "is_mandatory": false,
             "prerequisites": null
         },
@@ -533,7 +533,7 @@
             "semester_type": "B",
             "name": "Introduction to string theory - seminarion",
             "points": 2,
-            "avg_grade": 72.49,
+            "avg_grade": 72,
             "is_mandatory": false,
             "prerequisites": null
         },
@@ -551,7 +551,7 @@
                     76412
                 ]
             ],
-            "avg_grade": 63.13
+            "avg_grade": 63
         },
         {
             "course_number": 77638,
@@ -565,7 +565,7 @@
                     76412
                 ]
             ],
-            "avg_grade": 78.55
+            "avg_grade": 79
         },
         {
             "course_number": 77925,
@@ -578,7 +578,7 @@
                     76412
                 ]
             ],
-            "avg_grade": 88.97
+            "avg_grade": 89
         },
         {
             "course_number": 77501,
@@ -595,7 +595,7 @@
                     77106
                 ]
             ],
-            "avg_grade": 95.38
+            "avg_grade": 95
         },
         {
             "course_number": 77532,
@@ -604,7 +604,7 @@
             "semester_type": "A",
             "is_mandatory": false,
             "prerequisites": null,
-            "avg_grade": 96.12
+            "avg_grade": 96
         },
         {
             "course_number": 77542,
@@ -617,7 +617,7 @@
                     77605
                 ]
             ],
-            "avg_grade": 60.78
+            "avg_grade": 61
         },
         {
             "course_number": 77602,
@@ -634,7 +634,7 @@
                     77605
                 ]
             ],
-            "avg_grade": 94.17
+            "avg_grade": 94
         },
         {
             "course_number": 77603,
@@ -647,7 +647,7 @@
                     77605
                 ]
             ],
-            "avg_grade": 75.61
+            "avg_grade": 76
         },
         {
             "course_number": 77606,
@@ -668,7 +668,7 @@
                     83313
                 ]
             ],
-            "avg_grade": 81.18
+            "avg_grade": 81
         },
         {
             "course_number": 77607,
@@ -684,7 +684,7 @@
                     77313
                 ]
             ],
-            "avg_grade": 65.54
+            "avg_grade": 66
         },
         {
             "course_number": 77609,
@@ -697,7 +697,7 @@
                     77605
                 ]
             ],
-            "avg_grade": 77.26
+            "avg_grade": 77
         },
         {
             "course_number": 77693,
@@ -710,7 +710,7 @@
                     77305
                 ]
             ],
-            "avg_grade": 66.21
+            "avg_grade": 66
         },
         {
             "course_number": 77972,
@@ -719,7 +719,7 @@
             "semester_type": "A",
             "is_mandatory": false,
             "prerequisites": null,
-            "avg_grade": 66.95
+            "avg_grade": 67
         },
         {
             "course_number": 55772,
@@ -728,7 +728,7 @@
             "semester_type": "B",
             "is_mandatory": false,
             "prerequisites": null,
-            "avg_grade": 81.95
+            "avg_grade": 82
         },
         {
             "course_number": 77412,
@@ -737,7 +737,7 @@
             "semester_type": "B",
             "is_mandatory": false,
             "prerequisites": [[77152]],
-            "avg_grade": 86.3
+            "avg_grade": 86
         },
         {
             "course_number": 77874,
@@ -746,7 +746,7 @@
             "semester_type": "A",
             "is_mandatory": false,
             "prerequisites": [],
-            "avg_grade": 88.7
+            "avg_grade": 89
         },
         {
             "course_number": 80519,
@@ -755,7 +755,7 @@
             "semester_type": "A",
             "is_mandatory": false,
             "prerequisites": [[80132, 80142], [80415]],
-            "avg_grade": 92.5
+            "avg_grade": 93
         }
     ]
 }

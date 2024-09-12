@@ -1,14 +1,10 @@
-"""
-In local_search.py, you will implement generic search algorithms
-"""
 import math
 import random
 from threading import Thread
 from typing import Callable, Any
 from abc import ABC
+from local_search.thread_safe_set import TsSet
 import numpy as np
-
-from thread_safe_set import TsSet
 
 
 class LocalSearchProblem(ABC):
@@ -129,12 +125,12 @@ def sample_k_neighbors(problem: LocalSearchProblem, all_neighbors: TsSet, k: int
 
 def stop_condition(problem: LocalSearchProblem, state) -> bool:
     ############ for Roee ###############
-    from degree_plan import DegreePlan
-    from local_degree_planning_problem import DegreePlanningProblem
-    if isinstance(problem, DegreePlanningProblem):
-        problem: DegreePlanningProblem = problem
-    if isinstance(state, DegreePlan):
-        state: DegreePlan = state
+    from local_search.local_degree_plan import LocalDegreePlan
+    from local_degree_planning_problem import LocalDegreePlanningProblem
+    if isinstance(problem, LocalDegreePlanningProblem):
+        problem: LocalDegreePlanningProblem = problem
+    if isinstance(state, LocalDegreePlan):
+        state: LocalDegreePlan = state
     #####################################
 
     eps = 0.5  # todo: check this

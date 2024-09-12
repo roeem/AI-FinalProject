@@ -8,7 +8,7 @@ class Semester:
     B = "B"
 
 
-class DegreePlan:
+class LocalDegreePlan:
     """
     This class represent a Degree Plan.
     This class is immutable and can be used as state in search problem.
@@ -23,7 +23,7 @@ class DegreePlan:
         self.__semesters: list[set[Course]] = []
         self.__avg_grade = 0
 
-    def add_course(self, course: Course, semester: int) -> "DegreePlan":
+    def add_course(self, course: Course, semester: int) -> "LocalDegreePlan":
         semester_type = Semester.A if semester % 2 == 0 else Semester.B
         if (len(self.__semesters) < semester or semester < 0 or self.took_course_number(course.number) or
                 semester_type != course.semester_type):
@@ -44,7 +44,7 @@ class DegreePlan:
                 new_degree_plan.__total_points)
         return new_degree_plan
 
-    def remove_course(self, course: Course) -> "DegreePlan":
+    def remove_course(self, course: Course) -> "LocalDegreePlan":
         if not self.took_course(course):
             raise ValueError("Course not taken yet.")
 
@@ -81,7 +81,8 @@ class DegreePlan:
         return course.number in self.__courses_so_far.keys() and course in self.__semesters[
             self.__courses_so_far[course.number]]
 
-    def possible_semesters_to_course(self, course: Course, max_semester_points: int, max_sem_num: int) -> list[int]:
+    def possible_semesters_to_course(self, course: Course, max_semester_points: int, max_sem_num: int) -> \
+            list[int]:
         if self.took_course_number(course.number):
             return []
 
@@ -113,16 +114,11 @@ class DegreePlan:
 
     def can_remove_course(self, course_to_remove) -> bool:
         next_sem = self.__courses_so_far[course_to_remove.number] + 1
-        # TODO SLAP ROEE
-        taken_courses_nums = set()
-        for i in range(next_sem):
-            taken_courses_nums |= {c.number for c in self.__semesters[i]}
-        taken_courses2 = reduce(lambda acc, i: acc | {c.number for c in self.__semesters[i]}, range(next_sem),
-                                set())
-        assert taken_courses_nums == taken_courses2
+        taken_courses_nums = reduce(lambda acc, i: acc | {c.number for c in self.__semesters[i]},
+                                    range(next_sem), set())
         taken_courses_nums -= {course_to_remove.number}
-        for i in range(next_sem, len(self.__semesters)):
-            for course in self.__semesters[i]:
+        for j in range(next_sem, len(self.__semesters)):
+            for course in self.__semesters[j]:
                 if not course.can_take_this_course(taken_courses_nums):
                     return False
 
@@ -159,8 +155,8 @@ class DegreePlan:
     def avg_grade(self) -> float:
         return self.__avg_grade
 
-    def __copy__(self) -> "DegreePlan":
-        new_plan = DegreePlan()
+    def __copy__(self) -> "LocalDegreePlan":
+        new_plan = LocalDegreePlan()
         new_plan.__mandatory_points = self.__mandatory_points
         new_plan.__total_points = self.__total_points
         new_plan.__semesters = [semester.copy() for semester in self.__semesters]

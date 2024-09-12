@@ -75,14 +75,14 @@ class GUI:
         ttk.Label(frame, text=f"Average Grade: {degree_plan.avg_grade:.2f}", font=bold_font).grid(row=0, column=2,
                                                                                                   padx=10, pady=5,
                                                                                                   sticky="w")
-        ttk.Label(frame, text=f"Semesters: {len(degree_plan._DegreePlan__semesters)}", font=bold_font).grid(row=0,
+        ttk.Label(frame, text=f"Semesters: {len(degree_plan._LocalDegreePlan__semesters)}", font=bold_font).grid(row=0,
                                                                                                             column=3,
                                                                                                             padx=10,
                                                                                                             pady=5,
                                                                                                             sticky="w")
 
     def populate_table(self, degree_plan):
-        for i, semester in enumerate(degree_plan._DegreePlan__semesters):
+        for i, semester in enumerate(degree_plan._LocalDegreePlan__semesters):
             semester_type = "A" if i % 2 == 0 else "B"
             for course in sorted(semester, key=lambda c: c.number):
                 # Insert a row for each course, including the semester number (A or B)
@@ -119,7 +119,7 @@ def run_gui(degree_plan):
     gui = GUI(root, degree_plan)
     root.mainloop()
 
-# Assuming you have a DegreePlan object ready, for example:
-# degree_plan = DegreePlan([...])
+# Assuming you have a LocalDegreePlan object ready, for example:
+# degree_plan = LocalDegreePlan([...])
 
 # run_gui(degree_plan)

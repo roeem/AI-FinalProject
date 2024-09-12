@@ -1,11 +1,11 @@
 import random
 
 from course import Course
-from degree_plan import DegreePlan
-from local_search import LocalSearchProblem
+from local_search.local_degree_plan import LocalDegreePlan
+from local_search.local_search_ import LocalSearchProblem
 
 
-class DegreePlanningProblem(LocalSearchProblem):
+class LocalDegreePlanningProblem(LocalSearchProblem):
 
     def __init__(self, degree_courses: list[Course], mandatory_points: int,
                  target_points: int, min_semester_points, max_semester_points):
@@ -27,14 +27,16 @@ class DegreePlanningProblem(LocalSearchProblem):
     def mandatory_points(self) -> int:
         return self.__mandatory_points
 
-    def get_initial_state(self) -> DegreePlan:
-        init_state = DegreePlan()
+    def get_initial_state(self) -> LocalDegreePlan:
+        init_state = LocalDegreePlan()
         random_num_of_points = random.randint(1, self.__target_points)
         max_iter = 10000
         courses = self.__degree_courses.copy()
         while max_iter > 0 and init_state.total_points < random_num_of_points:
             random_course: Course = random.choice(courses)
-            possible_semesters = init_state.possible_semesters_to_course(random_course, self.__max_semester_points, self.__max_semester_num)
+            possible_semesters = init_state.possible_semesters_to_course(random_course,
+                                                                         self.__max_semester_points,
+                                                                         self.__max_semester_num)
             if possible_semesters:
                 random_semester = random.choice(possible_semesters)
                 init_state = init_state.add_course(random_course, random_semester)
@@ -43,7 +45,7 @@ class DegreePlanningProblem(LocalSearchProblem):
             max_iter -= 1
         return init_state
 
-    def get_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
+    def get_neighbors(self, state: LocalDegreePlan) -> list[LocalDegreePlan]:
         self.expanded += 1
         neighbors = self._single_step_neighbors(state)
         neighbors.extend(self._double_step_neighbors(state))
@@ -51,22 +53,26 @@ class DegreePlanningProblem(LocalSearchProblem):
         neighbors = list(set(neighbors))
         return neighbors
 
-    def fitness(self, state: DegreePlan) -> float:
+    def fitness(self, state: LocalDegreePlan) -> float:
         w_exceeded_points, w_mandatory_left, w_elective_left, w_avg = 3, 8, 2, 5
         w_legality = 1
 
-        exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points, self.__max_semester_points)
+        exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points,
+                                                                 self.__max_semester_points)
         mandatory_left = self.__mandatory_points - state.mandatory_points
-        elective_left = (self.__target_points - self.__mandatory_points) - (state.total_points - state.mandatory_points)
+        elective_left = (self.__target_points - self.__mandatory_points) - (
+                state.total_points - state.mandatory_points)
         avg = state.avg_grade
 
-        legality_fine = (w_mandatory_left * mandatory_left + w_elective_left * elective_left + w_exceeded_points * exceeded_points)
+        legality_fine = (
+                w_mandatory_left * mandatory_left + w_elective_left * elective_left + w_exceeded_points *
+                exceeded_points)
         return w_avg * avg - w_legality * legality_fine
 
     def get_upper_bound(self) -> float:
         if self.__upper_bound:
             return self.__upper_bound
-        mandatory_courses = {}
+        mandatory_courses: dict[int, Course] = {}
         for course in self.__degree_courses:
             if course.is_mandatory:
                 if course.number in mandatory_courses:
@@ -80,7 +86,7 @@ class DegreePlanningProblem(LocalSearchProblem):
         sum_mandatory_points = sum([course.points for course in mandatory_courses.values()])
         # TODO: pass mandatory_points as a parameter and check legality
 
-        elective_courses = {}
+        elective_courses: dict[int, Course] = {}
         for course in self.__degree_courses:
             if not course.is_mandatory:
                 if course.number in elective_courses:
@@ -90,7 +96,7 @@ class DegreePlanningProblem(LocalSearchProblem):
                     elective_courses[course.number] = course
 
         # Sort elective courses by avg grade in descending order
-        elective_courses = sorted(elective_courses.values(), key=lambda x: x.avg_grade)
+        elective_courses: list[Course] = sorted(elective_courses.values(), key=lambda x: x.avg_grade)
 
         sum_elective_points, weighted_sum_elective = 0, 0
         elective_points_left = self.__target_points - sum_mandatory_points
@@ -109,7 +115,7 @@ class DegreePlanningProblem(LocalSearchProblem):
 
     # region ########### HELPERS ###########
 
-    def _single_step_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
+    def _single_step_neighbors(self, state: LocalDegreePlan) -> list[LocalDegreePlan]:
         neighbors = []
         removable_courses = state.possible_courses_to_remove()
         for c in self.__degree_courses:
@@ -117,11 +123,12 @@ class DegreePlanningProblem(LocalSearchProblem):
                 neighbors.append(state.remove_course(c))
             elif not state.took_course_number(
                     c.number) and state.total_points + c.points <= self.__target_points:
-                available_semesters = state.possible_semesters_to_course(c, self.__max_semester_points, self.__max_semester_num)
+                available_semesters = state.possible_semesters_to_course(c, self.__max_semester_points,
+                                                                         self.__max_semester_num)
                 neighbors.extend([state.add_course(c, sem) for sem in available_semesters])
         return neighbors
 
-    def _double_step_neighbors(self, state: DegreePlan) -> list[DegreePlan]:
+    def _double_step_neighbors(self, state: LocalDegreePlan) -> list[LocalDegreePlan]:
         neighbors = []
         removable_courses = state.possible_courses_to_remove()
         for c1 in removable_courses:
@@ -129,14 +136,16 @@ class DegreePlanningProblem(LocalSearchProblem):
                 if c1 == c2:
                     continue
                 # TODO: check efficiency
-                new_state: DegreePlan = state.remove_course(c1)
+                new_state: LocalDegreePlan = state.remove_course(c1)
                 if c2 in removable_courses:
-                    new_state: DegreePlan = new_state.remove_course(c2)
+                    new_state: LocalDegreePlan = new_state.remove_course(c2)
                 if new_state.took_course_number(c2.number):
                     continue
 
                 if new_state.total_points + c2.points <= self.__target_points:
-                    available_semesters = new_state.possible_semesters_to_course(c2, self.__max_semester_points, self.__max_semester_num)
+                    available_semesters = new_state.possible_semesters_to_course(c2,
+                                                                                 self.__max_semester_points,
+                                                                                 self.__max_semester_num)
                     neighbors.extend([new_state.add_course(c2, sem) for sem in available_semesters])
         return neighbors
 
