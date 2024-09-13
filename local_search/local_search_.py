@@ -3,7 +3,7 @@ import random
 from threading import Thread
 from typing import Callable, Any
 from abc import ABC
-from local_search.thread_safe_set import TsSet
+from local_search.thread_safe_set import TSS
 import numpy as np
 
 
@@ -78,11 +78,11 @@ def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], f
     return current
 
 
-def exp_cool_schedule(t: int, T0=10000, alpha=0.9) -> float:
+def exp_cool_schedule(t: int, T0=10000, alpha=0.95) -> float:
     return T0 * (alpha ** t)
 
 
-def linear_cool_schedule(t: int, T0=1000, rate=1) -> float:
+def linear_cool_schedule(t: int, T0=10000, rate=1) -> float:
     # If we choose rate = T0/max_iter- we'll use all the iterations.
     return T0 - t * rate
 
@@ -94,7 +94,7 @@ def log_cool_schedule(t: int, T0=100, beta=5) -> float:
 # endregion
 
 # region Stochastic Beam Search - specific to DegreePlanningProblem
-def single_beam_search(problem: LocalSearchProblem, state, all_neighbors: TsSet):
+def single_beam_search(problem: LocalSearchProblem, state, all_neighbors: TSS):
     for neighbor in problem.get_neighbors(state):
         all_neighbors.add(neighbor)
 
@@ -111,7 +111,7 @@ def softmax(scores: list[float], T: float) -> np.ndarray[float]:
     return exp_scores / exp_scores.sum()
 
 
-def sample_k_neighbors(problem: LocalSearchProblem, all_neighbors: TsSet, k: int, T: float) -> set:
+def sample_k_neighbors(problem: LocalSearchProblem, all_neighbors: TSS, k: int, T: float) -> set:
     """Sample k neighbors based on their scores using softmax probabilities."""
     all_neighbors = list(all_neighbors)
     scores = [problem.fitness(neighbor) for neighbor in all_neighbors]
@@ -124,45 +124,46 @@ def sample_k_neighbors(problem: LocalSearchProblem, all_neighbors: TsSet, k: int
 
 
 def stop_condition(problem: LocalSearchProblem, state) -> bool:
-    ############ for Roee ###############
-    from local_search.local_degree_plan import LocalDegreePlan
-    from local_degree_planning_problem import LocalDegreePlanningProblem
-    if isinstance(problem, LocalDegreePlanningProblem):
-        problem: LocalDegreePlanningProblem = problem
-    if isinstance(state, LocalDegreePlan):
-        state: LocalDegreePlan = state
-    #####################################
+    return False
+    # ############ for Roee ###############
+    # from local_search.local_degree_plan import LocalDegreePlan
+    # from local_degree_planning_problem import LocalDegreePlanningProblem
+    # if isinstance(problem, LocalDegreePlanningProblem):
+    #     problem: LocalDegreePlanningProblem = problem
+    # if isinstance(state, LocalDegreePlan):
+    #     state: LocalDegreePlan = state
+    # #####################################
+    #
+    # eps = 0.5  # todo: check this
+    # return (state.total_points == problem.target_points and
+    #         state.mandatory_points == problem.mandatory_points and
+    #         problem.get_upper_bound() - state.avg_grade <= eps)
 
-    eps = 0.5  # todo: check this
-    return (state.total_points == problem.target_points and
-            state.mandatory_points == problem.mandatory_points and
-            problem.get_upper_bound() - state.avg_grade <= eps)
 
-
-def create_threads(problem: LocalSearchProblem, states: set, all_neighbors: TsSet) -> list[Thread]:
+def create_threads(problem: LocalSearchProblem, states: set, all_neighbors: TSS) -> list[Thread]:
     threads = []
     for state in states:
         thread = Thread(target=single_beam_search, args=(problem, state, all_neighbors))
-        thread.start()
         threads.append(thread)
+        thread.start()
     return threads
 
 
 def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 1, max_iter=10 ** 5):
     init_states = {problem.get_initial_state() for _ in range(k)}
     best_state = max(init_states, key=problem.fitness)
-    all_neighbors: TsSet = TsSet()
+    all_neighbors: TSS = TSS()
     # first iteration
     threads = create_threads(problem, init_states, all_neighbors)
 
     for _ in range(max_iter):
         wait_for_all_threads(threads)
         k_neighbors = sample_k_neighbors(problem, all_neighbors, k, T)
-        cur_best_state = max(k_neighbors, key=problem.fitness)
-        best_state = max(best_state, cur_best_state, key=problem.fitness)
+        best_state = max(k_neighbors, key=problem.fitness)
+        # best_state = max(best_state, cur_best_state, key=problem.fitness)
         if stop_condition(problem, best_state):
             return best_state  # todo: return the best
-        all_neighbors: TsSet = TsSet()
+        all_neighbors: TSS = TSS()
         threads = create_threads(problem, k_neighbors, all_neighbors)
     print("******* Reached max_iterations ! *******\n")
     return best_state

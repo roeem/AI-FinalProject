@@ -2,7 +2,7 @@ from threading import Lock
 from typing import Any, Iterator
 
 
-class TsSet:
+class TSS:
     def __init__(self):
         self.__set = set()
         self.__lock = Lock()

@@ -13,12 +13,13 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
         self.__degree_courses = degree_courses
         self.__target_points = target_points
         self.__mandatory_points = mandatory_points
+        self.__elective_points = target_points - mandatory_points
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
         self.__max_semester_num = target_points // min_semester_points
         self.__upper_bound = None
         self.expanded = 0
-
+        self.__MINIMUM_INIT_POINTS = self.__target_points//3
     @property
     def target_points(self) -> int:
         return self.__target_points
@@ -29,18 +30,21 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
 
     def get_initial_state(self) -> LocalDegreePlan:
         init_state = LocalDegreePlan()
-        random_num_of_points = random.randint(1, self.__target_points)
+        random_num_of_points = random.randint(self.__MINIMUM_INIT_POINTS, self.__target_points)
         max_iter = 10000
         courses = self.__degree_courses.copy()
         while max_iter > 0 and init_state.total_points < random_num_of_points:
             random_course: Course = random.choice(courses)
-            possible_semesters = init_state.possible_semesters_to_course(random_course,
-                                                                         self.__max_semester_points,
-                                                                         self.__max_semester_num)
-            if possible_semesters:
-                random_semester = random.choice(possible_semesters)
-                init_state = init_state.add_course(random_course, random_semester)
-                courses.remove(random_course)
+            if (init_state.total_points - init_state.mandatory_points) + random_course.points * (
+            not random_course.is_mandatory) <= self.__elective_points:
+                possible_semesters = init_state.possible_semesters_to_course(random_course,
+                                                                             self.__min_semester_points,
+                                                                             self.__max_semester_points,
+                                                                             self.__max_semester_num)
+                if possible_semesters:
+                    random_semester = random.choice(possible_semesters)
+                    init_state = init_state.add_course(random_course, random_semester)
+                    courses.remove(random_course)
 
             max_iter -= 1
         return init_state
@@ -53,21 +57,26 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
         neighbors = list(set(neighbors))
         return neighbors
 
+    # def fitness(self, state: LocalDegreePlan) -> float:
+    #     w_exceeded_points, w_mandatory_left, w_elective_left, w_avg = 3, 8, 2, 5
+    #     w_legality = 1
+    #
+    #     exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points,
+    #                                                              self.__max_semester_points)
+    #     mandatory_left = self.__mandatory_points - state.mandatory_points
+    #     elective_left = (self.__target_points - self.__mandatory_points) - (
+    #             state.total_points - state.mandatory_points)
+    #     avg = state.avg_grade
+    #
+    #     legality_fine = (w_mandatory_left * mandatory_left + w_elective_left *
+    #                      elective_left + w_exceeded_points * exceeded_points)
+    #     return w_avg * avg - w_legality * legality_fine
+
     def fitness(self, state: LocalDegreePlan) -> float:
-        w_exceeded_points, w_mandatory_left, w_elective_left, w_avg = 3, 8, 2, 5
-        w_legality = 1
-
-        exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points,
-                                                                 self.__max_semester_points)
+        avg = (state.avg_grade * state.total_points) / self.__target_points
         mandatory_left = self.__mandatory_points - state.mandatory_points
-        elective_left = (self.__target_points - self.__mandatory_points) - (
-                state.total_points - state.mandatory_points)
-        avg = state.avg_grade
-
-        legality_fine = (
-                w_mandatory_left * mandatory_left + w_elective_left * elective_left + w_exceeded_points *
-                exceeded_points)
-        return w_avg * avg - w_legality * legality_fine
+        exceeded_elective = abs(state.total_points - state.mandatory_points - self.__elective_points)
+        return avg
 
     def get_upper_bound(self) -> float:
         if self.__upper_bound:
@@ -118,12 +127,14 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
     def _single_step_neighbors(self, state: LocalDegreePlan) -> list[LocalDegreePlan]:
         neighbors = []
         removable_courses = state.possible_courses_to_remove()
+        elective_pts = state.total_points - state.mandatory_points
         for c in self.__degree_courses:
             if c in removable_courses:
                 neighbors.append(state.remove_course(c))
-            elif not state.took_course_number(
-                    c.number) and state.total_points + c.points <= self.__target_points:
-                available_semesters = state.possible_semesters_to_course(c, self.__max_semester_points,
+            elif (not state.took_course_number(c.number) and
+                  elective_pts + c.points * (not c.is_mandatory) <= self.__elective_points):
+                available_semesters = state.possible_semesters_to_course(c, self.__min_semester_points,
+                                                                         self.__max_semester_points,
                                                                          self.__max_semester_num)
                 neighbors.extend([state.add_course(c, sem) for sem in available_semesters])
         return neighbors
@@ -142,8 +153,10 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
                 if new_state.took_course_number(c2.number):
                     continue
 
-                if new_state.total_points + c2.points <= self.__target_points:
+                if (new_state.total_points - new_state.mandatory_points) + c2.points * (
+                        not c2.is_mandatory) <= self.__elective_points:
                     available_semesters = new_state.possible_semesters_to_course(c2,
+                                                                                 self.__min_semester_points,
                                                                                  self.__max_semester_points,
                                                                                  self.__max_semester_num)
                     neighbors.extend([new_state.add_course(c2, sem) for sem in available_semesters])

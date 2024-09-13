@@ -96,13 +96,13 @@ def run_local_search_main(algorithm: str, degree_courses: list[Course], mandator
     elif algorithm == 'sa_log':
         solution: LocalDegreePlan = simulated_annealing(dpp, log_cool_schedule)
     elif algorithm == 'beam':
-        solution: LocalDegreePlan = stochastic_beam_search(dpp, k=10, max_iter=10)
+        solution: LocalDegreePlan = stochastic_beam_search(dpp, k=50, max_iter=1000)
     else:
         raise ValueError('Invalid algorithm type')
 
     dec = "###############################"
     print(f"{dec}DEGREE PLAN:{dec}")
-    run_gui(solution)
+    # run_gui(solution)
     print(f"Expanded: {dpp.expanded}\n{solution}")
 
 
@@ -120,8 +120,22 @@ def main():
     else:
         run_search = run_local_search_main
 
+    # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
+
     run_search(algorithm, degree_courses, mandatory_points, target_points,
                min_semester_points, max_semester_points)
+
+#TODO REMOVE!!!!!!!!!!!
+def tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points):
+    ldpp = LocalDegreePlanningProblem(degree_courses, mandatory_points, target_points, min_semester_points,
+                                      max_semester_points)
+    states = []
+    for _ in range(10):
+        states.append(ldpp.get_initial_state())
+    states.sort(key=lambda x: ldpp.fitness(x))
+    for s in states:
+        print(f"Fitness Score= {ldpp.fitness(s)}\n The Degree Plan:\n{s}\n")
+        print("\n=============================================================\n")
 
 
 if __name__ == '__main__':
