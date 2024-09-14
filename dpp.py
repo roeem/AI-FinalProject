@@ -1,4 +1,5 @@
 import sys
+from enum import Enum
 
 from course import Course
 from graph_search.degree_planning_problem import DegreePlanningProblem, max_avg_heuristic
@@ -8,6 +9,13 @@ from gui import run_gui
 from input_loader import load_degree_plan
 from local_search.local_degree_planning_problem import LocalDegreePlanningProblem
 from local_search.local_search_ import *
+
+
+class DegreeLoad(Enum):
+    LOW = 10, 20
+    MEDIUM = 15, 25
+    HIGH = 20, 30
+
 
 
 def timer(func):
@@ -110,8 +118,7 @@ def run_local_search_main(algorithm: str, degree_courses: list[Course], mandator
 def main():
     algorithm = sys.argv[1]
     input_file_path = "input_files/" + sys.argv[2]
-    min_semester_points = int(sys.argv[3])
-    max_semester_points = int(sys.argv[4])
+    min_semester_points, max_semester_points = DegreeLoad[(sys.argv[3]).upper()].value
 
     mandatory_points, target_points, degree_courses = load_degree_plan(input_file_path)
 

@@ -59,7 +59,7 @@ class DegreePlanningProblem(SearchProblem):
         cost of expanding to that successor
         """
         self.expanded = self.expanded + 1
-        if self.expanded % 10000 == 0:
+        if self.expanded % 500000 == 0:
             print(f"Expanded: {self.expanded}")
 
         successors = []
