@@ -9,6 +9,7 @@ from gui import run_gui
 from input_loader import load_degree_plan
 from local_search.local_degree_planning_problem import LocalDegreePlanningProblem
 from local_search.local_search_ import *
+import time
 
 
 class DegreeLoad(Enum):
@@ -17,10 +18,18 @@ class DegreeLoad(Enum):
     HIGH = 20, 30
 
 
+def is_valid_degree_plan(degree_plan: LocalDegreePlan, degree_planning_params):
+    # TODO REMOVE BEFORE SUBMISSION
+    if degree_plan.total_points != degree_planning_params['target_points']:
+        return False
+    if degree_plan.mandatory_points != degree_planning_params['mandatory_points']:
+        return False
+
+    return True
+
 
 def timer(func):
     def wrapper(*args, **kwargs):
-        import time
         start = time.time()
         result = func(*args, **kwargs)
         print("Time: %s seconds" % (time.time() - start))
@@ -48,16 +57,7 @@ def num_of_semesters(courses: list[Course]) -> int:
     return count
 
 
-def run_graph_search_main(algorithm: str, degree_courses: list[Course], mandatory_points: int,
-                          target_points: int, min_semester_points: int, max_semester_points: int):
-    degree_planning_search_params = {
-        'degree_courses': degree_courses,
-        'mandatory_points': mandatory_points,
-        'target_points': target_points,
-        'min_semester_points': min_semester_points,
-        'max_semester_points': max_semester_points
-    }
-
+def run_graph_search_main(algorithm: str, degree_planning_search_params: dict):
     degree_planning_search = DegreePlanningProblem(**degree_planning_search_params)
 
     if algorithm == 'bfs':
@@ -75,8 +75,8 @@ def run_graph_search_main(algorithm: str, degree_courses: list[Course], mandator
     avg, points = calculate_avg(solution)
     print(f"num of courses: {len(solution)}")
     print(f"num of semesters: {num_of_semesters(solution)}")
-    print(f"Target points: {target_points}")
-    print(f"Mandatory points: {mandatory_points}")
+    print(f"Target points: {degree_planning_search_params['target_points']}")
+    print(f"Mandatory points: {degree_planning_search_params['mandatory_points']}")
     print(f"Average: {avg}")
     print(f"Points: {points}")
     print(f"Expanded: {degree_planning_search.expanded}")
@@ -84,15 +84,7 @@ def run_graph_search_main(algorithm: str, degree_courses: list[Course], mandator
         print(course)
 
 
-def run_local_search_main(algorithm: str, degree_courses: list[Course], mandatory_points: int,
-                          target_points: int, min_semester_points: int, max_semester_points: int):
-    degree_planning_search_params = {
-        'degree_courses': degree_courses,
-        'mandatory_points': mandatory_points,
-        'target_points': target_points,
-        'min_semester_points': min_semester_points,
-        'max_semester_points': max_semester_points
-    }
+def run_local_search_main(algorithm: str, degree_planning_search_params: dict):
     dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
 
     if algorithm == 'hill':
@@ -122,6 +114,14 @@ def main():
 
     mandatory_points, target_points, degree_courses = load_degree_plan(input_file_path)
 
+    degree_planning_search_params = {
+        'degree_courses': degree_courses,
+        'mandatory_points': mandatory_points,
+        'target_points': target_points,
+        'min_semester_points': min_semester_points,
+        'max_semester_points': max_semester_points
+    }
+
     if algorithm in ["dfs", "bfs", "ucs", "astar"]:
         run_search = run_graph_search_main
     else:
@@ -129,10 +129,11 @@ def main():
 
     # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
 
-    run_search(algorithm, degree_courses, mandatory_points, target_points,
-               min_semester_points, max_semester_points)
+    # run_search(algorithm, degree_planning_search_params)
+    print(test_local(degree_planning_search_params, hill_climbing, 100))
 
-#TODO REMOVE!!!!!!!!!!!
+
+# TODO REMOVE!!!!!!!!!!!
 def tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points):
     ldpp = LocalDegreePlanningProblem(degree_courses, mandatory_points, target_points, min_semester_points,
                                       max_semester_points)
@@ -143,6 +144,29 @@ def tests(degree_courses, mandatory_points, max_semester_points, min_semester_po
     for s in states:
         print(f"Fitness Score= {ldpp.fitness(s)}\n The Degree Plan:\n{s}\n")
         print("\n=============================================================\n")
+
+
+def test_local(degree_planning_search_params, algorithm, number_of_runs):
+    # TODO: remove before submission
+    runs = []
+    expanded = 0
+    for _ in range(number_of_runs):
+        dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
+        start_time = time.time()
+        solution: LocalDegreePlan = algorithm(dpp)
+        total_time = time.time() - start_time
+        runs.append((solution, total_time))
+        expanded += dpp.expanded
+
+    avg_expanded = expanded / number_of_runs
+    legal_runs_avg = [run[0].avg_grade for run in runs if is_valid_degree_plan(run[0], degree_planning_search_params)]
+    avg_avg_grade = sum(legal_runs_avg) / len(legal_runs_avg)
+    legal_ratio = len(legal_runs_avg) / number_of_runs
+
+    print(f"Average Average Grade: {avg_avg_grade}")
+    print(f"Legal Ratio: {legal_ratio}")
+    print(f"Average Expanded: {avg_expanded}")
+    return avg_avg_grade, legal_ratio
 
 
 if __name__ == '__main__':
