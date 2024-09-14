@@ -17,9 +17,9 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
         self.__min_semester_points = min_semester_points
         self.__max_semester_points = max_semester_points
         self.__max_semester_num = target_points // min_semester_points
-        self.__upper_bound = None
         self.expanded = 0
-        self.__MINIMUM_INIT_POINTS = self.__target_points//3
+        self.__MINIMUM_INIT_POINTS = self.__target_points // 3
+
     @property
     def target_points(self) -> int:
         return self.__target_points
@@ -36,7 +36,7 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
         while max_iter > 0 and init_state.total_points < random_num_of_points:
             random_course: Course = random.choice(courses)
             if (init_state.total_points - init_state.mandatory_points) + random_course.points * (
-            not random_course.is_mandatory) <= self.__elective_points:
+                    not random_course.is_mandatory) <= self.__elective_points:
                 possible_semesters = init_state.possible_semesters_to_course(random_course,
                                                                              self.__min_semester_points,
                                                                              self.__max_semester_points,
@@ -77,50 +77,6 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
         mandatory_left = self.__mandatory_points - state.mandatory_points
         exceeded_elective = abs(state.total_points - state.mandatory_points - self.__elective_points)
         return avg
-
-    def get_upper_bound(self) -> float:
-        if self.__upper_bound:
-            return self.__upper_bound
-        mandatory_courses: dict[int, Course] = {}
-        for course in self.__degree_courses:
-            if course.is_mandatory:
-                if course.number in mandatory_courses:
-                    max_option = max([mandatory_courses[course.number], course], key=lambda x: x.avg_grade)
-                    mandatory_courses[course.number] = max_option
-                else:
-                    mandatory_courses[course.number] = course
-
-        weighted_sum_mandatory = sum(
-            [course.avg_grade * course.points for course in mandatory_courses.values()])
-        sum_mandatory_points = sum([course.points for course in mandatory_courses.values()])
-        # TODO: pass mandatory_points as a parameter and check legality
-
-        elective_courses: dict[int, Course] = {}
-        for course in self.__degree_courses:
-            if not course.is_mandatory:
-                if course.number in elective_courses:
-                    max_option = max([elective_courses[course.number], course], key=lambda x: x.avg_grade)
-                    elective_courses[course.number] = max_option
-                else:
-                    elective_courses[course.number] = course
-
-        # Sort elective courses by avg grade in descending order
-        elective_courses: list[Course] = sorted(elective_courses.values(), key=lambda x: x.avg_grade)
-
-        sum_elective_points, weighted_sum_elective = 0, 0
-        elective_points_left = self.__target_points - sum_mandatory_points
-
-        course = elective_courses[-1]
-        while sum_elective_points + elective_courses[-1].points <= elective_points_left:
-            course = elective_courses.pop()
-            sum_elective_points += course.points
-            weighted_sum_elective += course.avg_grade * course.points
-
-        weighted_sum_elective += course.avg_grade * (elective_points_left - sum_elective_points)
-        total_average = (weighted_sum_mandatory + weighted_sum_elective) / self.__target_points
-        assert total_average <= 100
-        self.__upper_bound = total_average
-        return self.__upper_bound
 
     # region ########### HELPERS ###########
 

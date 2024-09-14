@@ -96,7 +96,7 @@ def run_local_search_main(algorithm: str, degree_courses: list[Course], mandator
     elif algorithm == 'sa_log':
         solution: LocalDegreePlan = simulated_annealing(dpp, log_cool_schedule)
     elif algorithm == 'beam':
-        solution: LocalDegreePlan = stochastic_beam_search(dpp, k=50, max_iter=1000)
+        solution: LocalDegreePlan = stochastic_beam_search(dpp, k=50)
     else:
         raise ValueError('Invalid algorithm type')
 

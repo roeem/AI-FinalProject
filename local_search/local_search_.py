@@ -1,3 +1,4 @@
+import collections
 import math
 import random
 from threading import Thread
@@ -62,7 +63,7 @@ def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
 
 # region Simulated Annealing
 def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], float], max_iter=10 ** 5,
-                        eps=1e-10):
+                        eps=1e-15):
     current = problem.get_initial_state()
     for t in range(max_iter):
         T = schedule(t)
@@ -78,7 +79,7 @@ def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], f
     return current
 
 
-def exp_cool_schedule(t: int, T0=10000, alpha=0.95) -> float:
+def exp_cool_schedule(t: int, T0=10000, alpha=0.99) -> float:
     return T0 * (alpha ** t)
 
 
@@ -99,16 +100,26 @@ def single_beam_search(problem: LocalSearchProblem, state, all_neighbors: TSS):
         all_neighbors.add(neighbor)
 
 
-def wait_for_all_threads(threads: list[Thread]):
-    for thread in threads:
-        thread.join()
-
-
-def softmax(scores: list[float], T: float) -> np.ndarray[float]:
-    """Compute softmax probabilities from scores with temperature scaling."""
-    scores = np.array(scores) / T
-    exp_scores = np.exp(scores - np.max(scores))  # Numerical stability TODO: check the "- np.max(scores)"
-    return exp_scores / exp_scores.sum()
+def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 1, max_iter=10 ** 5):
+    init_states = {problem.get_initial_state() for _ in range(k)}
+    best_state = max(init_states, key=problem.fitness)
+    all_neighbors: TSS = TSS()
+    # first iteration
+    threads = create_threads(problem, init_states, all_neighbors)
+    # we want to keep the results from last l iters
+    last_best: collections.deque[float] = collections.deque(maxlen=50)
+    for _ in range(max_iter):
+        wait_for_all_threads(threads)
+        k_neighbors = sample_k_neighbors(problem, all_neighbors, k, T)
+        best_state = max(k_neighbors, key=problem.fitness)
+        last_best.append(problem.fitness(best_state))
+        # best_state = max(best_state, cur_best_state, key=problem.fitness)
+        if stop_condition(last_best):
+            return best_state  # todo: return the best
+        all_neighbors: TSS = TSS()
+        threads = create_threads(problem, k_neighbors, all_neighbors)
+    print("******* Reached max_iterations ! *******\n")
+    return best_state
 
 
 def sample_k_neighbors(problem: LocalSearchProblem, all_neighbors: TSS, k: int, T: float) -> set:
@@ -123,21 +134,23 @@ def sample_k_neighbors(problem: LocalSearchProblem, all_neighbors: TSS, k: int, 
     return {all_neighbors[i] for i in chosen_indices}
 
 
-def stop_condition(problem: LocalSearchProblem, state) -> bool:
+def stop_condition(last_best: collections.deque[float]) -> bool:
+    eps = 1e-3
+    if len(last_best) == last_best.maxlen:
+        return max(last_best) - min(last_best) <= eps
     return False
-    # ############ for Roee ###############
-    # from local_search.local_degree_plan import LocalDegreePlan
-    # from local_degree_planning_problem import LocalDegreePlanningProblem
-    # if isinstance(problem, LocalDegreePlanningProblem):
-    #     problem: LocalDegreePlanningProblem = problem
-    # if isinstance(state, LocalDegreePlan):
-    #     state: LocalDegreePlan = state
-    # #####################################
-    #
-    # eps = 0.5  # todo: check this
-    # return (state.total_points == problem.target_points and
-    #         state.mandatory_points == problem.mandatory_points and
-    #         problem.get_upper_bound() - state.avg_grade <= eps)
+
+
+def wait_for_all_threads(threads: list[Thread]):
+    for thread in threads:
+        thread.join()
+
+
+def softmax(scores: list[float], T: float) -> np.ndarray[float]:
+    """Compute softmax probabilities from scores with temperature scaling."""
+    scores = np.array(scores) / T
+    exp_scores = np.exp(scores - np.max(scores))  # Numerical stability TODO: check the "- np.max(scores)"
+    return exp_scores / exp_scores.sum()
 
 
 def create_threads(problem: LocalSearchProblem, states: set, all_neighbors: TSS) -> list[Thread]:
@@ -147,25 +160,5 @@ def create_threads(problem: LocalSearchProblem, states: set, all_neighbors: TSS)
         threads.append(thread)
         thread.start()
     return threads
-
-
-def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 1, max_iter=10 ** 5):
-    init_states = {problem.get_initial_state() for _ in range(k)}
-    best_state = max(init_states, key=problem.fitness)
-    all_neighbors: TSS = TSS()
-    # first iteration
-    threads = create_threads(problem, init_states, all_neighbors)
-
-    for _ in range(max_iter):
-        wait_for_all_threads(threads)
-        k_neighbors = sample_k_neighbors(problem, all_neighbors, k, T)
-        best_state = max(k_neighbors, key=problem.fitness)
-        # best_state = max(best_state, cur_best_state, key=problem.fitness)
-        if stop_condition(problem, best_state):
-            return best_state  # todo: return the best
-        all_neighbors: TSS = TSS()
-        threads = create_threads(problem, k_neighbors, all_neighbors)
-    print("******* Reached max_iterations ! *******\n")
-    return best_state
 
 # endregion
