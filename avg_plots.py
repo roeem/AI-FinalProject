@@ -71,9 +71,10 @@ for data_set in data_sets:
     # Plot the bar plot (excluding the upper bound row)
     ax = subset_grouped.plot(kind='bar', ax=plt.gca())
 
-    plt.title(f'Average grade for {data_set} by semester load and Algorithm')
+    plt.title(f'Average grade for "{data_set}" by semester load')
     plt.ylabel('Average Grade')
     plt.xlabel('Semester Load')
+    plt.xticks(rotation=0)
 
     # Set the dynamic y-axis limits
     plt.ylim(60, 92)  # Set upper limit slightly above the upper bound
