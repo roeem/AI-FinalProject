@@ -1,7 +1,6 @@
 import sys
 from enum import Enum
 
-import graph_search.degree_planning_problem
 from course import Course
 from graph_search.degree_planning_problem import DegreePlanningProblem, max_avg_heuristic
 from graph_search.search import bfs, dfs, ucs, astar
