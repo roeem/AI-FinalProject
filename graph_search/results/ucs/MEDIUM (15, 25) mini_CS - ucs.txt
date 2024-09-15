@@ -1,3 +1,5 @@
+MEDIUM (15, 25) mini_CS - ucs
+
 num of courses: 17
 num of semesters: 4
 Target points: 84
