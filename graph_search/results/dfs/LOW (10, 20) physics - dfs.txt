@@ -1,0 +1,42 @@
+num of courses: 34
+num of semesters: 10
+Target points: 137
+Mandatory points: 113
+Average: 75.97810218978103
+Points: 137
+Expanded: 43
+Course(num=77874, semester=A, name="Non linear Dynamics in Biological Systems", points=2, avg_grade=89, is_mandatory=False, prerequisites=[])
+Course(num=77972, semester=A, name="Physical Models of biological systems", points=3, avg_grade=67, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=77532, semester=A, name="Introduction to Physics Research", points=1, avg_grade=96, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=77594, semester=A, name="Physical processes in astrophysics", points=2, avg_grade=99, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=77605, semester=A, name="Quantum Theory II", points=7, avg_grade=87, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=55772, semester=B, name="Using Exact Sciences Modeling Tools to Understand Social Phenomena", points=3, avg_grade=82, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=77609, semester=B, name="Introduction to Elementary Particles", points=3, avg_grade=77, is_mandatory=False, prerequisites=[(77605)])
+Course(num=77603, semester=B, name="Nuclear Physics", points=3, avg_grade=76, is_mandatory=False, prerequisites=[(77605)])
+Course(num=77542, semester=B, name="Quantum Theory C", points=3, avg_grade=61, is_mandatory=False, prerequisites=[(77605)])
+Course(num=77892, semester=B, name="Introduction to string theory - seminarion", points=2, avg_grade=72, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=77153, semester=B, name="Basic Ideas of Modern Physics", points=2, avg_grade=100, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=69322, semester=B, name="GENERAL CHEMISTRY FOR PHYSICS STUDENTS", points=4, avg_grade=89, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80153, semester=A, name="Linear algebra for engineering and science students 1", points=4, avg_grade=74, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80114, semester=A, name="Mathematical Methods I", points=6, avg_grade=61, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80155, semester=B, name="Calculus for Physics students", points=4, avg_grade=83, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80157, semester=B, name="Mathematical Methods II", points=6, avg_grade=64, is_mandatory=True, prerequisites=[(80114) and (80134 or 80152 or 80153)])
+Course(num=80312, semester=A, name="PROBABILITY THEORY AND APPLICATIONS", points=4, avg_grade=88, is_mandatory=True, prerequisites=[(80114 or 80131)])
+Course(num=77114, semester=A, name="PHYSICS LAB A1", points=2, avg_grade=82, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=76641, semester=A, name="PYTHON PROGRAMMING FOR PHYSICS STUDENTS", points=4, avg_grade=63, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80314, semester=B, name="COMPLEX VARIABLES AND APPLICATIONS", points=4, avg_grade=62, is_mandatory=True, prerequisites=[(80132 or 80142 or 80157)])
+Course(num=77336, semester=B, name="Physics Lab II-2-Waves, dynamical systems and materials properties", points=3, avg_grade=84, is_mandatory=True, prerequisites=[(77103 or 77110 or 77111 or 77114 or 77335)])
+Course(num=80154, semester=B, name="Linear algebra for engineering and science students 2", points=3, avg_grade=84, is_mandatory=True, prerequisites=[(80153)])
+Course(num=77335, semester=A, name="Physics Lab II-1-Waves, dynamical systems and materials properties", points=3, avg_grade=72, is_mandatory=True, prerequisites=[(77103 or 77110 or 77111 or 77114 or 77125 or 77159 or 77174 or 77622)])
+Course(num=77101, semester=A, name="Mechanics and Special relativity", points=7, avg_grade=73, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=77622, semester=B, name="PHYSICS LAB A2", points=4, avg_grade=67, is_mandatory=True, prerequisites=[(77110 or 77114)])
+Course(num=77102, semester=B, name="Electricity and Magnetism", points=6, avg_grade=84, is_mandatory=True, prerequisites=[(80114) and (77101 or 77910)])
+Course(num=77303, semester=A, name="Analytical Mechanics", points=6, avg_grade=83, is_mandatory=True, prerequisites=[(77101) and (80114)])
+Course(num=77313, semester=A, name="Equations of Mathematical Physics", points=6, avg_grade=64, is_mandatory=True, prerequisites=[(77101) and (80114) and (80157) and (77102 or 77106)])
+Course(num=77305, semester=A, name="Waves and Optics", points=5, avg_grade=81, is_mandatory=True, prerequisites=[(77101) and (80114) and (80157) and (77102 or 77106)])
+Course(num=77152, semester=B, name="Thermal Physics", points=4, avg_grade=62, is_mandatory=True, prerequisites=[(77101 or 77115 or 77910) and (80114)])
+Course(num=77401, semester=B, name="Analytical Electrodynamics", points=5, avg_grade=91, is_mandatory=True, prerequisites=[(77303) and (80114 or 80132) and (77102 or 77106) and (80157 or 80315) and (77305)])
+Course(num=77318, semester=B, name="Quantum Theory I", points=6, avg_grade=63, is_mandatory=True, prerequisites=[(77303) and (77305)])
+Course(num=77307, semester=A, name="Intro. to Statistical Physics", points=4, avg_grade=69, is_mandatory=True, prerequisites=[(69123 or 77152) and (80312 or 80420)])
+Course(num=77508, semester=A, name="Physics Lab III: Advanced experiments in quantum and modern physics", points=6, avg_grade=83, is_mandatory=True, prerequisites=[(77318) and (77302 or 77322 or 77335 or 77336 or 77365 or 77367)])
+Time: 0.009140491485595703 seconds
