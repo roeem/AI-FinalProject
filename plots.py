@@ -12,6 +12,12 @@ def add_value_labels(ax):
                     (p.get_x() + p.get_width() / 2., p.get_height()),
                     ha='center', va='center', xytext=(0, 10), textcoords='offset points')
 
+load_order = ['Low', 'Medium', 'High']
+algorithm_order = ['DFS', 'UCS', 'A*']  # This can be adjusted based on the presence of 'UCS'
+
+# Convert 'Load' and 'Algorithm' to categorical types with the specified ordering
+df['Load'] = pd.Categorical(df['Load'], categories=load_order, ordered=True)
+
 # List of unique data sets
 data_sets = df['Data set'].unique()
 
@@ -51,12 +57,13 @@ for data_set in data_sets:
     # Plot the bar plot (excluding the upper bound row)
     ax = subset_grouped.plot(kind='bar', ax=plt.gca())
 
-    plt.title(f'Bar Plot of Avg for {data_set} by Load and Algorithm')
-    plt.ylabel('Average (Avg)')
+    plt.title(f'Average grade for {data_set} by semester load and Algorithm')
+    plt.ylabel('Average Grade')
+    plt.xlabel('Semester Load')
 
     # Set the dynamic y-axis limits
     plt.ylim(lower_bound, upper_bound + 5)  # Set upper limit slightly above the upper bound
-    plt.ylim(60, 88)  # Set upper limit slightly above the upper bound
+    plt.ylim(60, 92)  # Set upper limit slightly above the upper bound
 
     # Adding a horizontal line to indicate the "upper bound" from the data
     plt.axhline(y=upper_bound, color='red', linestyle='--', label=f'Upper Bound ({upper_bound:.2f})')  # Dashed red line
