@@ -1,0 +1,35 @@
+num of courses: 27
+num of semesters: 6
+Target points: 126
+Mandatory points: 84
+Average: 78.72222222222223
+Points: 126
+Expanded: 381
+Course(num=67508, semester=A, name="Foundations of Data Privacy", points=2, avg_grade=85, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=67302, semester=A, name="Machine Learning Methods", points=3, avg_grade=78, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80181, semester=A, name="DISCRETE MATHEMATICS", points=5, avg_grade=76, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80134, semester=A, name="LINEAR ALGEBRA (1)", points=6, avg_grade=74, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=67978, semester=B, name="A Needle in a Data Haystack: Introduction to Data Science", points=3, avg_grade=90, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=67842, semester=B, name="Introduction to Artificial Intelligence", points=5, avg_grade=85, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80135, semester=B, name="LINEAR ALGEBRA (2)", points=6, avg_grade=74, is_mandatory=True, prerequisites=[(80134)])
+Course(num=80131, semester=B, name="INFINITESIMAL CALCULUS (1)", points=7, avg_grade=71, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=67101, semester=A, name="Introduction to Computer Science", points=7, avg_grade=75, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=67925, semester=A, name="Computer Cons. Workshop: From Nand to Tetris", points=5, avg_grade=85, is_mandatory=True, prerequisites=[(67101)])
+Course(num=80132, semester=A, name="INFINITESIMAL CALCULUS (2)", points=7, avg_grade=69, is_mandatory=True, prerequisites=[(80131)])
+Course(num=67200, semester=B, name="Computer Architecture", points=5, avg_grade=83, is_mandatory=False, prerequisites=[(67101 or 67102 or 76639)])
+Course(num=80430, semester=B, name="Introduction to Probability and Statistics", points=6, avg_grade=72, is_mandatory=True, prerequisites=[(80114 or 80132 or 80133 or 80142) and (80181 or 83106) and (80131 or 80177)])
+Course(num=67315, semester=B, name="Programming Workshop in C & C++", points=4, avg_grade=79, is_mandatory=True, prerequisites=[(67101 or 67102)])
+Course(num=67109, semester=B, name="Data Structures", points=4, avg_grade=82, is_mandatory=True, prerequisites=[(67101 or 67102) and (80131 or 80134 or 80137 or 80153 or 80155 or 80177 or 80564) and (80181)])
+Course(num=67731, semester=A, name="Convex Optimization and Applications", points=4, avg_grade=80, is_mandatory=False, prerequisites=[(80114 or 80132) and (80134 or 80154)])
+Course(num=67561, semester=A, name="ELEMENTS OF INFORMATION THEORY", points=4, avg_grade=83, is_mandatory=False, prerequisites=[(80312 or 80420 or 80430)])
+Course(num=67609, semester=A, name="Computer Graphics", points=5, avg_grade=83, is_mandatory=False, prerequisites=[(67312 or 67315 or 67320)])
+Course(num=67506, semester=A, name="Databases", points=5, avg_grade=88, is_mandatory=False, prerequisites=[(67109)])
+Course(num=67125, semester=A, name="Introduction to Object Oriented", points=4, avg_grade=89, is_mandatory=True, prerequisites=[(67312 or 67315 or 67320) and (67101)])
+Course(num=67504, semester=B, name="Algorithms", points=5, avg_grade=80, is_mandatory=True, prerequisites=[(80134 or 80153) and (67109)])
+Course(num=67594, semester=B, name="Introduction to Communication Networks", points=4, avg_grade=60, is_mandatory=True, prerequisites=[(67504) and (67200 or 67925 or 67926) and (52005 or 80312 or 80313 or 80420 or 80430)])
+Course(num=80737, semester=B, name="Introduction to Stochastic Processes", points=3, avg_grade=77, is_mandatory=False, prerequisites=[(80420 or 80430) and (80135)])
+Course(num=67808, semester=B, name="Operating Systems", points=4, avg_grade=82, is_mandatory=True, prerequisites=[(67312 or 67315 or 67320) and (67200 or 67925)])
+Course(num=67577, semester=B, name="Introduction to Machine Learning", points=5, avg_grade=86, is_mandatory=True, prerequisites=[(67504) and (80312 or 80420 or 80430) and (80114 or 80132 or 80133)])
+Course(num=67658, semester=A, name="Natural Language Processing", points=3, avg_grade=88, is_mandatory=False, prerequisites=[(67504)])
+Course(num=67521, semester=A, name="Computational Models, Computability and Complexity", points=5, avg_grade=75, is_mandatory=True, prerequisites=[(67504)])
+Time: 0.048465728759765625 seconds

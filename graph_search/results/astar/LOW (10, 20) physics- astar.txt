@@ -1,0 +1,2 @@
+Expanded: 1450000
+zsh: cpu limit exceeded  python3 dpp.py astar physics.json low
