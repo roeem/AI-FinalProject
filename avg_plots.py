@@ -3,19 +3,20 @@ import matplotlib.pyplot as plt
 
 # Load the Excel file into a DataFrame
 file_path = 'results.xlsx'  # Replace with the actual file path of your Excel file
-df = pd.read_excel(file_path)  # Adjusted to read from the default sheet or specify if needed
+df = pd.read_excel(file_path)
 
 # Function to add labels on bars
 def add_value_labels(ax):
     for p in ax.patches:
-        ax.annotate(f'{p.get_height():.2f}',
-                    (p.get_x() + p.get_width() / 2., p.get_height()),
-                    ha='center', va='center', xytext=(0, 10), textcoords='offset points')
+        if not pd.isna(p.get_height()):
+            ax.annotate(f'{p.get_height():.2f}',
+                        (p.get_x() + p.get_width() / 2., p.get_height()),
+                        ha='center', va='bottom', xytext=(0, 10), textcoords='offset points')
 
 load_order = ['Low', 'Medium', 'High']
-algorithm_order = ['DFS', 'UCS', 'A*']  # This can be adjusted based on the presence of 'UCS'
+algorithm_order = ['DFS', 'Astar', 'UCS']  # Ensure these match the names in your data
 
-# Convert 'Load' and 'Algorithm' to categorical types with the specified ordering
+# Convert 'Load' to a categorical type with the specified ordering
 df['Load'] = pd.Categorical(df['Load'], categories=load_order, ordered=True)
 
 # List of unique data sets
@@ -43,13 +44,26 @@ for data_set in data_sets:
         upper_bound = subset['Avg'].max()
         subset_without_upper_bound = subset
 
-    # Calculate dynamic lower bound based on the data
-    lower_bound = max(40, subset_without_upper_bound['Avg'].min() - 5)  # Set lower bound to the minimum value of Avg or 40
-
     # Check if there's any data left after removing the upper bound row
     if subset_without_upper_bound.empty:
         print(f"No data to plot for {data_set} after removing the upper bound row.")
         continue  # Skip this plot if no data is left
+
+    # Calculate dynamic lower bound based on the data
+    lower_bound = max(40, subset_without_upper_bound['Avg'].min() - 5)  # Set lower bound to the minimum value of Avg or 40
+
+    # Determine the algorithms present in this subset
+    algorithms_present = subset_without_upper_bound['Algorithm'].unique()
+
+    # Create ordered list of algorithms present, preserving the order specified in algorithm_order
+    algorithms_present_ordered = [alg for alg in algorithm_order if alg in algorithms_present]
+
+    # Set 'Algorithm' as categorical with the ordered categories
+    subset_without_upper_bound['Algorithm'] = pd.Categorical(
+        subset_without_upper_bound['Algorithm'],
+        categories=algorithms_present_ordered,
+        ordered=True
+    )
 
     # Group the remaining data (without the upper bound row) for plotting
     subset_grouped = subset_without_upper_bound.groupby(['Load', 'Algorithm'])['Avg'].mean().unstack()
@@ -62,7 +76,6 @@ for data_set in data_sets:
     plt.xlabel('Semester Load')
 
     # Set the dynamic y-axis limits
-    plt.ylim(lower_bound, upper_bound + 5)  # Set upper limit slightly above the upper bound
     plt.ylim(60, 92)  # Set upper limit slightly above the upper bound
 
     # Adding a horizontal line to indicate the "upper bound" from the data
