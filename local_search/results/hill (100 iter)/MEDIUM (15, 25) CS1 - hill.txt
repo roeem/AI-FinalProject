@@ -1,38 +1,5 @@
-MEDIUM (15, 25) CS1 - astar
-
-
-
-num of courses: 26
-num of semesters: 6
-Target points: 126
-Mandatory points: 84
-Average: 80.11904761904762
-Points: 126
-Expanded: 546530
-Course(num=67101, semester=A, name="Introduction to Computer Science", points=7, avg_grade=75, is_mandatory=True, prerequisites=No Prerequisites)
-Course(num=80134, semester=A, name="LINEAR ALGEBRA (1)", points=6, avg_grade=74, is_mandatory=True, prerequisites=No Prerequisites)
-Course(num=80131, semester=A, name="INFINITESIMAL CALCULUS (1)", points=7, avg_grade=72, is_mandatory=True, prerequisites=No Prerequisites)
-Course(num=80181, semester=B, name="DISCRETE MATHEMATICS", points=5, avg_grade=80, is_mandatory=True, prerequisites=No Prerequisites)
-Course(num=67200, semester=B, name="Computer Architecture", points=5, avg_grade=83, is_mandatory=False, prerequisites=[(67101 or 67102 or 76639)])
-Course(num=67109, semester=B, name="Data Structures", points=4, avg_grade=82, is_mandatory=True, prerequisites=[(67101 or 67102) and (80131 or 80134 or 80137 or 80153 or 80155 or 80177 or 80564) and (80181)])
-Course(num=80132, semester=B, name="INFINITESIMAL CALCULUS (2)", points=7, avg_grade=70, is_mandatory=True, prerequisites=[(80131)])
-Course(num=67925, semester=A, name="Computer Cons. Workshop: From Nand to Tetris", points=5, avg_grade=85, is_mandatory=True, prerequisites=[(67101)])
-Course(num=67506, semester=A, name="Databases", points=5, avg_grade=88, is_mandatory=False, prerequisites=[(67109)])
-Course(num=67504, semester=A, name="Algorithms", points=5, avg_grade=82, is_mandatory=True, prerequisites=[(80134 or 80153) and (67109)])
-Course(num=67315, semester=B, name="Programming Workshop in C & C++", points=4, avg_grade=79, is_mandatory=True, prerequisites=[(67101 or 67102)])
-Course(num=80135, semester=B, name="LINEAR ALGEBRA (2)", points=6, avg_grade=74, is_mandatory=True, prerequisites=[(80134)])
-Course(num=67125, semester=B, name="Introduction to Object Oriented", points=4, avg_grade=90, is_mandatory=True, prerequisites=[(67312 or 67315 or 67320) and (67101)])
-Course(num=67842, semester=B, name="Introduction to Artificial Intelligence", points=5, avg_grade=85, is_mandatory=False, prerequisites=No Prerequisites)
-Course(num=80430, semester=B, name="Introduction to Probability and Statistics", points=6, avg_grade=72, is_mandatory=True, prerequisites=[(80114 or 80132 or 80133 or 80142) and (80181 or 83106) and (80131 or 80177)])
-Course(num=67658, semester=A, name="Natural Language Processing", points=3, avg_grade=88, is_mandatory=False, prerequisites=[(67504)])
-Course(num=67392, semester=A, name="Introduction to Cryptography and Software Security", points=4, avg_grade=84, is_mandatory=False, prerequisites=[(67504) and (80312 or 80420 or 80430) and (67312 or 67315 or 67320)])
-Course(num=67609, semester=A, name="Computer Graphics", points=5, avg_grade=83, is_mandatory=False, prerequisites=[(67312 or 67315 or 67320)])
-Course(num=67528, semester=A, name="Software Engineering", points=4, avg_grade=92, is_mandatory=False, prerequisites=[(67125)])
-Course(num=67577, semester=B, name="Introduction to Machine Learning", points=5, avg_grade=86, is_mandatory=True, prerequisites=[(67504) and (80312 or 80420 or 80430) and (80114 or 80132 or 80133)])
-Course(num=67594, semester=B, name="Introduction to Communication Networks", points=4, avg_grade=60, is_mandatory=True, prerequisites=[(67504) and (67200 or 67925 or 67926) and (52005 or 80312 or 80313 or 80420 or 80430)])
-Course(num=67521, semester=B, name="Computational Models, Computability and Complexity", points=5, avg_grade=78, is_mandatory=True, prerequisites=[(67504)])
-Course(num=67822, semester=B, name="Introduction to Deep Learning", points=4, avg_grade=85, is_mandatory=False, prerequisites=[(67577 or 80430)])
-Course(num=67978, semester=B, name="A Needle in a Data Haystack: Introduction to Data Science", points=3, avg_grade=90, is_mandatory=False, prerequisites=No Prerequisites)
-Course(num=67808, semester=B, name="Operating Systems", points=4, avg_grade=82, is_mandatory=True, prerequisites=[(67312 or 67315 or 67320) and (67200 or 67925)])
-Course(num=67829, semester=A, name="Image Processing", points=4, avg_grade=89, is_mandatory=False, prerequisites=[(67504)])
-Time: 443.9170792102814 seconds
+Average Average Grade: 79.16609977324264
+Legal Ratio: 0.14
+Average Expanded: 8.55
+(79.16609977324264, 0.14)
+Time: 16.627599954605103 seconds
