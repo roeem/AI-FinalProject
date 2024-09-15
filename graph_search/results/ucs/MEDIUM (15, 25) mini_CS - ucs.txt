@@ -1,0 +1,25 @@
+num of courses: 17
+num of semesters: 4
+Target points: 84
+Mandatory points: 55
+Average: 84.46428571428571
+Points: 84
+Expanded: 135912
+Course(num=67609, semester=A, name="Computer Graphics", points=5, avg_grade=83, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=67101, semester=A, name="Introduction to Computer Science", points=7, avg_grade=75, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80131, semester=A, name="INFINITESIMAL CALCULUS (1)", points=7, avg_grade=72, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=67978, semester=B, name="A Needle in a Data Haystack: Introduction to Data Science", points=3, avg_grade=90, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80132, semester=B, name="INFINITESIMAL CALCULUS (2)", points=7, avg_grade=88, is_mandatory=True, prerequisites=[(80131)])
+Course(num=67200, semester=B, name="Computer Architecture", points=5, avg_grade=83, is_mandatory=False, prerequisites=[(67101 or 67102 or 76639)])
+Course(num=67125, semester=B, name="Introduction to Object Oriented", points=4, avg_grade=90, is_mandatory=True, prerequisites=[(67101)])
+Course(num=67109, semester=B, name="Data Structures", points=4, avg_grade=82, is_mandatory=True, prerequisites=[(67101 or 67102) and (80131 or 80134 or 80137 or 80153 or 80155 or 80177 or 80564)])
+Course(num=80134, semester=A, name="LINEAR ALGEBRA (1)", points=6, avg_grade=74, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=67504, semester=A, name="Algorithms", points=5, avg_grade=92, is_mandatory=True, prerequisites=[(80134 or 80153) and (67109)])
+Course(num=67528, semester=A, name="Software Engineering", points=4, avg_grade=92, is_mandatory=False, prerequisites=[(67125)])
+Course(num=67808, semester=B, name="Operating Systems", points=4, avg_grade=99, is_mandatory=True, prerequisites=[(67200 or 67925)])
+Course(num=67577, semester=B, name="Introduction to Machine Learning", points=5, avg_grade=86, is_mandatory=True, prerequisites=[(67504) and (80114 or 80132 or 80133)])
+Course(num=80135, semester=B, name="LINEAR ALGEBRA (2)", points=6, avg_grade=74, is_mandatory=True, prerequisites=[(80134)])
+Course(num=67829, semester=A, name="Image Processing", points=4, avg_grade=89, is_mandatory=False, prerequisites=[(67504)])
+Course(num=67658, semester=A, name="Natural Language Processing", points=3, avg_grade=88, is_mandatory=False, prerequisites=[(67504)])
+Course(num=67506, semester=A, name="Databases", points=5, avg_grade=100, is_mandatory=False, prerequisites=[(67109)])
+Time: 22.27091932296753 seconds

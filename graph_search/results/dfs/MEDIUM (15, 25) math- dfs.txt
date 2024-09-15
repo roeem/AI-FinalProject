@@ -1,0 +1,37 @@
+num of courses: 29
+num of semesters: 6
+Target points: 120
+Mandatory points: 63
+Average: 78.96666666666667
+Points: 120
+Expanded: 94
+Course(num=67101, semester=A, name="Introduction to Computer Science", points=7, avg_grade=85, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=76634, semester=A, name="PYTHON FOR EARTH SCIENCES", points=2, avg_grade=91, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=76631, semester=A, name="PYTHON1", points=2, avg_grade=94, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80111, semester=A, name="Elementary analysis 1", points=3, avg_grade=80, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80181, semester=A, name="DISCRETE MATHEMATICS", points=5, avg_grade=85, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80610, semester=B, name="Analytic Number Theory", points=3, avg_grade=69, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=76628, semester=B, name="MATLAB FOR EARTH SCIENCES", points=2, avg_grade=84, is_mandatory=False, prerequisites=[(6141 or 8402 or 40358 or 51719 or 52304 or 54260 or 71137 or 76608 or 76631 or 76634 or 76637 or 76638 or 76639)])
+Course(num=76632, semester=B, name="PYTHON2", points=2, avg_grade=90, is_mandatory=False, prerequisites=[(6141 or 8402 or 40358 or 51719 or 52304 or 54260 or 71137 or 76608 or 76631 or 76634 or 76637 or 76638 or 76639)])
+Course(num=76637, semester=B, name="programming in python", points=2, avg_grade=92, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80115, semester=B, name="Elementary Number Theory", points=4, avg_grade=87, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80200, semester=B, name="SET THEORY", points=3, avg_grade=89, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80520, semester=A, name="COMBINATORICS", points=3, avg_grade=88, is_mandatory=False, prerequisites=[(80181)])
+Course(num=80134, semester=A, name="LINEAR ALGEBRA (1)", points=6, avg_grade=82, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80131, semester=A, name="INFINITESIMAL CALCULUS (1)", points=7, avg_grade=70, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=77154, semester=B, name="Mechanics for math students", points=7, avg_grade=73, is_mandatory=True, prerequisites=[(80111)])
+Course(num=76629, semester=B, name="MATHEMATICAL PROGRAMMING WITH MATLAB FOR CHEMISTRY", points=3, avg_grade=80, is_mandatory=False, prerequisites=[(71007 or 71071 or 71072 or 71740 or 80109 or 80112 or 80131 or 80132)])
+Course(num=80116, semester=B, name="Elementary analysis 2", points=3, avg_grade=81, is_mandatory=True, prerequisites=[(80111) and (80134) and (80131)])
+Course(num=80135, semester=B, name="LINEAR ALGEBRA (2)", points=6, avg_grade=77, is_mandatory=True, prerequisites=[(80134)])
+Course(num=80132, semester=A, name="INFINITESIMAL CALCULUS (2)", points=7, avg_grade=72, is_mandatory=True, prerequisites=[(80131)])
+Course(num=80420, semester=A, name="PROBABILITY THEORY (1)", points=5, avg_grade=78, is_mandatory=False, prerequisites=[(80132 or 80133 or 80142) and (80131)])
+Course(num=80545, semester=A, name="Elementary geometry", points=4, avg_grade=90, is_mandatory=False, prerequisites=[(80134 or 80135)])
+Course(num=80423, semester=A, name="MATHEMATICAL LOGIC (1)", points=4, avg_grade=86, is_mandatory=False, prerequisites=[(80134 or 80152) and (80181)])
+Course(num=80415, semester=B, name="INFINITESIMAL CALCULUS 3", points=6, avg_grade=69, is_mandatory=True, prerequisites=[(80132 or 80142) and (80134) and (80116) and (80135) and (80131)])
+Course(num=80424, semester=B, name="MATHEMATICAL LOGIC (2)", points=3, avg_grade=84, is_mandatory=False, prerequisites=[(80423)])
+Course(num=80516, semester=B, name="INTRODUCTION TO TOPOLOGY", points=4, avg_grade=75, is_mandatory=False, prerequisites=[(80315 or 80415)])
+Course(num=80320, semester=B, name="DIFFERENTIAL EQUATIONS", points=4, avg_grade=72, is_mandatory=False, prerequisites=[(80415) and (80132 or 80142) and (80134) and (80135) and (80131)])
+Course(num=80417, semester=B, name="Functional analysis", points=3, avg_grade=70, is_mandatory=True, prerequisites=[(80415)])
+Course(num=80416, semester=B, name="Analysis on manifolds", points=4, avg_grade=68, is_mandatory=True, prerequisites=[(80415)])
+Course(num=80445, semester=A, name="ALGEBRAIC STRUCTURES (1)", points=6, avg_grade=76, is_mandatory=True, prerequisites=[(80132 or 80133 or 80142) and (80134) and (80135) and (80131)])
+Time: 0.011581182479858398 seconds
