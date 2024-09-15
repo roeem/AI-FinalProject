@@ -23,6 +23,15 @@ class LocalDegreePlan:
         self.__semesters: list[set[Course]] = []
         self.__avg_grade = 0
 
+    def get_modified_avg_grade(self) -> float:
+        if self.total_points == 0:
+            return 0
+        sum_avg = 0
+        for i, sem in enumerate(self.__semesters):
+            for c in sem:
+                sum_avg += c.avg_grade * c.points - i * 1e-6
+        return sum_avg / self.total_points
+
     def add_course(self, course: Course, semester: int) -> "LocalDegreePlan":
         semester_type = Semester.A if semester % 2 == 0 else Semester.B
         if (len(self.__semesters) < semester or semester < 0 or self.took_course_number(course.number) or
@@ -81,7 +90,8 @@ class LocalDegreePlan:
         return course.number in self.__courses_so_far.keys() and course in self.__semesters[
             self.__courses_so_far[course.number]]
 
-    def possible_semesters_to_course(self, course: Course, min_semester_points: int, max_semester_points: int, max_sem_num: int) -> \
+    def possible_semesters_to_course(self, course: Course, min_semester_points: int, max_semester_points: int,
+                                     max_sem_num: int) -> \
             list[int]:
         if self.took_course_number(course.number):
             return []
@@ -100,9 +110,9 @@ class LocalDegreePlan:
         # check if opening a new semester is possible
         if (len(self.__semesters) % 2 == course_semester and course.can_take_this_course(taken_courses) and
                 len(self.__semesters) < max_sem_num):
-            if len(self.__semesters) < 2 or sum(c.points for c in self.__semesters[-2]) >= min_semester_points:
+            if len(self.__semesters) < 2 or sum(
+                    c.points for c in self.__semesters[-2]) >= min_semester_points:
                 possible_semesters.append(len(self.__semesters))
-
 
         return possible_semesters
 

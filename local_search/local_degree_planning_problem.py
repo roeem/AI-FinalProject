@@ -73,9 +73,8 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
     #     return w_avg * avg - w_legality * legality_fine
 
     def fitness(self, state: LocalDegreePlan) -> float:
-        avg = (state.avg_grade * state.total_points) / self.__target_points
-        mandatory_left = self.__mandatory_points - state.mandatory_points
-        exceeded_elective = abs(state.total_points - state.mandatory_points - self.__elective_points)
+        # avg = (state.avg_grade * state.total_points) / self.__target_points #todo: old
+        avg = (state.get_modified_avg_grade() * state.total_points) / self.__target_points
         return avg
 
     # region ########### HELPERS ###########
@@ -100,11 +99,11 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
         removable_courses = state.possible_courses_to_remove()
         for c1 in removable_courses:
             for c2 in self.__degree_courses:
-                if c1 == c2:
-                    continue
+                # if c1 == c2:
+                #     continue
                 # TODO: check efficiency
                 new_state: LocalDegreePlan = state.remove_course(c1)
-                if c2 in removable_courses:
+                if c2 in removable_courses and c1 != c2:
                     new_state: LocalDegreePlan = new_state.remove_course(c2)
                 if new_state.took_course_number(c2.number):
                     continue

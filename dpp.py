@@ -1,6 +1,7 @@
 import sys
 from enum import Enum
 
+import graph_search.degree_planning_problem
 from course import Course
 from graph_search.degree_planning_problem import DegreePlanningProblem, max_avg_heuristic
 from graph_search.search import bfs, dfs, ucs, astar
@@ -129,9 +130,9 @@ def main():
 
     # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
 
-    # run_search(algorithm, degree_planning_search_params)
-    # print(test_local(degree_planning_search_params, hill_climbing, 100))
-    test_sa_param(degree_planning_search_params)
+    run_search(algorithm, degree_planning_search_params)
+    # print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 20))
+    # test_sa_param(degree_planning_search_params)
 
 
 # TODO REMOVE!!!!!!!!!!!
