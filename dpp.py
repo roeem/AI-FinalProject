@@ -130,7 +130,8 @@ def main():
     # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
 
     # run_search(algorithm, degree_planning_search_params)
-    print(test_local(degree_planning_search_params, hill_climbing, 100))
+    # print(test_local(degree_planning_search_params, hill_climbing, 100))
+    test_sa_param(degree_planning_search_params)
 
 
 # TODO REMOVE!!!!!!!!!!!
@@ -146,6 +147,26 @@ def tests(degree_courses, mandatory_points, max_semester_points, min_semester_po
         print("\n=============================================================\n")
 
 
+def test_sa_param(degree_planning_search_params):
+    epss, T0s, alphas = [1e-5, 1e-7, 1e-9, 1e-12, 1e-15, 1e-20], [100, 1000, 5000, 10000, 20000], \
+        [0.7, 0.8, 0.9, 0.95, 0.99, 0.995, 0.999]
+    for alpha in alphas:
+        for eps in epss:
+            for T0 in T0s:
+                dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
+                start_time = time.time()
+                solution: LocalDegreePlan = (
+                    simulated_annealing(dpp, schedule=lambda t: exp_cool_schedule(t, T0, alpha), eps=eps))
+                total_time = time.time() - start_time
+                print(f"Params: eps={eps}, T0={T0}, alpha={alpha}")
+                print(f"Average Grade: {solution.avg_grade}")
+                print(f"Total Points: {solution.total_points}")
+                print(f"Mandatory Points: {solution.mandatory_points}")
+                print(f"Expanded: {dpp.expanded}")
+                print(f"Time: {total_time}")
+                print("\n==============================================\n")
+
+
 def test_local(degree_planning_search_params, algorithm, number_of_runs):
     # TODO: remove before submission
     runs = []
@@ -159,7 +180,8 @@ def test_local(degree_planning_search_params, algorithm, number_of_runs):
         expanded += dpp.expanded
 
     avg_expanded = expanded / number_of_runs
-    legal_runs_avg = [run[0].avg_grade for run in runs if is_valid_degree_plan(run[0], degree_planning_search_params)]
+    legal_runs_avg = [run[0].avg_grade for run in runs if
+                      is_valid_degree_plan(run[0], degree_planning_search_params)]
     avg_avg_grade = sum(legal_runs_avg) / len(legal_runs_avg)
     legal_ratio = len(legal_runs_avg) / number_of_runs
 
