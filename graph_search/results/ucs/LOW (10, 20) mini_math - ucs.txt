@@ -1,0 +1,29 @@
+LOW (10, 20) mini_math - ucs
+
+num of courses: 19
+num of semesters: 5
+Target points: 76
+Mandatory points: 53
+Average: 85.05263157894737
+Points: 76
+Expanded: 1700926
+Course(num=76634, semester=A, name="PYTHON FOR EARTH SCIENCES", points=2, avg_grade=91, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80134, semester=A, name="LINEAR ALGEBRA (1)", points=6, avg_grade=73, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=76631, semester=A, name="PYTHON1", points=2, avg_grade=94, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80111, semester=B, name="Elementary analysis 1", points=3, avg_grade=94, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=80131, semester=B, name="INFINITESIMAL CALCULUS (1)", points=7, avg_grade=85, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=76632, semester=B, name="PYTHON2", points=2, avg_grade=90, is_mandatory=False, prerequisites=[(6141 or 8402 or 40358 or 51719 or 52304 or 54260 or 71137 or 76608 or 76631 or 76634 or 76637 or 76638 or 76639)])
+Course(num=80135, semester=A, name="LINEAR ALGEBRA (2)", points=6, avg_grade=88, is_mandatory=True, prerequisites=[(80134)])
+Course(num=80132, semester=A, name="INFINITESIMAL CALCULUS (2)", points=7, avg_grade=86, is_mandatory=True, prerequisites=[(80131)])
+Course(num=80116, semester=A, name="Elementary analysis 2", points=3, avg_grade=88, is_mandatory=True, prerequisites=[(80111) and (80134) and (80131)])
+Course(num=80181, semester=B, name="DISCRETE MATHEMATICS", points=5, avg_grade=91, is_mandatory=True, prerequisites=No Prerequisites)
+Course(num=76637, semester=B, name="programming in python", points=2, avg_grade=92, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=80445, semester=B, name="ALGEBRAIC STRUCTURES (1)", points=6, avg_grade=90, is_mandatory=True, prerequisites=[(80132 or 80133 or 80142) and (80134) and (80135) and (80131)])
+Course(num=80415, semester=A, name="INFINITESIMAL CALCULUS 3", points=6, avg_grade=71, is_mandatory=True, prerequisites=[(80132 or 80142) and (80134) and (80116) and (80135) and (80131)])
+Course(num=80545, semester=A, name="Elementary geometry", points=4, avg_grade=95, is_mandatory=False, prerequisites=[(80134 or 80135)])
+Course(num=80520, semester=A, name="COMBINATORICS", points=3, avg_grade=88, is_mandatory=False, prerequisites=[(80181)])
+Course(num=80428, semester=B, name="GAME THEORY (1)", points=3, avg_grade=83, is_mandatory=False, prerequisites=[(80415) and (80135) and (80132 or 80142)])
+Course(num=80416, semester=B, name="Analysis on manifolds", points=4, avg_grade=68, is_mandatory=True, prerequisites=[(80415)])
+Course(num=80200, semester=B, name="SET THEORY", points=3, avg_grade=89, is_mandatory=False, prerequisites=No Prerequisites)
+Course(num=76628, semester=B, name="MATLAB FOR EARTH SCIENCES", points=2, avg_grade=84, is_mandatory=False, prerequisites=[(6141 or 8402 or 40358 or 51719 or 52304 or 54260 or 71137 or 76608 or 76631 or 76634 or 76637 or 76638 or 76639)])
+Time: 582.0631120204926 seconds
