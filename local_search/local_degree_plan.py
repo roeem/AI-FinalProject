@@ -23,7 +23,7 @@ class LocalDegreePlan:
         self.__semesters: list[set[Course]] = []
         self.__avg_grade = 0
 
-    def get_modified_avg_grade(self) -> float:
+    def get_modified_avg_grade(self) -> float: # todo: if work remove from here and calc outside
         if self.total_points == 0:
             return 0
         sum_avg = 0
