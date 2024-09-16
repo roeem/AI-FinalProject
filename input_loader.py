@@ -24,5 +24,6 @@ def load_degree_plan(json_file: str) -> tuple[int, int, list[Course]]:
         )
         for course_data in data['degree_courses']
     ]
-
-    return data['mandatory_points'], data['target_points'], degree_courses
+    mandatory_courses = {(c.number, c.points) for c in degree_courses if c.is_mandatory}
+    mandatory_points = sum(c[1] for c in mandatory_courses)
+    return mandatory_points, data['target_points'], degree_courses

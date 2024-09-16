@@ -71,6 +71,9 @@ def run_graph_search_main(algorithm: str, degree_planning_search_params: dict):
     else:
         raise ValueError('Invalid algorithm type')
 
+    if not solution:
+        print("Sorry...\nThere is no solution for this input.")
+        return
     # todo: fix gui class to handle both degree plans and use gui here.
     avg, points = calculate_avg(solution)
     print(f"num of courses: {len(solution)}")
