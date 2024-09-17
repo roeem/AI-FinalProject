@@ -107,7 +107,7 @@ def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 
     # first iteration
     threads = create_threads(problem, init_states, all_neighbors)
     # we want to keep the results from last l iters
-    last_best: collections.deque[float] = collections.deque(maxlen=50)
+    last_best: collections.deque[float] = collections.deque(maxlen=20)
     for _ in range(max_iter):
         wait_for_all_threads(threads)
         k_neighbors = sample_k_neighbors(problem, all_neighbors, k, T)

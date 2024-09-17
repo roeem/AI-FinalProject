@@ -1,3 +1,4 @@
+import os
 import sys
 from enum import Enum
 
@@ -111,6 +112,20 @@ def run_local_search_main(algorithm: str, degree_planning_search_params: dict):
 
 @timer
 def main():
+    direct = 'C:\\Users\\bnron\PycharmProjects\AI-FinalProject\local_search\\results\\beam'
+    for filename in os.listdir(direct):
+        # Check if "sa" is in the filename
+        if 'sa' in filename:
+            # Create the new filename by replacing 'sa' with 'beam'
+            new_filename = filename.replace('sa', 'beam')
+
+            # Get the full paths for the old and new filenames
+            old_file_path = os.path.join(direct, filename)
+            new_file_path = os.path.join(direct, new_filename)
+
+            # Rename the file
+            os.rename(old_file_path, new_file_path)
+    return
     algorithm = sys.argv[1]
     input_file_path = "input_files/" + sys.argv[2]
     min_semester_points, max_semester_points = DegreeLoad[(sys.argv[3]).upper()].value
@@ -132,8 +147,8 @@ def main():
 
     # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
 
-    # run_search(algorithm, degree_planning_search_params)
-    print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 10))
+    run_search(algorithm, degree_planning_search_params)
+    #print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 10))
     #test_sa_param(degree_planning_search_params)
 
 
