@@ -100,7 +100,7 @@ def single_beam_search(problem: LocalSearchProblem, state, all_neighbors: TSS):
         all_neighbors.add(neighbor)
 
 
-def stochastic_beam_search(problem: LocalSearchProblem, k: int = 10, T: float = 1, max_iter=10 ** 5):
+def stochastic_beam_search(problem: LocalSearchProblem, k: int = 50, T: float = 1, max_iter=10 ** 5):
     init_states = {problem.get_initial_state() for _ in range(k)}
     best_state = max(init_states, key=problem.fitness)
     all_neighbors: TSS = TSS()
