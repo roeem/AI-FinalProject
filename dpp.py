@@ -133,7 +133,7 @@ def main():
     # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
 
     # run_search(algorithm, degree_planning_search_params)
-    print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 50))
+    print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 10))
     #test_sa_param(degree_planning_search_params)
 
 
@@ -191,7 +191,8 @@ def test_local(degree_planning_search_params, algorithm, number_of_runs):
         total_time = time.time() - start_time
         runs.append((solution, total_time))
         expanded += dpp.expanded
-
+        if is_valid_degree_plan(solution, degree_planning_search_params):
+            print(f"SUCCESSSSSSSSSSSSSSSSS")
     avg_expanded = expanded / number_of_runs
     legal_runs_avg = [run[0].avg_grade for run in runs if
                       is_valid_degree_plan(run[0], degree_planning_search_params)]
