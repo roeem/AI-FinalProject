@@ -28,19 +28,19 @@ for data_set in data_sets:
     subset = df[df['Data set'] == data_set].copy()  # Use copy to avoid SettingWithCopyWarning
 
     # Ensure 'Avg' is numeric
-    subset['Avg'] = pd.to_numeric(subset['Avg'], errors='coerce')
+    subset['Time'] = pd.to_numeric(subset['Time'], errors='coerce')
 
     # Check if 'Upper Bound' row exists in the subset
     if 'Upper Bound' in subset['Algorithm'].values:
         # Extract the upper bound value
         upper_bound_row = subset[subset['Algorithm'] == 'Upper Bound']
-        upper_bound = upper_bound_row['Avg'].values[0]
+        upper_bound = upper_bound_row['Time'].values[0]
 
         # Remove the 'Upper Bound' row from the subset
         subset_without_upper_bound = subset[subset['Algorithm'] != 'Upper Bound']
     else:
         # If no 'Upper Bound' row, proceed without removing any row
-        upper_bound = subset['Avg'].max()
+        upper_bound = subset['Time'].max()
         subset_without_upper_bound = subset
 
     # Check if there's any data left after removing the upper bound row
@@ -49,7 +49,7 @@ for data_set in data_sets:
         continue  # Skip this plot if no data is left
 
     # Calculate dynamic lower bound based on the data
-    lower_bound = max(40, subset_without_upper_bound['Avg'].min() - 5)  # Set lower bound to the minimum value of Avg or 40
+    lower_bound = max(40, subset_without_upper_bound['Time'].min() - 5)  # Set lower bound to the minimum value of Avg or 40
 
     # Determine the algorithms present in this subset
     algorithms_present = subset_without_upper_bound['Algorithm'].unique()
@@ -65,21 +65,21 @@ for data_set in data_sets:
     )
 
     # Group the remaining data (without the upper bound row) for plotting
-    subset_grouped = subset_without_upper_bound.groupby(['Load', 'Algorithm'])['Avg'].mean().unstack()
+    subset_grouped = subset_without_upper_bound.groupby(['Load', 'Algorithm'])['Time'].mean().unstack()
 
     # Plot the bar plot (excluding the upper bound row)
     ax = subset_grouped.plot(kind='bar', ax=plt.gca())
 
-    plt.title(f'Average grade for "{data_set}" by semester load')
-    plt.ylabel('Average Grade')
+    plt.title(f'Average execution time for "{data_set}" by semester load')
+    plt.ylabel('Execution Time')
     plt.xlabel('Semester Load')
     plt.xticks(rotation=0)
 
     # Set the dynamic y-axis limits
-    plt.ylim(60, 92)  # Set upper limit slightly above the upper bound
+    plt.ylim(0, 300)  # Set upper limit slightly above the upper bound
 
     # Adding a horizontal line to indicate the "upper bound" from the data
-    plt.axhline(y=upper_bound, color='red', linestyle='--', label=f'Upper Bound ({upper_bound:.2f})')  # Dashed red line
+    # plt.axhline(y=upper_bound, color='red', linestyle='--', label=f'Upper Bound ({upper_bound:.2f})')  # Dashed red line
 
     plt.grid(True)
 
