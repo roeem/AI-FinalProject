@@ -73,8 +73,10 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
     #     return w_avg * avg - w_legality * legality_fine
 
     def fitness(self, state: LocalDegreePlan) -> float:
-        # avg = (state.avg_grade * state.total_points) / self.__target_points #todo: old
-        avg = (state.get_modified_avg_grade() * state.total_points) / self.__target_points
+        avg = (state.avg_grade * state.total_points) / self.__target_points #todo: old
+        avg += 100 if (state.total_points == self.__target_points and state.mandatory_points ==
+                       self.mandatory_points) else 0
+        # avg = (state.get_modified_avg_grade() * state.total_points) / self.__target_points
         return avg
 
     # region ########### HELPERS ###########
