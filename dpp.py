@@ -133,7 +133,7 @@ def main():
     # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
 
     # run_search(algorithm, degree_planning_search_params)
-    print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 20))
+    print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 50))
     #test_sa_param(degree_planning_search_params)
 
 

@@ -146,7 +146,7 @@ def wait_for_all_threads(threads: list[Thread]):
         thread.join()
 
 
-def softmax(scores: list[float], T: float) -> np.ndarray[float]:
+def softmax(scores: list[float], T: float):
     """Compute softmax probabilities from scores with temperature scaling."""
     scores = np.array(scores) / T
     exp_scores = np.exp(scores - np.max(scores))  # Numerical stability TODO: check the "- np.max(scores)"
