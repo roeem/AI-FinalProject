@@ -132,9 +132,9 @@ def main():
 
     # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
 
-    run_search(algorithm, degree_planning_search_params)
-    # print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 20))
-    # test_sa_param(degree_planning_search_params)
+    # run_search(algorithm, degree_planning_search_params)
+    print(test_local(degree_planning_search_params, lambda x:simulated_annealing(x,exp_cool_schedule), 20))
+    #test_sa_param(degree_planning_search_params)
 
 
 # TODO REMOVE!!!!!!!!!!!
@@ -156,25 +156,35 @@ def test_sa_param(degree_planning_search_params):
     for alpha in alphas:
         for eps in epss:
             for T0 in T0s:
-                dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
-                start_time = time.time()
-                solution: LocalDegreePlan = (
-                    simulated_annealing(dpp, schedule=lambda t: exp_cool_schedule(t, T0, alpha), eps=eps))
-                total_time = time.time() - start_time
+                successes = 0
+                avg = 0
+                for i in range(10):
+                    dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
+                    print(f"Started iteration {i}")
+                    start_time = time.time()
+                    solution: LocalDegreePlan = (
+                        simulated_annealing(dpp, schedule=lambda t: exp_cool_schedule(t, T0, alpha), eps=eps))
+                    total_time = time.time() - start_time
+                    # print(f"Params: eps={eps}, T0={T0}, alpha={alpha}")
+                    # print(f"Average Grade: {solution.avg_grade}")
+                    # print(f"Total Points: {solution.total_points}")
+                    # print(f"Mandatory Points: {solution.mandatory_points}")
+                    # print(f"Expanded: {dpp.expanded}")
+                    # print(f"Time: {total_time}")
+                    # print("\n==============================================\n")
+                    if is_valid_degree_plan(solution, degree_planning_search_params):
+                        successes += 1
+                        avg += solution.avg_grade
+                avg = 0 if successes == 0 else avg / successes
+                print(f"Solution succeeded {successes} time out of 10, with success's avg = {avg}\n")
                 print(f"Params: eps={eps}, T0={T0}, alpha={alpha}")
-                print(f"Average Grade: {solution.avg_grade}")
-                print(f"Total Points: {solution.total_points}")
-                print(f"Mandatory Points: {solution.mandatory_points}")
-                print(f"Expanded: {dpp.expanded}")
-                print(f"Time: {total_time}")
-                print("\n==============================================\n")
-
 
 def test_local(degree_planning_search_params, algorithm, number_of_runs):
     # TODO: remove before submission
     runs = []
     expanded = 0
-    for _ in range(number_of_runs):
+    for i in range(number_of_runs):
+        print(f"Iteration num {i}")
         dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
         start_time = time.time()
         solution: LocalDegreePlan = algorithm(dpp)

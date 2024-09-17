@@ -30,7 +30,7 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
 
     def get_initial_state(self) -> LocalDegreePlan:
         init_state = LocalDegreePlan()
-        random_num_of_points = random.randint(self.__MINIMUM_INIT_POINTS, self.__target_points)
+        random_num_of_points = random.randint(0, self.__target_points)
         max_iter = 10000
         courses = self.__degree_courses.copy()
         while max_iter > 0 and init_state.total_points < random_num_of_points:

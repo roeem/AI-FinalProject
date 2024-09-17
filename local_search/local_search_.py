@@ -63,7 +63,7 @@ def hill_climbing(problem: LocalSearchProblem, max_iter=10 ** 5):
 
 # region Simulated Annealing
 def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], float], max_iter=10 ** 5,
-                        eps=1e-15):
+                        eps=1e-25):
     current = problem.get_initial_state()
     for t in range(max_iter):
         T = schedule(t)
@@ -79,7 +79,7 @@ def simulated_annealing(problem: LocalSearchProblem, schedule: Callable[[int], f
     return current
 
 
-def exp_cool_schedule(t: int, T0=10000, alpha=0.99) -> float:
+def exp_cool_schedule(t: int, T0=100000, alpha=0.95) -> float:
     return T0 * (alpha ** t)
 
 
