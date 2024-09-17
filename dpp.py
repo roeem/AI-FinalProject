@@ -1,3 +1,4 @@
+import os
 import sys
 from enum import Enum
 
@@ -111,6 +112,20 @@ def run_local_search_main(algorithm: str, degree_planning_search_params: dict):
 
 @timer
 def main():
+    direct = 'C:\\Users\\bnron\PycharmProjects\AI-FinalProject\local_search\\results\hill'
+    for filename in os.listdir(direct):
+        # Check if "sa" is in the filename
+        if 'beam' in filename:
+            # Create the new filename by replacing 'sa' with 'beam'
+            new_filename = filename.replace('beam', 'hill')
+
+            # Get the full paths for the old and new filenames
+            old_file_path = os.path.join(direct, filename)
+            new_file_path = os.path.join(direct, new_filename)
+
+            # Rename the file
+            os.rename(old_file_path, new_file_path)
+    return
     algorithm = sys.argv[1]
     input_file_path = "input_files/" + sys.argv[2]
     min_semester_points, max_semester_points = DegreeLoad[(sys.argv[3]).upper()].value
