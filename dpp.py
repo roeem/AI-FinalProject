@@ -91,7 +91,7 @@ def run_graph_search_main(algorithm: str, degree_planning_search_params: dict):
 def run_local_search_main(algorithm: str, degree_planning_search_params: dict):
     dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
 
-    if algorithm == 'hill':
+    if algorithm == 'hill (50 iterations)':
         solution: LocalDegreePlan = hill_climbing(dpp)
     elif algorithm == 'sa_exp':
         solution: LocalDegreePlan = simulated_annealing(dpp, exp_cool_schedule)
@@ -99,7 +99,7 @@ def run_local_search_main(algorithm: str, degree_planning_search_params: dict):
         solution: LocalDegreePlan = simulated_annealing(dpp, linear_cool_schedule)
     elif algorithm == 'sa_log':
         solution: LocalDegreePlan = simulated_annealing(dpp, log_cool_schedule)
-    elif algorithm == 'beam':
+    elif algorithm == 'beam (20 iterations)':
         solution: LocalDegreePlan = stochastic_beam_search(dpp)
     else:
         raise ValueError('Invalid algorithm type')
