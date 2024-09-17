@@ -1,5 +1,0 @@
-Average Average Grade: 79.19047619047619
-Legal Ratio: 0.06
-Average Expanded: 9.69
-(79.19047619047619, 0.06)
-Time: 17.46189832687378 seconds
