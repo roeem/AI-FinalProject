@@ -1,0 +1,5 @@
+SUCCESSSSSSSSSSSSSSSSS
+Average Average Grade: 76.82481751824818
+Legal Ratio: 1.0
+Average Expanded: 1359.8
+Time: 866.4123713970184 seconds
