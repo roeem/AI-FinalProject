@@ -7,11 +7,27 @@ from graph_search.search import SearchProblem
 
 class DegreePlanningProblem(SearchProblem):
     """
-    Implementation of Search Problem for Degree Planning problem.
+    Implementation of a Search Problem for the Degree Planning problem.
+
+    This class models the problem of planning a degree by creating and manipulating a degree plan.
     """
 
     def __init__(self, degree_courses: list[Course], mandatory_points: int,
                  target_points: int, min_semester_points: int = 0, max_semester_points: int = math.inf):
+        """
+        Initializes the Degree Planning Problem with given parameters.
+
+        :param degree_courses: List of courses available for the degree.
+        :type degree_courses: list[Course]
+        :param mandatory_points: Number of mandatory points required.
+        :type mandatory_points: int
+        :param target_points: Total points required to complete the degree.
+        :type target_points: int
+        :param min_semester_points: Minimum points required in each semester.
+        :type min_semester_points: int
+        :param max_semester_points: Maximum points allowed in each semester.
+        :type max_semester_points: int
+        """
         self.degree_plan = DegreePlan(degree_courses)
         self.__target_points = target_points
         self.__mandatory_points = mandatory_points
@@ -21,34 +37,60 @@ class DegreePlanningProblem(SearchProblem):
 
     @property
     def target_points(self) -> int:
+        """
+        Returns the target points for the degree.
+
+        :return: Target points required to complete the degree.
+        :rtype: int
+        """
         return self.__target_points
 
     @property
     def mandatory_points(self) -> int:
+        """
+        Returns the number of mandatory points required.
+
+        :return: Mandatory points required for the degree.
+        :rtype: int
+        """
         return self.__mandatory_points
 
     def get_start_state(self) -> DegreePlan:
         """
-        :return: the start state for the search problem
+        Returns the start state for the search problem.
+
+        :return: The initial Degree Plan state.
+        :rtype: DegreePlan
         """
         return self.degree_plan
 
     def is_goal_state(self, state: DegreePlan) -> bool:
         """
-        :param state: a degree plan
-        :return: true if and only if the state is a valid goal state
+        Checks if the given state is a valid goal state for the search problem.
+
+        A state is considered a goal state if the total points and mandatory points match the target values.
+
+        :param state: The Degree Plan to check.
+        :type state: DegreePlan
+        :return: True if the state is a goal state; False otherwise.
+        :rtype: bool
         """
         return (state.total_points == self.__target_points and
                 state.mandatory_points == self.__mandatory_points)
 
     def get_successors(self, state: DegreePlan) -> list[tuple[DegreePlan, Course, float]]:
         """
-        :param state: a degree plan
-        :return: for a given state, this should return a list of triples,
-        (successor, action, stepCost), where 'successor' is a
-        successor to the current state, 'action' is the action
-        required to get there, and 'stepCost' is the incremental
-        cost of expanding to that successor
+        Returns a list of successor states for the given state.
+
+        For a given state, this method returns a list of tuples, where each tuple consists of:
+        - `successor`: A successor Degree Plan state.
+        - `action`: The course added to the state.
+        - `stepCost`: The cost of transitioning to the successor state.
+
+        :param state: The Degree Plan state to expand.
+        :type state: DegreePlan
+        :return: List of successor states.
+        :rtype: list[tuple[DegreePlan, Course, float]]
         """
         self.expanded = self.expanded + 1
         if self.expanded % 50000 == 0:
@@ -65,11 +107,35 @@ class DegreePlanningProblem(SearchProblem):
         return successors
 
     def _get_cost_of_action(self, action: Course) -> float:
+        """
+        Computes the cost of taking a particular action (adding a course).
+
+        The cost is computed based on the average grade of the course and its points relative to the
+        target points.
+
+        :param action: The course being added.
+        :type action: Course
+        :return: The cost of taking the action.
+        :rtype: float
+        """
         cost = (100 - action.avg_grade) * (action.points / self.__target_points)
         return round(cost * 100000)
 
 
 def get_upper_bound_avg(courses: frozenset[Course], total_points_left: int) -> float:
+    """
+    Estimates the upper bound average grade achievable given a set of courses and remaining points.
+
+    The estimate is computed based on the highest possible average grade for both mandatory and elective
+    courses.
+
+    :param courses: Set of available courses.
+    :type courses: frozenset[Course]
+    :param total_points_left: Total points left to achieve the target.
+    :type total_points_left: int
+    :return: The upper bound average grade.
+    :rtype: float
+    """
     if total_points_left == 0:
         return 100
 
@@ -113,6 +179,19 @@ def get_upper_bound_avg(courses: frozenset[Course], total_points_left: int) -> f
 
 
 def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningProblem) -> float:
+    """
+    Heuristic function for estimating the maximum average grade achievable from a given state.
+
+    This heuristic calculates the estimated maximum average grade by considering the courses left
+    and the total points required to reach the goal.
+
+    :param state: The current Degree Plan state.
+    :type state: DegreePlan
+    :param problem: The Degree Planning Problem instance.
+    :type problem: DegreePlanningProblem
+    :return: The heuristic estimate of the maximum average grade.
+    :rtype: float
+    """
     points_left = problem.target_points - state.total_points
     left_avg = get_upper_bound_avg(state.get_optional_courses(), points_left)
     res = (100 - left_avg) * points_left / problem.target_points

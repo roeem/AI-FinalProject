@@ -13,12 +13,25 @@ import time
 
 
 class DegreeLoad(Enum):
+    """
+    Enum representing degree load categories, specifying the minimum and maximum points
+    a student can take per semester.
+    """
     LOW = 10, 20
     MEDIUM = 15, 25
     HIGH = 20, 30
 
 
 def show_results(solution: Union[LocalDegreePlan, Optional[list[Course]]], expanded: int) -> None:
+    """
+    Displays the solution for the degree plan and runs a GUI to visualize it.
+
+    :param solution: The solution for the degree plan, either as a `LocalDegreePlan` or a list of `Course`
+    objects.
+    :type solution: Union[LocalDegreePlan, Optional[list[Course]]]
+    :param expanded: The number of nodes expanded during the search process.
+    :type expanded: int
+    """
     if not solution:
         print("Sorry...\nThere is no solution for this input.")
         return
@@ -39,6 +52,15 @@ def show_results(solution: Union[LocalDegreePlan, Optional[list[Course]]], expan
 
 
 def timer(func):
+    """
+    Decorator function to time the execution of the decorated function.
+
+    :param func: The function to be timed.
+    :type func: callable
+    :return: Wrapper function that prints the time taken to execute the function.
+    :rtype: callable
+    """
+
     def wrapper(*args, **kwargs):
         start = time.time()
         result = func(*args, **kwargs)
@@ -50,6 +72,16 @@ def timer(func):
 
 def run_graph_search_main(algorithm: str, degree_planning_search_params: dict) -> (
         tuple)[Optional[list[Course]], int]:
+    """
+    Runs a graph search algorithm to solve the degree planning problem.
+
+    :param algorithm: The search algorithm to be used ('dfs', 'ucs', 'astar').
+    :type algorithm: str
+    :param degree_planning_search_params: A dictionary of parameters required for the degree planning problem.
+    :type degree_planning_search_params: dict
+    :return: A tuple containing the solution (list of `Course` objects) and the number of expanded nodes.
+    :rtype: tuple[Optional[list[Course]], int]
+    """
     dpp = DegreePlanningProblem(**degree_planning_search_params)
 
     if algorithm == 'dfs':
@@ -64,6 +96,16 @@ def run_graph_search_main(algorithm: str, degree_planning_search_params: dict) -
 
 
 def run_local_search_main(algorithm: str, degree_planning_search_params: dict) -> tuple[LocalDegreePlan, int]:
+    """
+    Runs a local search algorithm to solve the degree planning problem.
+
+    :param algorithm: The local search algorithm to be used ('hill', 'sa', 'beam', etc.).
+    :type algorithm: str
+    :param degree_planning_search_params: A dictionary of parameters required for the degree planning problem.
+    :type degree_planning_search_params: dict
+    :return: A tuple containing the solution (`LocalDegreePlan`) and the number of expanded nodes.
+    :rtype: tuple[LocalDegreePlan, int]
+    """
     dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
     if algorithm == 'hill':
         solution: LocalDegreePlan = hill(dpp)
@@ -82,6 +124,12 @@ def run_local_search_main(algorithm: str, degree_planning_search_params: dict) -
 
 @timer
 def main():
+    """
+    The main entry point of the program. Loads the input degree plan, determines the algorithm,
+    and runs the appropriate search method (graph search or local search) to generate the degree plan.
+
+    :raises ValueError: If the algorithm specified is not valid.
+    """
     algorithm = sys.argv[1]
     input_file_path = "input_files/" + sys.argv[2]
     min_semester_points, max_semester_points = DegreeLoad[(sys.argv[3]).upper()].value

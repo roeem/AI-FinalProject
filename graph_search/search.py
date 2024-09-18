@@ -3,54 +3,60 @@ from graph_search import util
 
 class SearchProblem:
     """
-    This class outlines the structure of a search problem, but doesn't implement
-    any of the methods (in object-oriented terminology: an abstract class).
+    Abstract class outlining the structure of a search problem.
 
-    You do not need to change anything in this class, ever.
+    This class is a template for defining specific search problems. It does not implement any of the methods.
     """
 
     def get_start_state(self):
         """
-        Returns the start state for the search problem
+        Returns the start state for the search problem.
+
+        :return: The start state for the search problem.
+        :rtype: object
         """
         util.raiseNotDefined()
 
     def is_goal_state(self, state):
         """
-        state: Search state
+        Checks if the given state is a valid goal state.
 
-        Returns True if and only if the state is a valid goal state
+        :param state: The state to check.
+        :type state: object
+        :return: True if the state is a goal state; False otherwise.
+        :rtype: bool
         """
         util.raiseNotDefined()
 
     def get_successors(self, state):
         """
-        state: Search state
+        Returns a list of successors for the given state.
 
-        For a given state, this should return a list of triples,
-        (successor, action, stepCost), where 'successor' is a
-        successor to the current state, 'action' is the action
-        required to get there, and 'stepCost' is the incremental
-        cost of expanding to that successor
+        For a given state, this method should return a list of triples:
+        - `successor`: A successor state.
+        - `action`: The action that led to the successor.
+        - `stepCost`: The cost of the action.
+
+        :param state: The state to expand.
+        :type state: object
+        :return: List of triples (successor, action, stepCost).
+        :rtype: list[tuple[object, object, float]]
         """
         util.raiseNotDefined()
 
 
 def depth_first_search(problem):
     """
-    Search the deepest nodes in the search tree first.
+    Performs depth-first search on the given problem.
 
-    Your search algorithm needs to return a list of actions that reaches
-    the goal. Make sure to implement a graph search algorithm.
+    This search algorithm explores the deepest nodes in the search tree first. It returns a list of actions
+    that leads to the goal. Implements graph search to avoid re-expanding nodes.
 
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    :param problem: The search problem to solve.
+    :type problem: SearchProblem
+    :return: List of actions to reach the goal state, or None if no solution exists.
+    :rtype: list[object] | None
     """
-    "*** YOUR CODE HERE ***"
     fringe = util.Stack()
     visited = set()  # set of all the visited states
 
@@ -82,9 +88,16 @@ class Stage:
 
 def uniform_cost_search(problem):
     """
-    Search the node of least total cost first.
+    Performs uniform cost search on the given problem.
+
+    This search algorithm expands the node with the least total cost first. It returns a list of actions
+    that leads to the goal. Implements graph search to avoid re-expanding nodes.
+
+    :param problem: The search problem to solve.
+    :type problem: SearchProblem
+    :return: List of actions to reach the goal state, or None if no solution exists.
+    :rtype: list[object] | None
     """
-    "*** YOUR CODE HERE ***"
     fringe = util.PriorityQueue()
     visited = set()  # set of all the visited states
 
@@ -116,17 +129,34 @@ def uniform_cost_search(problem):
 
 def null_heuristic(state, problem=None):
     """
-    A heuristic function estimates the cost from the current state to the nearest
-    goal in the provided SearchProblem.  This heuristic is trivial.
+    A trivial heuristic function that always returns 0.
+
+    This heuristic does not provide any useful information for guiding the search and is used as a default.
+
+    :param state: The current state.
+    :type state: object
+    :param problem: The search problem instance.
+    :type problem: SearchProblem | None
+    :return: The heuristic estimate, which is always 0.
+    :rtype: float
     """
     return 0
 
 
 def a_star_search(problem, heuristic=null_heuristic):
     """
-    Search the node that has the lowest combined cost and heuristic first.
+    Performs A* search on the given problem.
+
+    This search algorithm expands the node with the lowest combined cost and heuristic value first. It returns
+    a list of actions that leads to the goal. Implements graph search to avoid re-expanding nodes.
+
+    :param problem: The search problem to solve.
+    :type problem: SearchProblem
+    :param heuristic: A heuristic function to estimate the cost from the current state to the goal.
+    :type heuristic: callable | null_heuristic
+    :return: List of actions to reach the goal state, or None if no solution exists.
+    :rtype: list[object] | None
     """
-    "*** YOUR CODE HERE ***"
     fringe = util.PriorityQueue()
     visited = set()  # set of all the visited states
 
@@ -158,7 +188,7 @@ def a_star_search(problem, heuristic=null_heuristic):
     return None
 
 
-# Abbreviations
+# Abbreviations for convenience
 dfs = depth_first_search
 astar = a_star_search
 ucs = uniform_cost_search
