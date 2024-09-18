@@ -1,11 +1,13 @@
 import os
 import sys
 from enum import Enum
+from typing import Optional, Union
 
 from course import Course
+from graph_search.degree_plan import DegreePlan
 from graph_search.degree_planning_problem import DegreePlanningProblem, max_avg_heuristic
 from graph_search.search import bfs, dfs, ucs, astar
-from local_search.local_degree_plan import LocalDegreePlan
+from local_search.local_degree_plan import LocalDegreePlan, Semester
 from gui import run_gui
 from input_loader import load_degree_plan
 from local_search.local_degree_planning_problem import LocalDegreePlanningProblem
@@ -27,6 +29,26 @@ def is_valid_degree_plan(degree_plan: LocalDegreePlan, degree_planning_params):
         return False
 
     return True
+
+
+def show_results(solution: Union[LocalDegreePlan, Optional[list[Course]]], expanded: int) -> None:
+    if not solution:
+        print("Sorry...\nThere is no solution for this input.")
+        return
+    if type(solution) is list:
+        sol = solution
+        solution = LocalDegreePlan()
+        sem_num = 0
+        for c in sol:
+            if (c.semester_type == Semester.A and sem_num % 2 == 1 or c.semester_type == Semester.B and
+                    sem_num % 2 == 0):
+                sem_num += 1
+            solution = solution.add_course(c, sem_num)
+
+    dec = "###############################"
+    print(f"{dec}DEGREE PLAN:{dec}")
+    print(f"Expanded: {expanded}\n{solution}")
+    run_gui(solution)
 
 
 def timer(func):
@@ -58,39 +80,25 @@ def num_of_semesters(courses: list[Course]) -> int:
     return count
 
 
-def run_graph_search_main(algorithm: str, degree_planning_search_params: dict):
-    degree_planning_search = DegreePlanningProblem(**degree_planning_search_params)
+def run_graph_search_main(algorithm: str, degree_planning_search_params: dict) -> (
+        tuple)[Optional[list[Course]], int]:
+    dpp = DegreePlanningProblem(**degree_planning_search_params)
 
     if algorithm == 'bfs':
-        solution = bfs(degree_planning_search)
+        solution = bfs(dpp)
     elif algorithm == 'dfs':
-        solution = dfs(degree_planning_search)
+        solution = dfs(dpp)
     elif algorithm == 'astar':
-        solution = astar(degree_planning_search, max_avg_heuristic)
+        solution = astar(dpp, max_avg_heuristic)
     elif algorithm == 'ucs':
-        solution = ucs(degree_planning_search)
+        solution = ucs(dpp)
     else:
         raise ValueError('Invalid algorithm type')
-
-    if not solution:
-        print("Sorry...\nThere is no solution for this input.")
-        return
-    # todo: fix gui class to handle both degree plans and use gui here.
-    avg, points = calculate_avg(solution)
-    print(f"num of courses: {len(solution)}")
-    print(f"num of semesters: {num_of_semesters(solution)}")
-    print(f"Target points: {degree_planning_search_params['target_points']}")
-    print(f"Mandatory points: {degree_planning_search_params['mandatory_points']}")
-    print(f"Average: {avg}")
-    print(f"Points: {points}")
-    print(f"Expanded: {degree_planning_search.expanded}")
-    for course in solution:
-        print(course)
+    return solution, dpp.expanded
 
 
-def run_local_search_main(algorithm: str, degree_planning_search_params: dict):
+def run_local_search_main(algorithm: str, degree_planning_search_params: dict) -> tuple[LocalDegreePlan, int]:
     dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
-
     if algorithm == 'hill':
         solution: LocalDegreePlan = hill_climbing(dpp)
     elif algorithm == 'sa_exp':
@@ -103,11 +111,7 @@ def run_local_search_main(algorithm: str, degree_planning_search_params: dict):
         solution: LocalDegreePlan = stochastic_beam_search(dpp)
     else:
         raise ValueError('Invalid algorithm type')
-
-    dec = "###############################"
-    print(f"{dec}DEGREE PLAN:{dec}")
-    # run_gui(solution)
-    print(f"Expanded: {dpp.expanded}\n{solution}")
+    return solution, dpp.expanded
 
 
 @timer
@@ -131,11 +135,8 @@ def main():
     else:
         run_search = run_local_search_main
 
-    # tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points)
-
-    #run_search(algorithm, degree_planning_search_params)
-    test_local(degree_planning_search_params, stochastic_beam_search, 10)
-    #test_sa_param(degree_planning_search_params)
+    solution, expanded = run_search(algorithm, degree_planning_search_params)
+    show_results(solution, expanded)
 
 
 # TODO REMOVE!!!!!!!!!!!
@@ -179,6 +180,7 @@ def test_sa_param(degree_planning_search_params):
                 avg = 0 if successes == 0 else avg / successes
                 print(f"Solution succeeded {successes} time out of 10, with success's avg = {avg}\n")
                 print(f"Params: eps={eps}, T0={T0}, alpha={alpha}")
+
 
 def test_local(degree_planning_search_params, algorithm, number_of_runs):
     # TODO: remove before submission

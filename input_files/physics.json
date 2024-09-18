@@ -744,7 +744,7 @@
             "points": 2,
             "semester_type": "A",
             "is_mandatory": false,
-            "prerequisites": [],
+            "prerequisites": null,
             "avg_grade": 89
         },
         {
