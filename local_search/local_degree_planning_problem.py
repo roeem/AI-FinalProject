@@ -53,30 +53,13 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
         self.expanded += 1
         neighbors = self._single_step_neighbors(state)
         neighbors.extend(self._double_step_neighbors(state))
-        # TODO: maybe expand such that there are no duplicates in neighbors (probability wise!)
         neighbors = list(set(neighbors))
         return neighbors
 
-    # def fitness(self, state: LocalDegreePlan) -> float:
-    #     w_exceeded_points, w_mandatory_left, w_elective_left, w_avg = 3, 8, 2, 5
-    #     w_legality = 1
-    #
-    #     exceeded_points = state.sum_exceeded_points_in_semesters(self.__min_semester_points,
-    #                                                              self.__max_semester_points)
-    #     mandatory_left = self.__mandatory_points - state.mandatory_points
-    #     elective_left = (self.__target_points - self.__mandatory_points) - (
-    #             state.total_points - state.mandatory_points)
-    #     avg = state.avg_grade
-    #
-    #     legality_fine = (w_mandatory_left * mandatory_left + w_elective_left *
-    #                      elective_left + w_exceeded_points * exceeded_points)
-    #     return w_avg * avg - w_legality * legality_fine
-
     def fitness(self, state: LocalDegreePlan) -> float:
-        avg = (state.avg_grade * state.total_points) / self.__target_points #todo: old
+        avg = (state.avg_grade * state.total_points) / self.__target_points
         avg += 100 if (state.total_points == self.__target_points and state.mandatory_points ==
                        self.mandatory_points) else 0
-        # avg = (state.get_modified_avg_grade() * state.total_points) / self.__target_points
         return avg
 
     # region ########### HELPERS ###########
@@ -101,21 +84,15 @@ class LocalDegreePlanningProblem(LocalSearchProblem):
         removable_courses = state.possible_courses_to_remove()
         for c1 in removable_courses:
             for c2 in self.__degree_courses:
-                # if c1 == c2:
-                #     continue
-                # TODO: check efficiency
                 new_state: LocalDegreePlan = state.remove_course(c1)
                 if c2 in removable_courses and c1 != c2:
                     new_state: LocalDegreePlan = new_state.remove_course(c2)
                 if new_state.took_course_number(c2.number):
                     continue
-
                 if (new_state.total_points - new_state.mandatory_points) + c2.points * (
                         not c2.is_mandatory) <= self.__elective_points:
-                    available_semesters = new_state.possible_semesters_to_course(c2,
-                                                                                 self.__min_semester_points,
-                                                                                 self.__max_semester_points,
-                                                                                 self.__max_semester_num)
+                    available_semesters = new_state.possible_semesters_to_course(
+                        c2, self.__min_semester_points, self.__max_semester_points, self.__max_semester_num)
                     neighbors.extend([new_state.add_course(c2, sem) for sem in available_semesters])
         return neighbors
 

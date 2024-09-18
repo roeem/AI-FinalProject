@@ -113,9 +113,8 @@ def stochastic_beam_search(problem: LocalSearchProblem, k: int = 50, T: float = 
         k_neighbors = sample_k_neighbors(problem, all_neighbors, k, T)
         best_state = max(k_neighbors, key=problem.fitness)
         last_best.append(problem.fitness(best_state))
-        # best_state = max(best_state, cur_best_state, key=problem.fitness)
         if stop_condition(last_best):
-            return best_state  # todo: return the best
+            return best_state
         all_neighbors: TSS = TSS()
         threads = create_threads(problem, k_neighbors, all_neighbors)
     print("******* Reached max_iterations ! *******\n")
@@ -149,7 +148,7 @@ def wait_for_all_threads(threads: list[Thread]):
 def softmax(scores: list[float], T: float):
     """Compute softmax probabilities from scores with temperature scaling."""
     scores = np.array(scores) / T
-    exp_scores = np.exp(scores - np.max(scores))  # Numerical stability TODO: check the "- np.max(scores)"
+    exp_scores = np.exp(scores - np.max(scores))  # Numerical stability
     return exp_scores / exp_scores.sum()
 
 
@@ -161,4 +160,10 @@ def create_threads(problem: LocalSearchProblem, states: set, all_neighbors: TSS)
         thread.start()
     return threads
 
+
 # endregion
+
+# Abbreviations
+hill = hill_climbing
+sa = simulated_annealing
+beam = stochastic_beam_search

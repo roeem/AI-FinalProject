@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load the Excel file into a DataFrame
-file_path = 'results.xlsx'  # Replace with the actual file path of your Excel file
+file_path = '../Documents/results.xlsx'  # Replace with the actual file path of your Excel file
 df = pd.read_excel(file_path, sheet_name='local')
 # Function to add labels on bars
 def add_value_labels(ax):

@@ -1,12 +1,9 @@
-import os
 import sys
 from enum import Enum
 from typing import Optional, Union
-
 from course import Course
-from graph_search.degree_plan import DegreePlan
 from graph_search.degree_planning_problem import DegreePlanningProblem, max_avg_heuristic
-from graph_search.search import bfs, dfs, ucs, astar
+from graph_search.search import dfs, ucs, astar
 from local_search.local_degree_plan import LocalDegreePlan, Semester
 from gui import run_gui
 from input_loader import load_degree_plan
@@ -19,16 +16,6 @@ class DegreeLoad(Enum):
     LOW = 10, 20
     MEDIUM = 15, 25
     HIGH = 20, 30
-
-
-def is_valid_degree_plan(degree_plan: LocalDegreePlan, degree_planning_params):
-    # TODO REMOVE BEFORE SUBMISSION
-    if degree_plan.total_points != degree_planning_params['target_points']:
-        return False
-    if degree_plan.mandatory_points != degree_planning_params['mandatory_points']:
-        return False
-
-    return True
 
 
 def show_results(solution: Union[LocalDegreePlan, Optional[list[Course]]], expanded: int) -> None:
@@ -61,32 +48,11 @@ def timer(func):
     return wrapper
 
 
-def calculate_avg(courses: list[Course]) -> tuple[float, int]:
-    points = 0
-    grade_sum = 0
-    for course in courses:
-        points += course.points
-        grade_sum += course.avg_grade * course.points
-    return grade_sum / points, points
-
-
-def num_of_semesters(courses: list[Course]) -> int:
-    semester = "A"
-    count = 0
-    for course in courses:
-        if course.semester_type != semester:
-            count += 1
-            semester = course.semester_type
-    return count
-
-
 def run_graph_search_main(algorithm: str, degree_planning_search_params: dict) -> (
         tuple)[Optional[list[Course]], int]:
     dpp = DegreePlanningProblem(**degree_planning_search_params)
 
-    if algorithm == 'bfs':
-        solution = bfs(dpp)
-    elif algorithm == 'dfs':
+    if algorithm == 'dfs':
         solution = dfs(dpp)
     elif algorithm == 'astar':
         solution = astar(dpp, max_avg_heuristic)
@@ -100,15 +66,15 @@ def run_graph_search_main(algorithm: str, degree_planning_search_params: dict) -
 def run_local_search_main(algorithm: str, degree_planning_search_params: dict) -> tuple[LocalDegreePlan, int]:
     dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
     if algorithm == 'hill':
-        solution: LocalDegreePlan = hill_climbing(dpp)
-    elif algorithm == 'sa_exp':
-        solution: LocalDegreePlan = simulated_annealing(dpp, exp_cool_schedule)
+        solution: LocalDegreePlan = hill(dpp)
+    elif algorithm in ['sa', 'sa_exp']:
+        solution: LocalDegreePlan = sa(dpp, exp_cool_schedule)
     elif algorithm == 'sa_lin':
-        solution: LocalDegreePlan = simulated_annealing(dpp, linear_cool_schedule)
+        solution: LocalDegreePlan = sa(dpp, linear_cool_schedule)
     elif algorithm == 'sa_log':
-        solution: LocalDegreePlan = simulated_annealing(dpp, log_cool_schedule)
+        solution: LocalDegreePlan = sa(dpp, log_cool_schedule)
     elif algorithm == 'beam':
-        solution: LocalDegreePlan = stochastic_beam_search(dpp)
+        solution: LocalDegreePlan = beam(dpp)
     else:
         raise ValueError('Invalid algorithm type')
     return solution, dpp.expanded
@@ -137,75 +103,6 @@ def main():
 
     solution, expanded = run_search(algorithm, degree_planning_search_params)
     show_results(solution, expanded)
-
-
-# TODO REMOVE!!!!!!!!!!!
-def tests(degree_courses, mandatory_points, max_semester_points, min_semester_points, target_points):
-    ldpp = LocalDegreePlanningProblem(degree_courses, mandatory_points, target_points, min_semester_points,
-                                      max_semester_points)
-    states = []
-    for _ in range(10):
-        states.append(ldpp.get_initial_state())
-    states.sort(key=lambda x: ldpp.fitness(x))
-    for s in states:
-        print(f"Fitness Score= {ldpp.fitness(s)}\n The Degree Plan:\n{s}\n")
-        print("\n=============================================================\n")
-
-
-def test_sa_param(degree_planning_search_params):
-    epss, T0s, alphas = [1e-5, 1e-7, 1e-9, 1e-12, 1e-15, 1e-20], [100, 1000, 5000, 10000, 20000], \
-        [0.7, 0.8, 0.9, 0.95, 0.99, 0.995, 0.999]
-    for alpha in alphas:
-        for eps in epss:
-            for T0 in T0s:
-                successes = 0
-                avg = 0
-                for i in range(10):
-                    dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
-                    print(f"Started iteration {i}")
-                    start_time = time.time()
-                    solution: LocalDegreePlan = (
-                        simulated_annealing(dpp, schedule=lambda t: exp_cool_schedule(t, T0, alpha), eps=eps))
-                    total_time = time.time() - start_time
-                    # print(f"Params: eps={eps}, T0={T0}, alpha={alpha}")
-                    # print(f"Average Grade: {solution.avg_grade}")
-                    # print(f"Total Points: {solution.total_points}")
-                    # print(f"Mandatory Points: {solution.mandatory_points}")
-                    # print(f"Expanded: {dpp.expanded}")
-                    # print(f"Time: {total_time}")
-                    # print("\n==============================================\n")
-                    if is_valid_degree_plan(solution, degree_planning_search_params):
-                        successes += 1
-                        avg += solution.avg_grade
-                avg = 0 if successes == 0 else avg / successes
-                print(f"Solution succeeded {successes} time out of 10, with success's avg = {avg}\n")
-                print(f"Params: eps={eps}, T0={T0}, alpha={alpha}")
-
-
-def test_local(degree_planning_search_params, algorithm, number_of_runs):
-    # TODO: remove before submission
-    runs = []
-    expanded = 0
-    for i in range(number_of_runs):
-        print(f"Iteration num {i}")
-        dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
-        start_time = time.time()
-        solution: LocalDegreePlan = algorithm(dpp)
-        total_time = time.time() - start_time
-        runs.append((solution, total_time))
-        expanded += dpp.expanded
-        if is_valid_degree_plan(solution, degree_planning_search_params):
-            print(f"SUCCESSSSSSSSSSSSSSSSS")
-    avg_expanded = expanded / number_of_runs
-    legal_runs_avg = [run[0].avg_grade for run in runs if
-                      is_valid_degree_plan(run[0], degree_planning_search_params)]
-    avg_avg_grade = sum(legal_runs_avg) / len(legal_runs_avg)
-    legal_ratio = len(legal_runs_avg) / number_of_runs
-
-    print(f"Average Average Grade: {avg_avg_grade}")
-    print(f"Legal Ratio: {legal_ratio}")
-    print(f"Average Expanded: {avg_expanded}")
-    return avg_avg_grade, legal_ratio
 
 
 if __name__ == '__main__':

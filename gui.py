@@ -118,8 +118,3 @@ def run_gui(degree_plan):
 
     gui = GUI(root, degree_plan)
     root.mainloop()
-
-# Assuming you have a LocalDegreePlan object ready, for example:
-# degree_plan = LocalDegreePlan([...])
-
-# run_gui(degree_plan)

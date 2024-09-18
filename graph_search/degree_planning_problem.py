@@ -27,14 +27,6 @@ class DegreePlanningProblem(SearchProblem):
     def mandatory_points(self) -> int:
         return self.__mandatory_points
 
-    @property
-    def max_semester_points(self) -> int:
-        return self.__max_semester_points
-
-    @property
-    def min_semester_points(self) -> int:
-        return self.__min_semester_points
-
     def get_start_state(self) -> DegreePlan:
         """
         :return: the start state for the search problem
@@ -72,16 +64,9 @@ class DegreePlanningProblem(SearchProblem):
                     successors.append((new_state, course, self._get_cost_of_action(course)))
         return successors
 
-    def get_cost_of_actions(self, actions: list[Course]) -> float:
-        """
-        :param actions: list of Courses
-        :return: sum of all cost of each Course.
-        """
-        return sum(self._get_cost_of_action(action) for action in actions)
-
     def _get_cost_of_action(self, action: Course) -> float:
         cost = (100 - action.avg_grade) * (action.points / self.__target_points)
-        return round(cost * 100000)  # todo: check this
+        return round(cost * 100000)
 
 
 def get_upper_bound_avg(courses: frozenset[Course], total_points_left: int) -> float:
@@ -99,7 +84,6 @@ def get_upper_bound_avg(courses: frozenset[Course], total_points_left: int) -> f
 
     weighted_sum_mandatory = sum([course.avg_grade * course.points for course in mandatory_courses.values()])
     sum_mandatory_points = sum([course.points for course in mandatory_courses.values()])
-    # TODO: pass mandatory_points as a parameter and check legality
 
     elective_courses = {}
     for course in courses:
@@ -133,4 +117,4 @@ def max_avg_heuristic(state: DegreePlan, problem: DegreePlanningProblem) -> floa
     left_avg = get_upper_bound_avg(state.get_optional_courses(), points_left)
     res = (100 - left_avg) * points_left / problem.target_points
     assert res >= 0
-    return round(res * 100000)  # todo: check this
+    return round(res * 100000)

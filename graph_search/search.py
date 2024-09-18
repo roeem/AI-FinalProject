@@ -35,15 +35,6 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
-    def get_cost_of_actions(self, actions):
-        """
-        actions: A list of actions to take
-
-        This method returns the total cost of a particular sequence of actions.  The sequence must
-        be composed of legal moves
-        """
-        util.raiseNotDefined()
-
 
 def depth_first_search(problem):
     """
@@ -61,32 +52,6 @@ def depth_first_search(problem):
     """
     "*** YOUR CODE HERE ***"
     fringe = util.Stack()
-    visited = set()  # set of all the visited states
-
-    start_state = problem.get_start_state()
-    fringe.push((start_state, []))
-
-    while not fringe.isEmpty():
-        current_state, actions = fringe.pop()
-
-        if problem.is_goal_state(current_state):
-            return actions
-
-        elif current_state not in visited:
-            visited.add(current_state)
-
-            for successor, action, step_cost in problem.get_successors(current_state):
-                fringe.push((successor, actions + [action]))
-
-    return None
-
-
-def breadth_first_search(problem):
-    """
-    Search the shallowest nodes in the search tree first.
-    """
-    "*** YOUR CODE HERE ***"
-    fringe = util.Queue()
     visited = set()  # set of all the visited states
 
     start_state = problem.get_start_state()
@@ -181,15 +146,6 @@ def a_star_search(problem, heuristic=null_heuristic):
         if problem.is_goal_state(current_state):
             actions = []
             while stage.predecessor is not None:
-                # TODO remove from here
-                if not (0 <= heuristic(stage.predecessor.state, problem) <= heuristic(stage.state,
-                                                                                      problem) + (
-                                stage.total_cost - stage.predecessor.total_cost)):
-                    res = heuristic(stage.predecessor.state, problem) - (heuristic(stage.state, problem) + (
-                                stage.total_cost - stage.predecessor.total_cost))
-                    if res > 0.001:
-                        print(f"Heuristic not consistent - {res}")
-                # TODO: remove until here
                 actions.append(stage.action)
                 stage = stage.predecessor
             return actions[::-1]
@@ -203,7 +159,6 @@ def a_star_search(problem, heuristic=null_heuristic):
 
 
 # Abbreviations
-bfs = breadth_first_search
 dfs = depth_first_search
 astar = a_star_search
 ucs = uniform_cost_search

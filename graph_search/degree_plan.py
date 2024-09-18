@@ -55,10 +55,6 @@ class DegreePlan:
         return new_degree_plan
 
     @property
-    def semester_count(self):
-        return self.__current_semester_num - 1
-
-    @property
     def mandatory_points(self) -> int:
         return self.__mandatory_points
 

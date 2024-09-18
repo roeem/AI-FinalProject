@@ -23,15 +23,6 @@ class LocalDegreePlan:
         self.__semesters: list[set[Course]] = []
         self.__avg_grade = 0
 
-    def get_modified_avg_grade(self) -> float: # todo: if work remove from here and calc outside
-        if self.total_points == 0:
-            return 0
-        sum_avg = 0
-        for i, sem in enumerate(self.__semesters):
-            for c in sem:
-                sum_avg += c.avg_grade * c.points - i * 1e-6
-        return sum_avg / self.total_points
-
     def add_course(self, course: Course, semester: int) -> "LocalDegreePlan":
         semester_type = Semester.A if semester % 2 == 0 else Semester.B
         if (len(self.__semesters) < semester or semester < 0 or self.took_course_number(course.number) or
@@ -74,14 +65,6 @@ class LocalDegreePlan:
         if semester == len(new_degree_plan.__semesters) - 1 and not new_degree_plan.__semesters[semester]:
             new_degree_plan.__semesters.pop()
         return new_degree_plan
-
-    def calc_avg(self) -> float:
-        wsum, points = 0, 0
-        for sem in self.__semesters:
-            for c in sem:
-                wsum += c.avg_grade * c.points
-                points += c.points
-        return 0 if points == 0 else wsum / points
 
     def took_course_number(self, course_number: int) -> bool:
         return course_number in self.__courses_so_far.keys()
@@ -135,25 +118,6 @@ class LocalDegreePlan:
                     return False
 
         return True
-
-    def sum_missing_prerequisites(self) -> int:
-        sum_miss_preq = 0
-        taken_courses: set[int] = set()
-        for sem in self.__semesters:
-            for c in sem:
-                sum_miss_preq += c.get_num_miss_preqs(taken_courses)
-            taken_courses |= {course.number for course in sem}  # Ron likes elegant ways to union sets
-        return sum_miss_preq
-
-    def sum_exceeded_points_in_semesters(self, min_semester_points: int, max_semester_points: int) -> int:
-        sem_points = map(lambda sem: sum(c.points for c in sem), self.__semesters)
-        invalid_sem_error = 0
-        for points in sem_points:
-            if points < min_semester_points:
-                invalid_sem_error += min_semester_points - points
-            elif points > max_semester_points:
-                invalid_sem_error += points - max_semester_points
-        return invalid_sem_error
 
     @property
     def mandatory_points(self) -> int:

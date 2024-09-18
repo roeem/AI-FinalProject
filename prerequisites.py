@@ -30,19 +30,6 @@ class Prerequisites:
                 return False
         return True
 
-    def num_missing_prerequisites(self, course_numbers_taken: set[int]) -> int:
-        miss_preqs = 0
-        if self.__cnf_course_numbers is None:
-            return miss_preqs
-
-        for clause in self.__cnf_course_numbers:
-            for course_num in clause:
-                if course_num in course_numbers_taken:
-                    break
-            else:
-                miss_preqs += 1
-        return miss_preqs
-
     def __repr__(self):
         """
         For debugging
