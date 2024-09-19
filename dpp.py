@@ -5,7 +5,7 @@ from course import Course
 from graph_search.degree_planning_problem import DegreePlanningProblem, max_avg_heuristic
 from graph_search.search import dfs, ucs, astar
 from local_search.local_degree_plan import LocalDegreePlan, Semester
-from gui import run_gui
+from html_generator import generate_html
 from input_loader import load_degree_plan
 from local_search.local_degree_planning_problem import LocalDegreePlanningProblem
 from local_search.local_search_ import *
@@ -48,7 +48,7 @@ def show_results(solution: Union[LocalDegreePlan, Optional[list[Course]]], expan
     dec = "###############################"
     print(f"{dec}DEGREE PLAN:{dec}")
     print(f"Expanded: {expanded}\n{solution}")
-    run_gui(solution)
+    generate_html(solution)
 
 
 def timer(func):
@@ -109,12 +109,8 @@ def run_local_search_main(algorithm: str, degree_planning_search_params: dict) -
     dpp = LocalDegreePlanningProblem(**degree_planning_search_params)
     if algorithm == 'hill':
         solution: LocalDegreePlan = hill(dpp)
-    elif algorithm in ['sa', 'sa_exp']:
+    elif algorithm == 'sa':
         solution: LocalDegreePlan = sa(dpp, exp_cool_schedule)
-    elif algorithm == 'sa_lin':
-        solution: LocalDegreePlan = sa(dpp, linear_cool_schedule)
-    elif algorithm == 'sa_log':
-        solution: LocalDegreePlan = sa(dpp, log_cool_schedule)
     elif algorithm == 'beam':
         solution: LocalDegreePlan = beam(dpp)
     else:

@@ -69,3 +69,13 @@ To run the A* Search algorithm with the input file cs2.json and a medium semeste
 ```bash
 python dpp.py astar cs2.json medium
 ```
+
+### Viewing Results
+
+Once you've run the program, you can view the results in two ways:
+
+1. **Console/Terminal Output**:  
+   After executing the program, you'll see the results displayed directly in the console, command-line, or terminal. This includes detailed information about the selected degree plan, courses taken each semester, and overall statistics like total credits and average grade.
+
+2. **DegreePlan.html File**:  
+   In addition to the console output, the program generates an HTML file called `DegreePlan.html`. You can open this file in any web browser (e.g., Chrome, Firefox) to view a more user-friendly, formatted version of your degree plan. Simply double-click the file or right-click and choose **Open with** to select your preferred browser.
